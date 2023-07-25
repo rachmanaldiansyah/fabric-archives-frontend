@@ -1,56 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import Login from "./components/Login";
+import Users from "./pages/Users";
+import UsersFormEdit from "./pages/UsersFormEdit";
+import UsersFormCreate from "./pages/UsersFormCreate";
+import Ijazah from "./pages/Ijazah";
+import IjazahFormEdit from "./pages/IjazahFormEdit";
+import IjazahFormCreate from "./pages/IjazahFormCreate";
+import Sertifikat from "./pages/Sertifikat";
+import SertifikatFormCreate from "./pages/SertifikatFormCreate";
+import SertifikatFormEdit from "./pages/SertifikatFormEdit";
+import Siswa from "./pages/Siswa";
+import SiswaFormCreate from "./pages/SiswaFormCreate";
+import SiswaFormEdit from "./pages/SiswaFormEdit";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/users/create" element={<UsersFormCreate />} />
+          <Route path="/users/edit/:id" element={<UsersFormEdit />} />
+          <Route path="/ijazah" element={<Ijazah />} />
+          <Route path="/ijazah/create" element={<IjazahFormCreate />} />
+          <Route path="/ijazah/edit/:id" element={<IjazahFormEdit />} />
+          <Route path="/sertifikat" element={<Sertifikat />} />
+          <Route path="/sertifikat/create" element={<SertifikatFormCreate />} />
+          <Route path="/sertifikat/edit/:id" element={<SertifikatFormEdit />} />
+          <Route path="/siswa" element={<Siswa />} />
+          <Route path="/siswa/create" element={<SiswaFormCreate /> } />
+          <Route path="/siswa/edit/:id" element={<SiswaFormEdit /> } />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
