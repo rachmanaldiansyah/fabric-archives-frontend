@@ -1,24 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Timeline from "./Timeline";
 
 const Welcome = () => {
   const { user } = useSelector((state) => state.auth);
-
-  const data = [
-    {
-      id: 1,
-      date: "27 Juli 2023",
-      description: "Dokumen ijazah diterima dan disetujui.",
-      active: true,
-    },
-    {
-      id: 2,
-      date: "26 Juli 2023",
-      description: "Dokumen ijazah sedang dalam proses verifikasi.",
-      active: false,
-    },
-  ];
 
   return (
     <div>
@@ -27,10 +11,32 @@ const Welcome = () => {
         Selamat Datang, <strong>{user && user.nama} !</strong>
       </h2>
 
-      <div className="container">
-        <h1 className="title">Timeline Aktif Ijazah</h1>
-        <Timeline data={data} />
-      </div>
+      <nav class="level">
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Arsip Ijazah di Database</p>
+            <p class="title">123</p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Arsip Sertifikat di Database</p>
+            <p class="title">123</p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Arsip Ijazah di Blockchain</p>
+            <p class="title">123</p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Arsip Sertifikat di Blockchain</p>
+            <p class="title">123</p>
+          </div>
+        </div>
+      </nav>
     </div>
   );
 };

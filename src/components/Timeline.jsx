@@ -29,25 +29,34 @@ const Timeline = () => {
   };
 
   return (
-    <div>
-      <h1>Data Ijazah Timeline</h1>
-      <ul>
+    <div className="container">
+      <h1 className="title">Data Ijazah Timeline</h1>
+      <div className="timeline">
         {Ijazah.map((ijazah) => (
-          <li key={ijazah.uuid}>
-            {ijazah.nama} - {ijazah.status}
-            {ijazah.status === 'Belum Disetujui' && (
-              <>
-                <button onClick={() => handleApprove(ijazah.uuid, 'Disetujui Kepala Sekolah')}>
-                  Setujui Kepala Sekolah
-                </button>
-                <button onClick={() => handleApprove(ijazah.uuid, 'Disetujui Kesiswaan')}>
-                  Setujui Kesiswaan
-                </button>
-              </>
-            )}
-          </li>
+          <div key={ijazah.uuid} className="timeline-item">
+            <div className="timeline-content">
+              <p className="heading">{ijazah.nama}</p>
+              <p>Status: {ijazah.status}</p>
+              {ijazah.status === 'Belum Disetujui' && (
+                <div className="buttons are-small">
+                  <button
+                    className="button is-success is-outlined"
+                    onClick={() => handleApprove(ijazah.uuid, 'Disetujui Kepala Sekolah')}
+                  >
+                    Setujui Kepala Sekolah
+                  </button>
+                  <button
+                    className="button is-success is-outlined"
+                    onClick={() => handleApprove(ijazah.uuid, 'Disetujui Kesiswaan')}
+                  >
+                    Setujui Kesiswaan
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
