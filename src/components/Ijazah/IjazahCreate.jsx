@@ -1,19 +1,48 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Web3Storage } from "web3.storage";
 
 const IjazahCreate = () => {
   const [no_ijazah, setNoIjazah] = useState("");
+  const [nisn, setNisn] = useState("");
+  const [nis, setNis] = useState("");
+  const [nama, setNama] = useState("");
+  const [jk, setJk] = useState("");
+  const [nama_orangtua, setNamaOrangtua] = useState("");
+  const [prodi, setProdi] = useState("");
   const [arsip_ijazah, setArsipIjazah] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
+  const uploadToIPFS = async (file) => {
+    const apiKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGUwOUJDQjZBYjAxRDQzMzlEMjY3MjVDRDcyQWFjMUEyYzUyRWJiOTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODQyNzc5OTU2NjgsIm5hbWUiOiJ0ZXN0aW5nIn0.gCHtwTQvqHYInM4qXKyhOtextW-fxkJlqYSR8NUfqyE";
+    const storage = new Web3Storage({ token: apiKey });
+    const files = [new File([file], "arsip_ijazah")];
+
+    try {
+      const cid = await storage.put(files);
+      return cid;
+    } catch (error) {
+      console.error("Error uploading to IPFS:", error);
+      return null;
+    }
+  };
+
   const SaveIjazah = async (e) => {
     e.preventDefault();
     try {
+      const cid = await uploadToIPFS(arsip_ijazah);
       await axios.post("http://localhost:5000/ijazah", {
         no_ijazah: no_ijazah,
-        arsip_ijazah: arsip_ijazah,
+        nisn: nisn,
+        nis: nis,
+        nama: nama,
+        jk: jk,
+        nama_orangtua: nama_orangtua,
+        prodi: prodi,
+        arsip_ijazah: cid,
       });
       navigate("/ijazah");
     } catch (error) {
@@ -25,10 +54,10 @@ const IjazahCreate = () => {
 
   return (
     <div>
-      <h1 className="title">Kelola Arsip Ijazah</h1>
-      <h2 className="subtitle">Arsip Ijazah Baru</h2>
       <div className="card is-shadowless">
         <div className="card-content">
+          <h1 className="title">Kelola Data Arsip Ijazah</h1>
+          <h2 className="subtitle">Menambah data arsip ijazah siswa</h2>
           <div className="content">
             <form onSubmit={SaveIjazah}>
               <p className="has-text-centered">{msg}</p>
@@ -45,14 +74,97 @@ const IjazahCreate = () => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Arsip Ijazah</label>
+                <label className="label">NISN</label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
-                    value={arsip_ijazah}
-                    onChange={(e) => setArsipIjazah(e.target.value)}
-                    placeholder="Isi arsip ijazah siswa"
+                    value={nisn}
+                    onChange={(e) => setNisn(e.target.value)}
+                    placeholder="Isi nomor siswa induk nasional"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Nomor Induk Siswa</label>
+                <div className="control">
+                  <input
+                    type="text"
+                    className="input"
+                    value={nis}
+                    onChange={(e) => setNis(e.target.value)}
+                    placeholder="Isi nomor induk siswa"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Nama Siswa</label>
+                <div className="control">
+                  <input
+                    type="text"
+                    className="input"
+                    value={nama}
+                    onChange={(e) => setNama(e.target.value)}
+                    placeholder="Isi nama lengkap siswa"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Jenis Kelamin</label>
+                <div className="control">
+                  <div className="select is-fullwidth">
+                    <select value={jk} onChange={(e) => setJk(e.target.value)}>
+                      <option value="" selected disabled>
+                        Pilih Jenis Kelamin
+                      </option>
+                      <option value="Laki-laki">Laki-laki</option>
+                      <option value="Perempuan">Perempuan</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Nama Orang Tua/Wali</label>
+                <div className="control">
+                  <input
+                    type="text"
+                    className="input"
+                    value={nama_orangtua}
+                    onChange={(e) => setNamaOrangtua(e.target.value)}
+                    placeholder="Isi nama lengkap orang tua siswa"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Program Keahlian</label>
+                <div className="control">
+                  <div className="select is-fullwidth">
+                    <select
+                      value={prodi}
+                      onChange={(e) => setProdi(e.target.value)}
+                    >
+                      <option value="" selected disabled>
+                        Pilih Program Keahlian
+                      </option>
+                      <option value="Teknik Komputer & Jaringan">
+                        Teknik Komputer & Jaringan
+                      </option>
+                      <option value="Perhotelan">Perhotelan</option>
+                      <option value="Multimedia">Multimedia</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Arsip Ijazah</label>
+                <div className="control">
+                  <input
+                    className="input"
+                    type="file"
+                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                    name={arsip_ijazah}
+                    onChange={(e) => setArsipIjazah(e.target.files[0])}
+                    required
                   />
                 </div>
               </div>

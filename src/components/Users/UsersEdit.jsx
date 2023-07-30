@@ -48,10 +48,10 @@ const UsersEdit = () => {
 
   return (
     <div>
-      <h1 className="title">Kelola Pengguna</h1>
-      <h2 className="subtitle">Ubah Data Pengguna</h2>
       <div className="card is-shadowless">
         <div className="card-content">
+          <h1 className="title">Kelola Data Pengguna</h1>
+          <h2 className="subtitle">Mengubah data pengguna</h2>
           <div className="content">
             <form onSubmit={updateUsers}>
               <p className="has-text-centered">{msg}</p>

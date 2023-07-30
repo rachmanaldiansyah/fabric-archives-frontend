@@ -1,6 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { IoCheckmarkCircleOutline, IoFileTrayFullOutline, IoGridOutline, IoLibraryOutline, IoPeopleOutline } from "react-icons/io5";
+import {
+  IoCheckmarkCircleOutline,
+  IoFileTrayFullOutline,
+  IoGridOutline,
+  IoLibraryOutline,
+  IoPeopleOutline,
+} from "react-icons/io5";
 import { useSelector } from "react-redux";
 
 const Sidebar = () => {
@@ -16,16 +22,48 @@ const Sidebar = () => {
               <IoGridOutline /> Dashboard
             </NavLink>
           </li>
-          <li>
-            <NavLink to={"/ijazah"}>
-              <IoLibraryOutline /> Daftar Ijazah
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to={"/sertifikat"}>
-              <IoLibraryOutline /> Daftar Sertifikat
-            </NavLink>
-          </li>
+          {user && user.roles === "admin" && (
+            <li>
+              <NavLink to={"/ijazah"}>
+                <IoLibraryOutline /> Daftar Ijazah
+              </NavLink>
+            </li>
+          )}
+          {user && user.roles === "kepala sekolah" && (
+            <li>
+              <NavLink to={"/ijazah"}>
+                <IoLibraryOutline /> Daftar Ijazah
+              </NavLink>
+            </li>
+          )}
+          {user && user.roles === "kesiswaan" && (
+            <li>
+              <NavLink to={"/ijazah"}>
+                <IoLibraryOutline /> Daftar Ijazah
+              </NavLink>
+            </li>
+          )}
+          {user && user.roles === "admin" && (
+            <li>
+              <NavLink to={"/sertifikat"}>
+                <IoLibraryOutline /> Daftar Sertifikat
+              </NavLink>
+            </li>
+          )}
+          {user && user.roles === "kepala sekolah" && (
+            <li>
+              <NavLink to={"/sertifikat"}>
+                <IoLibraryOutline /> Daftar Sertifikat
+              </NavLink>
+            </li>
+          )}
+          {user && user.roles === "mitra penerbit" && (
+            <li>
+              <NavLink to={"/sertifikat"}>
+                <IoLibraryOutline /> Daftar Sertifikat
+              </NavLink>
+            </li>
+          )}
         </ul>
         {user && user.roles === "admin" && (
           <div>
@@ -34,11 +72,6 @@ const Sidebar = () => {
               <li>
                 <NavLink to={"/users"}>
                   <IoPeopleOutline /> Kelola Pengguna
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to={"/siswa"}>
-                  <IoPeopleOutline /> Kelola Siswa
                 </NavLink>
               </li>
               <li>
@@ -59,12 +92,12 @@ const Sidebar = () => {
             <p className="menu-label">Kepala Sekolah</p>
             <ul className="menu-list">
               <li>
-                <NavLink to={"/"}>
+                <NavLink to={"/ijazah/konfirmasi"}>
                   <IoCheckmarkCircleOutline /> Konfirmasi Ijazah
                 </NavLink>
               </li>
               <li>
-                <NavLink to={"/"}>
+                <NavLink to={"/sertifikat/konfirmasi"}>
                   <IoCheckmarkCircleOutline /> Konfirmasi Sertifikat
                 </NavLink>
               </li>
@@ -76,19 +109,19 @@ const Sidebar = () => {
             <p className="menu-label">Kesiswaan</p>
             <ul className="menu-list">
               <li>
-                <NavLink to={"/"}>
+                <NavLink to={"/ijazah/konfirmasi"}>
                   <IoCheckmarkCircleOutline /> Konfirmasi Ijazah
                 </NavLink>
               </li>
             </ul>
           </div>
         )}
-        {user && user.roles === "mitra" && (
+        {user && user.roles === "mitra penerbit" && (
           <div>
             <p className="menu-label">Mitra Sertifikasi</p>
             <ul className="menu-list">
               <li>
-                <NavLink to={"/"}>
+                <NavLink to={"/sertifikat/konfirmasi"}>
                   <IoCheckmarkCircleOutline /> Konfirmasi Sertifikat
                 </NavLink>
               </li>

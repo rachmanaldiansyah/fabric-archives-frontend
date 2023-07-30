@@ -31,10 +31,10 @@ const UsersCreate = () => {
 
   return (
     <div>
-      <h1 className="title">Kelola Pengguna</h1>
-      <h2 className="subtitle">Daftar Pengguna Baru</h2>
       <div className="card is-shadowless">
         <div className="card-content">
+          <h1 className="title">Kelola Data Pengguna</h1>
+          <h2 className="subtitle">Menambahk data pengguna baru</h2>
           <div className="content">
             <form onSubmit={SaveUsers}>
               <p className="has-text-centered">{msg}</p>
@@ -100,13 +100,6 @@ const UsersCreate = () => {
                       <option value="mitra penerbit">Mitra</option>
                     </select>
                   </div>
-                </div>
-              </div>
-              <div className="field">
-                <div className="control">
-                  <button type="submit" className="button is-success">
-                    Daftarkan
-                  </button>
                 </div>
               </div>
             </form>

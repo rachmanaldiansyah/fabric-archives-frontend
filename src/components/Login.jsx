@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { LoginUser, reset } from "../features/AuthSlices";
 import Logo from "../img/logo-mtc.png";
 
@@ -32,9 +32,14 @@ function Login() {
           <div className="columns is-centered">
             <div className="column is-4">
               <form onSubmit={Auth} className="box">
-                {isError && <p className="has-text-centered">{message}</p>}
-                <div class="columns is-centered">
-                  <div class="column is-half">
+                {isError && (
+                  <div className="notification is-primary has-text-centered">
+                    {message}
+                  </div>
+                )}
+                <p className="title has-text-centered">LOGIN PENGGUNA</p>
+                <div className="columns is-centered">
+                  <div className="column is-half">
                     <img
                       src={Logo}
                       width="250"
@@ -71,10 +76,13 @@ function Login() {
                 <div className="field mt-5">
                   <button
                     type="submit"
-                    className="button is-success is-fullwidth"
+                    className="button is-primary is-fullwidth"
                   >
                     {isLoading ? "Loading..." : "Login"}
                   </button>
+                </div>
+                <div className="field mt-5 has-text-centered">
+                  Tidak Punya Akun? <Link to={"/register"}>Registrasi</Link>
                 </div>
               </form>
             </div>
