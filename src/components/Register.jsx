@@ -35,7 +35,12 @@ const Register = () => {
 
   // Function to show the NIP input field based on selected role
   const renderNipInputField = () => {
-    if (roles === "admin" || roles === "kepala sekolah" || roles === "kesiswaan" || roles === "mitra penerbit") {
+    if (
+      roles === "admin" ||
+      roles === "kepala sekolah" ||
+      roles === "kesiswaan" ||
+      roles === "mitra penerbit"
+    ) {
       return (
         <div className="field">
           <label className="label">NIP</label>
@@ -119,7 +124,9 @@ const Register = () => {
                         value={roles}
                         onChange={(e) => setRoles(e.target.value)}
                       >
-                        <option value="" disabled>Pilih Hak Akses</option>
+                        <option value="" disabled>
+                          Pilih Hak Akses
+                        </option>
                         <option value="admin">Admin</option>
                         <option value="kepala sekolah">Kepala Sekolah</option>
                         <option value="kesiswaan">Kesiswaan</option>
@@ -128,7 +135,8 @@ const Register = () => {
                     </div>
                   </div>
                 </div>
-                {renderNipInputField()} {/* Show the NIP input field based on selected role */}
+                {renderNipInputField()}{" "}
+                {/* Show the NIP input field based on selected role */}
                 <div className="field mt-5">
                   <button
                     type="submit"
