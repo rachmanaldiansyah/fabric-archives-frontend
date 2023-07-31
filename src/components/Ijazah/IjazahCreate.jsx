@@ -53,7 +53,7 @@ const IjazahCreate = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <div className="card is-shadowless">
         <div className="card-content">
           <h1 className="title">Kelola Data Arsip Ijazah</h1>

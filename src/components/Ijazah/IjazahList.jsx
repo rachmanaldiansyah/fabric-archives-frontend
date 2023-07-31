@@ -3,13 +3,16 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Modal from "../Modal";
+import Swal from "sweetalert2";
+import { IoTrashOutline, IoCreateOutline } from "react-icons/io5";
 
 const IjazahList = () => {
   const [ijazah, setIjazah] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const [selectedProdi, setSelectedProdi] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedIjazah, setSelectedIjazah] = useState(null)
+  const [selectedIjazah, setSelectedIjazah] = useState(null);
+  const [confirmedIjazah, setConfirmedIjazah] = useState([]);
 
   useEffect(() => {
     getIjazah();
@@ -21,8 +24,71 @@ const IjazahList = () => {
   };
 
   const deleteIjazah = async (ijazahId) => {
-    await axios.delete(`http://localhost:5000/ijazah/${ijazahId}`);
-    getIjazah();
+    Swal.fire({
+      title: "Apakah Anda Yakin Akan Menghapus Data Ini?",
+      text: "Data arsip ijazah yang terhapus tidak akan bisa kembali!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, Hapus",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await axios.delete(`http://localhost:5000/ijazah/${ijazahId}`);
+        getIjazah();
+        Swal.fire("Terhapus!", "Data Arsip Ijazah Telah Dihapus.", "success");
+      }
+    });
+  };
+
+  // fungsi untuk konfirmas data sebagai Kepala Sekolah
+  const konfirmasiKepalaSekolah = async (ijazahId) => {
+    try {
+      const response = await axios({
+        url: `http://localhost:5000/ijazah/${ijazahId}`,
+        method: "PATCH",
+        data: {
+          konfirmasi_kepsek: true,
+        },
+      });
+      // Setelah berhasil dikonfirmasi oleh kepala sekolah, update status di state
+      setConfirmedIjazah((prevConfirmedIjazah) => [
+        ...prevConfirmedIjazah,
+        response.data,
+      ]);
+      Swal.fire(
+        "Terkonfirmasi!",
+        "Data Arsip Ijazah Telah Dikonfirmasi oleh Kepala Sekolah.",
+        "success"
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const konfirmasiKesiswaan = async (ijazahId) => {
+    try {
+      const response = await axios({
+        url: `http://localhost:5000/ijazah/${ijazahId}`,
+        method: "PATCH",
+        data: {
+          konfirmasi_kesiswaan: true,
+        },
+      });
+      // Setelah berhasil dikonfirmasi oleh kesiswaan, update status di state
+      setConfirmedIjazah((prevConfirmedIjazah) => [
+        ...prevConfirmedIjazah,
+        response.data,
+      ]);
+      Swal.fire(
+        "Terkonfirmasi!",
+        "Data Arsip Ijazah Telah Dikonfirmasi oleh Kesiswaan.",
+        "success"
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const openModal = (arsipIjazah) => {
@@ -39,8 +105,8 @@ const IjazahList = () => {
   };
 
   return (
-    <div>
-      <h1 className="title">Kelola Daftar Ijazah</h1>
+    <div className="container">
+      <h1 className="title mt-2">Kelola Daftar Ijazah</h1>
       <h2 className="subtitle">Daftar Data Ijazah</h2>
       <div className="container mb-2">
         <div className="control">
@@ -62,7 +128,7 @@ const IjazahList = () => {
         </div>
       </div>
       <div className="table-container">
-        <table className="table is-striped is-fullwidth">
+        <table className="table is-striped is-fullwidth is-hoverable">
           <thead>
             <tr>
               <th>No</th>
@@ -72,7 +138,7 @@ const IjazahList = () => {
               <th>Nama Siswa</th>
               <th>Jenis Kelamin</th>
               <th>Nama Orangtua</th>
-              <th>Prodi</th>
+              <th>Program Studi</th>
               <th>Arsip Ijazah</th>
               {user && user.roles === "admin" && <th>Actions</th>}
               {user && user.roles === "kesiswaan" && <th>Actions</th>}
@@ -95,7 +161,11 @@ const IjazahList = () => {
                     <td>
                       <button
                         className="button is-small is-primary"
-                        onClick={() => openModal(ijazah.arsip_ijazah)}
+                        onClick={() =>
+                          openModal(
+                            "https://" + ijazah.arsip_ijazah + ".ipfs.w3s.link"
+                          )
+                        }
                       >
                         Arsip Ijazah
                       </button>
@@ -113,34 +183,42 @@ const IjazahList = () => {
                           to={`/ijazah/edit/${ijazah.uuid}`}
                           className="button is-small is-info"
                         >
-                          Ubah
+                          <IoCreateOutline />
                         </Link>
                         <button
                           onClick={() => deleteIjazah(ijazah.uuid)}
                           className="button is-small is-danger"
                         >
-                          Hapus
+                          <IoTrashOutline />
                         </button>
                       </td>
                     )}
                     {user && user.roles === "kepala sekolah" && (
                       <td>
-                        <Link
-                          to={`/ijazah/edit/${ijazah.uuid}`}
-                          className="button is-small is-info"
-                        >
-                          Konfirmasi
-                        </Link>
+                        {confirmedIjazah.includes(ijazah.uuid) ? (
+                          <span className="tag is-success">Terkonfirmasi</span>
+                        ) : (
+                          <button
+                            onClick={() => konfirmasiKepalaSekolah(ijazah.uuid)}
+                            className="button is-small is-info"
+                          >
+                            Konfirmasi
+                          </button>
+                        )}
                       </td>
                     )}
                     {user && user.roles === "kesiswaan" && (
                       <td>
-                        <Link
-                          to={`/ijazah/edit/${ijazah.uuid}`}
-                          className="button is-small is-info"
-                        >
-                          Konfirmasi
-                        </Link>
+                        {confirmedIjazah.includes(ijazah.uuid) ? (
+                          <span className="tag is-success">Terkonfirmasi</span>
+                        ) : (
+                          <button
+                            onClick={() => konfirmasiKesiswaan(ijazah.uuid)}
+                            className="button is-small is-info"
+                          >
+                            Konfirmasi
+                          </button>
+                        )}
                       </td>
                     )}
                   </tr>

@@ -22,7 +22,13 @@ const SertifikatFormList = () => {
 
   return (
     <Layout>
-      <SertifikatList />
+      <div className="container">
+        <div className="columns is-centered">
+          <div className="column is-11">
+            <SertifikatList />
+          </div>
+        </div>
+      </div>
     </Layout>
   );
 };

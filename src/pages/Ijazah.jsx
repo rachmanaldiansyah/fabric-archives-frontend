@@ -22,7 +22,13 @@ const Ijazah = () => {
 
   return (
     <Layout>
-      <IjazahList />
+      <div className="container">
+        <div className="columns is-centered">
+          <div className="column is-11">
+            <IjazahList />
+          </div>
+        </div>
+      </div>
     </Layout>
   );
 };

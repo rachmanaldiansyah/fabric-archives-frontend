@@ -92,7 +92,7 @@ const Sidebar = () => {
             <p className="menu-label">Kepala Sekolah</p>
             <ul className="menu-list">
               <li>
-                <NavLink to={"/ijazah/konfirmasi"}>
+                <NavLink to={`/ijazah/konfirmasi`}>
                   <IoCheckmarkCircleOutline /> Konfirmasi Ijazah
                 </NavLink>
               </li>
