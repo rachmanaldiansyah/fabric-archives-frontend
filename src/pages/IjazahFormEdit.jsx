@@ -21,7 +21,7 @@ const IjazahFormEdit = () => {
     if (user && user.roles !== "admin") {
       navigate("/dashboard");
     }
-  }, [isError, navigate]);
+  }, [isError, user, navigate]);
 
   return (
     <Layout>

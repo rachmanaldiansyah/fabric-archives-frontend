@@ -14,8 +14,7 @@ const SertifikatCreate = () => {
   const navigate = useNavigate();
 
   const uploadToIPFS = async (file) => {
-    const apiKey =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGUwOUJDQjZBYjAxRDQzMzlEMjY3MjVDRDcyQWFjMUEyYzUyRWJiOTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODQyNzc5OTU2NjgsIm5hbWUiOiJ0ZXN0aW5nIn0.gCHtwTQvqHYInM4qXKyhOtextW-fxkJlqYSR8NUfqyE";
+    const apiKey = process.env.WEB3STORAGE_TOKEN;
     const storage = new Web3Storage({ token: apiKey });
     const files = [new File([file], "arsip_sertifikat")];
 
@@ -53,7 +52,7 @@ const SertifikatCreate = () => {
       <div className="card is-shadowless">
         <div className="card-content">
           <h1 className="title">Kelola Arsip Sertifikat</h1>
-          <h2 className="subtitle">Menambahkan data arsip sertifikat Baru</h2>
+          <h2 className="subtitle">Menambahkan data arsip sertifikat uji kompetensi siswa</h2>
           <div className="content">
             <form onSubmit={saveSertifikat}>
               <p className="has-text-centered">{msg}</p>

@@ -24,7 +24,7 @@ const SertifikatFormList = () => {
     <Layout>
       <div className="container">
         <div className="columns is-centered">
-          <div className="column is-11">
+          <div className="column is-12">
             <SertifikatList />
           </div>
         </div>

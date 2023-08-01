@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import Layout from "./Layout";
-import UsersEdit from "../components/Users/UsersEdit";
+import IjazahConfirm from "../components/Ijazah/IjazahConfirm";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe } from "../features/AuthSlices";
 
-const UsersFormEdit = () => {
+const IjazahFormConfirm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isError, user } = useSelector((state) => state.auth);
+  const { isError } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getMe());
@@ -18,16 +18,19 @@ const UsersFormEdit = () => {
     if (isError) {
       navigate("/");
     }
-    if (user && user.roles !== "admin") {
-      navigate("/dashboard");
-    }
-  }, [isError, user, navigate]);
+  }, [isError, navigate]);
 
   return (
     <Layout>
-      <UsersEdit />
+      <div className="container">
+        <div className="columns is-centered">
+          <div className="column is-12">
+            <IjazahConfirm />
+          </div>
+        </div>
+      </div>
     </Layout>
   );
 };
 
-export default UsersFormEdit;
+export default IjazahFormConfirm;

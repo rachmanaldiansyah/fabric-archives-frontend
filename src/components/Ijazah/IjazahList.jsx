@@ -42,14 +42,14 @@ const IjazahList = () => {
     });
   };
 
-  // fungsi untuk konfirmas data sebagai Kepala Sekolah
+  // fungsi untuk konfirmasi data sebagai Kepala Sekolah
   const konfirmasiKepalaSekolah = async (ijazahId) => {
     try {
       const response = await axios({
         url: `http://localhost:5000/ijazah/${ijazahId}`,
         method: "PATCH",
         data: {
-          konfirmasi_kepsek: true,
+          konfirmasi_kepsek: "Dikonfirmasi",
         },
       });
       // Setelah berhasil dikonfirmasi oleh kepala sekolah, update status di state
@@ -67,13 +67,14 @@ const IjazahList = () => {
     }
   };
 
+  // fungsi untuk konfirmasi data sebagai kesiswaan
   const konfirmasiKesiswaan = async (ijazahId) => {
     try {
       const response = await axios({
         url: `http://localhost:5000/ijazah/${ijazahId}`,
         method: "PATCH",
         data: {
-          konfirmasi_kesiswaan: true,
+          konfirmasi_kesiswaan: "Dikonfirmasi",
         },
       });
       // Setelah berhasil dikonfirmasi oleh kesiswaan, update status di state
@@ -88,6 +89,21 @@ const IjazahList = () => {
       );
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const isIjazahConfirmed = (ijazahId) => {
+    return confirmedIjazah.includes(ijazahId);
+  };
+
+  const getStatus = (ijazah) => {
+    const isKepsekConfirmed = ijazah.konfirmasi_kepsek === "Dikonfirmasi";
+    const isKesiswaanConfirmed = ijazah.konfirmasi_kesiswaan === "Dikonfirmasi";
+
+    if (isKepsekConfirmed && isKesiswaanConfirmed) {
+      return "Valid";
+    } else {
+      return "Invalid";
     }
   };
 
@@ -106,8 +122,8 @@ const IjazahList = () => {
 
   return (
     <div className="container">
-      <h1 className="title mt-2">Kelola Daftar Ijazah</h1>
-      <h2 className="subtitle">Daftar Data Ijazah</h2>
+      <h1 className="title mt-2">Kelola Daftar Arsip Ijazah</h1>
+      <h2 className="subtitle">Daftar data arsip ijazah siswa</h2>
       <div className="container mb-2">
         <div className="control">
           <select
@@ -140,7 +156,12 @@ const IjazahList = () => {
               <th>Nama Orangtua</th>
               <th>Program Studi</th>
               <th>Arsip Ijazah</th>
-              {user && user.roles === "admin" && <th>Actions</th>}
+              {user && user.roles === "admin" && (
+                <>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </>
+              )}
               {user && user.roles === "kesiswaan" && <th>Actions</th>}
               {user && user.roles === "kepala sekolah" && <th>Actions</th>}
             </tr>
@@ -160,7 +181,7 @@ const IjazahList = () => {
                     <td>{ijazah.prodi}</td>
                     <td>
                       <button
-                        className="button is-small is-primary"
+                        className="button is-small is-fullwidth is-primary"
                         onClick={() =>
                           openModal(
                             "https://" + ijazah.arsip_ijazah + ".ipfs.w3s.link"
@@ -178,24 +199,36 @@ const IjazahList = () => {
                       )}
                     </td>
                     {user && user.roles === "admin" && (
-                      <td>
-                        <Link
-                          to={`/ijazah/edit/${ijazah.uuid}`}
-                          className="button is-small is-info"
-                        >
-                          <IoCreateOutline />
-                        </Link>
-                        <button
-                          onClick={() => deleteIjazah(ijazah.uuid)}
-                          className="button is-small is-danger"
-                        >
-                          <IoTrashOutline />
-                        </button>
-                      </td>
+                      <>
+                        {getStatus(ijazah) === "Valid" && (
+                          <td className="button is-small is-success is-fullwidth mt-2">
+                            {getStatus(ijazah)}
+                          </td>
+                        )}
+                        {getStatus(ijazah) === "Invalid" && (
+                          <td className="button is-small is-warning is-fullwidth mt-2">
+                            {getStatus(ijazah)}
+                          </td>
+                        )}
+                        <td>
+                          <Link
+                            to={`/ijazah/edit/${ijazah.uuid}`}
+                            className="button is-small is-info is-fullwidth"
+                          >
+                            <IoCreateOutline />
+                          </Link>
+                          <button
+                            onClick={() => deleteIjazah(ijazah.uuid)}
+                            className="button is-small is-danger is-fullwidth mt-1"
+                          >
+                            <IoTrashOutline />
+                          </button>
+                        </td>
+                      </>
                     )}
                     {user && user.roles === "kepala sekolah" && (
                       <td>
-                        {confirmedIjazah.includes(ijazah.uuid) ? (
+                        {isIjazahConfirmed(ijazah.uuid) ? (
                           <span className="tag is-success">Terkonfirmasi</span>
                         ) : (
                           <button
@@ -209,7 +242,7 @@ const IjazahList = () => {
                     )}
                     {user && user.roles === "kesiswaan" && (
                       <td>
-                        {confirmedIjazah.includes(ijazah.uuid) ? (
+                        {isIjazahConfirmed(ijazah.uuid) ? (
                           <span className="tag is-success">Terkonfirmasi</span>
                         ) : (
                           <button

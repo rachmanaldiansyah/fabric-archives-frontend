@@ -11,7 +11,7 @@ const Welcome = () => {
         Selamat Datang, <strong>{user && user.nama} !</strong>
       </h2>
 
-      <nav className="level">
+      <nav className="level mt-2">
         <div className="level-item has-text-centered">
           <div>
             <p className="heading">Arsip Ijazah di Database</p>

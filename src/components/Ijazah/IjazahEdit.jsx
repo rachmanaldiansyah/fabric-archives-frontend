@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { Web3Storage } from "web3.storage";
 
 const IjazahEdit = () => {
   const [no_ijazah, setNoIjazah] = useState("");
@@ -36,9 +37,24 @@ const IjazahEdit = () => {
     getIjazahById();
   }, [id]);
 
+  const uploadToIPFS = async (file) => {
+    const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGUwOUJDQjZBYjAxRDQzMzlEMjY3MjVDRDcyQWFjMUEyYzUyRWJiOTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODQyNzc5OTU2NjgsIm5hbWUiOiJ0ZXN0aW5nIn0.gCHtwTQvqHYInM4qXKyhOtextW-fxkJlqYSR8NUfqyE";
+    const storage = new Web3Storage({ token: apiKey });
+    const files = [new File([file], "arsip_ijazah")];
+
+    try {
+      const cid = await storage.put(files);
+      return cid;
+    } catch (error) {
+      console.error("Error uploading to IPFS:", error);
+      return null;
+    }
+  };
+
   const updateIjazah = async (e) => {
     e.preventDefault();
     try {
+      const cid = await uploadToIPFS(arsip_ijazah);
       await axios.patch(`http://localhost:5000/ijazah/${id}`, {
         no_ijazah: no_ijazah,
         nisn: nisn,
@@ -47,7 +63,7 @@ const IjazahEdit = () => {
         jk: jk,
         nama_orangtua: nama_orangtua,
         prodi: prodi,
-        arsip_ijazah: arsip_ijazah,
+        arsip_ijazah: cid,
       });
       navigate("/ijazah");
     } catch (error) {
@@ -164,11 +180,12 @@ const IjazahEdit = () => {
                 <label className="label">Arsip Ijazah</label>
                 <div className="control">
                   <input
-                    type="text"
                     className="input"
-                    value={arsip_ijazah}
-                    onChange={(e) => setArsipIjazah(e.target.value)}
-                    placeholder="Isi nama lengkap orang tua siswa"
+                    type="file"
+                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                    name={arsip_ijazah}
+                    onChange={(e) => setArsipIjazah(e.target.files[0])}
+                    required
                   />
                 </div>
               </div>

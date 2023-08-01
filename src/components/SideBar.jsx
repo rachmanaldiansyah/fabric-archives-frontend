@@ -31,14 +31,14 @@ const Sidebar = () => {
           )}
           {user && user.roles === "kepala sekolah" && (
             <li>
-              <NavLink to={"/ijazah"}>
+              <NavLink to={"/ijazah/confirm"}>
                 <IoLibraryOutline /> Daftar Ijazah
               </NavLink>
             </li>
           )}
           {user && user.roles === "kesiswaan" && (
             <li>
-              <NavLink to={"/ijazah"}>
+              <NavLink to={"/ijazah/confirm"}>
                 <IoLibraryOutline /> Daftar Ijazah
               </NavLink>
             </li>
@@ -52,14 +52,14 @@ const Sidebar = () => {
           )}
           {user && user.roles === "kepala sekolah" && (
             <li>
-              <NavLink to={"/sertifikat"}>
+              <NavLink to={"/sertifikat/confirm"}>
                 <IoLibraryOutline /> Daftar Sertifikat
               </NavLink>
             </li>
           )}
           {user && user.roles === "mitra penerbit" && (
             <li>
-              <NavLink to={"/sertifikat"}>
+              <NavLink to={"/sertifikat/confirm"}>
                 <IoLibraryOutline /> Daftar Sertifikat
               </NavLink>
             </li>
@@ -92,12 +92,12 @@ const Sidebar = () => {
             <p className="menu-label">Kepala Sekolah</p>
             <ul className="menu-list">
               <li>
-                <NavLink to={`/ijazah/konfirmasi`}>
+                <NavLink to={`/ijazah`}>
                   <IoCheckmarkCircleOutline /> Konfirmasi Ijazah
                 </NavLink>
               </li>
               <li>
-                <NavLink to={"/sertifikat/konfirmasi"}>
+                <NavLink to={`/sertifikat`}>
                   <IoCheckmarkCircleOutline /> Konfirmasi Sertifikat
                 </NavLink>
               </li>
@@ -109,7 +109,7 @@ const Sidebar = () => {
             <p className="menu-label">Kesiswaan</p>
             <ul className="menu-list">
               <li>
-                <NavLink to={"/ijazah/konfirmasi"}>
+                <NavLink to={"/ijazah"}>
                   <IoCheckmarkCircleOutline /> Konfirmasi Ijazah
                 </NavLink>
               </li>
@@ -121,7 +121,7 @@ const Sidebar = () => {
             <p className="menu-label">Mitra Sertifikasi</p>
             <ul className="menu-list">
               <li>
-                <NavLink to={"/sertifikat/konfirmasi"}>
+                <NavLink to={"/sertifikat"}>
                   <IoCheckmarkCircleOutline /> Konfirmasi Sertifikat
                 </NavLink>
               </li>
