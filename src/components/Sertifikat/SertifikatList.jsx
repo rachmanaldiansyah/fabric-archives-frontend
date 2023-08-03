@@ -18,6 +18,19 @@ const SertifikatList = () => {
     getSertifikat();
   }, []);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  // Calculate the index range of items to display for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sertifikat.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Function to handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   const getSertifikat = async () => {
     const response = await axios.get("http://localhost:5000/sertifikat");
     setSertifikat(response.data);
@@ -102,12 +115,12 @@ const SertifikatList = () => {
 
   const getStatus = (sertifikat) => {
     const isKepsekConfirmed = sertifikat.konfirmasi_kepsek === "Dikonfirmasi";
-    const isKesiswaanConfirmed = sertifikat.konfirmasi_mitra === "Dikonfirmasi";
+    const isMitraConfirmed = sertifikat.konfirmasi_mitra === "Dikonfirmasi";
 
-    if (isKepsekConfirmed && isKesiswaanConfirmed) {
-      return "Valid";
+    if (isKepsekConfirmed && isMitraConfirmed) {
+      return "Dikonfirmasi";
     } else {
-      return "Invalid";
+      return "Pending";
     }
   };
 
@@ -125,9 +138,13 @@ const SertifikatList = () => {
   };
 
   return (
-    <div>
-      <h1 className="title mt-2">Kelola Daftar Arsip Sertifikat Uji Kompetensi</h1>
-      <h2 className="subtitle">Daftar data arsip sertifikat uji kompetensi siswa</h2>
+    <div className="container">
+      <h1 className="title mt-2">
+        Kelola Daftar Arsip Sertifikat Uji Kompetensi
+      </h1>
+      <h2 className="subtitle">
+        Daftar data arsip sertifikat uji kompetensi siswa
+      </h2>
       <div className="container mb-2">
         <div className="control">
           <select
@@ -147,119 +164,147 @@ const SertifikatList = () => {
           </select>
         </div>
       </div>
-      <table className="table is-striped is-fullwidth">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>No Sertifikat</th>
-            <th>Nomor Induk</th>
-            <th>Nama Siswa</th>
-            <th>Jenis Kelamin</th>
-            <th>Kompetensi Keahlian</th>
-            <th>Arsip Sertifikat</th>
-            {user && user.roles === "admin" && (
-              <>
-                <th>Status</th>
-                <th>Actions</th>
-              </>
-            )}
-            {user && user.roles === "kepala sekolah" && <th>Actions</th>}
-            {user && user.roles === "mitra penerbit" && <th>Actions</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {sertifikat.map(
-            (sertifikat, index) =>
-              (!selectedProdi || selectedProdi === sertifikat.keahlian) && (
-                <tr key={sertifikat.uuid}>
-                  <td>{index + 1}</td>
-                  <td>{sertifikat.no_sertifikat}</td>
-                  <td>{sertifikat.nis}</td>
-                  <td>{sertifikat.nama}</td>
-                  <td>{sertifikat.jk}</td>
-                  <td>{sertifikat.keahlian}</td>
-                  <td>
-                    <button
-                      className="button is-small is-primary is-fullwidth"
-                      onClick={() =>
-                        openModal(
-                          "https://" +
-                            sertifikat.arsip_sertifikat +
-                            ".ipfs.w3s.link"
-                        )
-                      }
-                    >
-                      Arsip Sertifikat
-                    </button>
-                    {modalIsOpen && (
-                      <Modal
-                        title="Arsip Sertifikat"
-                        content={selectedSertifikat}
-                        onClose={closeModal}
-                      />
+      <div className="table-container">
+        <table className="table is-striped is-fullwidth">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>No Sertifikat</th>
+              <th>Nomor Induk</th>
+              <th>Nama Siswa</th>
+              <th>Jenis Kelamin</th>
+              <th>Kompetensi Keahlian</th>
+              <th>Arsip Sertifikat</th>
+              {user && user.roles === "admin" && (
+                <>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </>
+              )}
+              {user && user.roles === "kepala sekolah" && <th>Actions</th>}
+              {user && user.roles === "mitra penerbit" && <th>Actions</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {currentItems.map(
+              (sertifikat, index) =>
+                (!selectedProdi || selectedProdi === sertifikat.keahlian) && (
+                  <tr key={sertifikat.uuid}>
+                    <td>{index + 1}</td>
+                    <td>{sertifikat.no_sertifikat}</td>
+                    <td>{sertifikat.nis}</td>
+                    <td>{sertifikat.nama}</td>
+                    <td>{sertifikat.jk}</td>
+                    <td>{sertifikat.keahlian}</td>
+                    <td>
+                      <button
+                        className="button is-small is-primary is-fullwidth"
+                        onClick={() =>
+                          openModal(
+                            "https://" +
+                              sertifikat.arsip_sertifikat +
+                              ".ipfs.w3s.link"
+                          )
+                        }
+                      >
+                        Arsip Sertifikat
+                      </button>
+                      {modalIsOpen && (
+                        <Modal
+                          title="Arsip Sertifikat"
+                          content={selectedSertifikat}
+                          onClose={closeModal}
+                        />
+                      )}
+                    </td>
+                    {user && user.roles === "admin" && (
+                      <>
+                        {getStatus(sertifikat) === "Dikonfirmasi" && (
+                          <td className="tag is-small is-success is-fullwidth mt-2">
+                            {getStatus(sertifikat)}
+                          </td>
+                        )}
+                        {getStatus(sertifikat) === "Pending" && (
+                          <td className="tag is-small is-warning is-fullwidth mt-2">
+                            {getStatus(sertifikat)}
+                          </td>
+                        )}
+                        <td>
+                          <Link
+                            to={`/sertifikat/edit/${sertifikat.uuid}`}
+                            className="button is-small is-info is-fullwidth"
+                          >
+                            <IoCreateOutline />
+                          </Link>
+                          <button
+                            onClick={() => deleteSertifikat(sertifikat.uuid)}
+                            className="button is-small is-danger is-fullwidth mt-1"
+                          >
+                            <IoTrashOutline />
+                          </button>
+                        </td>
+                      </>
                     )}
-                  </td>
-                  {user && user.roles === "admin" && (
-                    <>
-                      {getStatus(sertifikat) === "Valid" && (
-                        <td className="button is-small is-success is-fullwidth mt-2">
-                          {getStatus(sertifikat)}
-                        </td>
-                      )}
-                      {getStatus(sertifikat) === "Invalid" && (
-                        <td className="button is-small is-warning is-fullwidth mt-2">
-                          {getStatus(sertifikat)}
-                        </td>
-                      )}
+                    {user && user.roles === "kepala sekolah" && (
                       <td>
-                        <Link
-                          to={`/sertifikat/edit/${sertifikat.uuid}`}
-                          className="button is-small is-info is-fullwidth"
-                        >
-                          <IoCreateOutline />
-                        </Link>
-                        <button
-                          onClick={() => deleteSertifikat(sertifikat.uuid)}
-                          className="button is-small is-danger is-fullwidth mt-1"
-                        >
-                          <IoTrashOutline />
-                        </button>
+                        {isSertifikatConfirmed(sertifikat.uuid) ? (
+                          <span className="tag is-success">Terkonfirmasi</span>
+                        ) : (
+                          <button
+                            onClick={() =>
+                              konfirmasiKepalaSekolah(sertifikat.uuid)
+                            }
+                            className="button is-small is-info"
+                          >
+                            Konfirmasi
+                          </button>
+                        )}
                       </td>
-                    </>
-                  )}
-                  {user && user.roles === "kepala sekolah" && (
-                    <td>
-                      {isSertifikatConfirmed(sertifikat.uuid) ? (
-                        <span className="tag is-success">Terkonfirmasi</span>
-                      ) : (
-                        <button
-                          onClick={() => konfirmasiKepalaSekolah(sertifikat.uuid)}
-                          className="button is-small is-info"
-                        >
-                          Konfirmasi
-                        </button>
-                      )}
-                    </td>
-                  )}
-                  {user && user.roles === "mitra penerbit" && (
-                    <td>
-                      {isSertifikatConfirmed(sertifikat.uuid) ? (
-                        <span className="tag is-success">Terkonfirmasi</span>
-                      ) : (
-                        <button
-                          onClick={() => konfirmasiMitra(sertifikat.uuid)}
-                          className="button is-small is-info"
-                        >
-                          Konfirmasi
-                        </button>
-                      )}
-                    </td>
-                  )}
-                </tr>
-              )
+                    )}
+                    {user && user.roles === "mitra penerbit" && (
+                      <td>
+                        {isSertifikatConfirmed(sertifikat.uuid) ? (
+                          <span className="tag is-success">Terkonfirmasi</span>
+                        ) : (
+                          <button
+                            onClick={() => konfirmasiMitra(sertifikat.uuid)}
+                            className="button is-small is-info"
+                          >
+                            Konfirmasi
+                          </button>
+                        )}
+                      </td>
+                    )}
+                  </tr>
+                )
+            )}
+          </tbody>
+        </table>
+      </div>
+      {/* Tampilan Pagination */}
+      <nav
+        className="pagination is-centered is-rounded is-small"
+        role="navigation"
+        aria-label="pagination"
+      >
+        <ul className="pagination-list">
+          {Array.from({ length: Math.ceil(sertifikat.length / itemsPerPage) }).map(
+            (_, i) => (
+              <li key={i}>
+                <button
+                  className={`pagination-link${
+                    currentPage === i + 1 ? " is-current" : ""
+                  }`}
+                  aria-label={`Goto page ${i + 1}`}
+                  onClick={() => handlePageChange(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              </li>
+            )
           )}
-        </tbody>
-      </table>
+        </ul>
+      </nav>
     </div>
   );
 };

@@ -2,18 +2,34 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import axios from "axios";
+import Swal from "sweetalert2";
 import Modal from "../Modal";
 
 const IjazahConfirm = () => {
-  const [ijazah, setIjazah] = useState([]);
   const { user } = useSelector((state) => state.auth);
+  const [ijazah, setIjazah] = useState([]);
   const [selectedProdi, setSelectedProdi] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedIjazah, setSelectedIjazah] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
+    fetchToken();
     getIjazah();
   }, []);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  // Calculate the index range of items to display for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = ijazah.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Function to handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const getIjazah = async () => {
     const response = await axios.get("http://localhost:5000/ijazah");
@@ -25,9 +41,9 @@ const IjazahConfirm = () => {
     const isKesiswaanConfirmed = ijazah.konfirmasi_kesiswaan === "Dikonfirmasi";
 
     if (isKepsekConfirmed && isKesiswaanConfirmed) {
-      return "Valid";
+      return "Dikonfirmasi";
     } else {
-      return "Invalid";
+      return "Pending";
     }
   };
 
@@ -43,6 +59,71 @@ const IjazahConfirm = () => {
   const handleProdiFilterChange = (event) => {
     setSelectedProdi(event.target.value);
   };
+  
+  const fetchToken = async () => {
+    try {
+      const enrollResponse = await axios.post(
+        "http://localhost:5001/user/enroll",
+        {
+          id: "admin",
+          secret: "adminpw",
+        }
+      );
+      const token = enrollResponse.data.token;
+      console.log("Fetched token:", token);
+      setToken(token);
+    } catch (error) {
+      console.error("Failed to fetch token:", error);
+    }
+  };
+  
+  
+  const uploadToBlockchain = async (uuid) => {
+    try {
+      const selectedIjazah = ijazah.find((item) => item.uuid === uuid);
+      const assetData = {
+        method: "CreateAsset",
+        args: [
+          selectedIjazah.no_ijazah,
+          selectedIjazah.nisn,
+          selectedIjazah.nis,
+          selectedIjazah.nama,
+          selectedIjazah.jk,
+          selectedIjazah.prodi,
+          selectedIjazah.nama_orangtua,
+          selectedIjazah.arsip_ijazah,
+          getStatus(selectedIjazah),
+          getStatus(selectedIjazah),
+        ],
+      };
+  
+      const createAssetResponse = await axios.post(
+        "http://localhost:5001/invoke/ijazah/chaincode-ijazah",
+        assetData,
+        { withCredentials: true }
+      );
+  
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Data arsip ijazah siswa berhasil disimpan ke blockchain!",
+      });
+  
+      console.log(createAssetResponse.data);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Gagal mengarsipkan data ijazah siswa ke blockchain!",
+      });
+  
+      console.error("Gagal mengarsipkan data ke blockchain:", error);
+    }
+  };
+
+  const handleUpload = (uuid) => {
+    uploadToBlockchain(uuid);
+  };
 
   return (
     <div className="container">
@@ -56,7 +137,7 @@ const IjazahConfirm = () => {
             value={selectedProdi}
             onChange={handleProdiFilterChange}
           >
-            <option value="" selected disabled>
+            <option value="" disabled>
               Pilih Program Studi
             </option>
             <option value="Teknik Komputer & Jaringan">
@@ -77,7 +158,6 @@ const IjazahConfirm = () => {
               <th>NIS</th>
               <th>Nama Siswa</th>
               <th>Jenis Kelamin</th>
-              <th>Nama Orangtua</th>
               <th>Program Studi</th>
               <th>Arsip Ijazah</th>
               {user && user.roles === "kepala sekolah" && (
@@ -94,7 +174,7 @@ const IjazahConfirm = () => {
             </tr>
           </thead>
           <tbody>
-            {ijazah.map(
+            {currentItems.map(
               (ijazah, index) =>
                 (!selectedProdi || selectedProdi === ijazah.prodi) && (
                   <tr key={ijazah.uuid}>
@@ -104,7 +184,6 @@ const IjazahConfirm = () => {
                     <td>{ijazah.nis}</td>
                     <td>{ijazah.nama}</td>
                     <td>{ijazah.jk}</td>
-                    <td>{ijazah.nama_orangtua}</td>
                     <td>{ijazah.prodi}</td>
                     <td>
                       <button
@@ -128,19 +207,22 @@ const IjazahConfirm = () => {
                     {user && user.roles === "kepala sekolah" && (
                       <>
                         <td>
-                          {getStatus(ijazah) === "Valid" && (
-                            <td className="button is-small is-success is-fullwidth">
+                          {getStatus(ijazah) === "Dikonfirmasi" && (
+                            <td className="tag is-success is-fullwidth">
                               {getStatus(ijazah)}
                             </td>
                           )}
-                          {getStatus(ijazah) === "Invalid" && (
-                            <td className="button is-small is-warning is-fullwidth">
+                          {getStatus(ijazah) === "Pending" && (
+                            <td className="tag is-warning is-fullwidth">
                               {getStatus(ijazah)}
                             </td>
                           )}
                         </td>
                         <td>
-                          <button className="button is-small is-info is-fullwidth">
+                          <button
+                            onClick={() => handleUpload(ijazah.uuid)}
+                            className="button is-small is-info is-fullwidth"
+                          >
                             <IoCloudUploadOutline />
                           </button>
                         </td>
@@ -149,13 +231,13 @@ const IjazahConfirm = () => {
                     {user && user.roles === "kesiswaan" && (
                       <>
                         <td>
-                          {getStatus(ijazah) === "Valid" && (
-                            <td className="button is-small is-success is-fullwidth">
+                          {getStatus(ijazah) === "Dikonfirmasi" && (
+                            <td className="tag is-success is-fullwidth">
                               {getStatus(ijazah)}
                             </td>
                           )}
-                          {getStatus(ijazah) === "Invalid" && (
-                            <td className="button is-small is-warning is-fullwidth">
+                          {getStatus(ijazah) === "Pending" && (
+                            <td className="tag is-warning is-fullwidth">
                               {getStatus(ijazah)}
                             </td>
                           )}
@@ -168,6 +250,30 @@ const IjazahConfirm = () => {
           </tbody>
         </table>
       </div>
+      {/* Tampilan Pagination */}
+      <nav
+        className="pagination is-small is-rounded is-centered"
+        role="navigation"
+        aria-label="pagination"
+      >
+        <ul className="pagination-list">
+          {Array.from({ length: Math.ceil(ijazah.length / itemsPerPage) }).map(
+            (_, i) => (
+              <li key={i}>
+                <button
+                  className={`pagination-link${
+                    currentPage === i + 1 ? " is-current" : ""
+                  }`}
+                  aria-label={`Goto page ${i + 1}`}
+                  onClick={() => handlePageChange(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              </li>
+            )
+          )}
+        </ul>
+      </nav>
     </div>
   );
 };

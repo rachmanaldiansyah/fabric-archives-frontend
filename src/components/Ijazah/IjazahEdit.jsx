@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Web3Storage } from "web3.storage";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 const IjazahEdit = () => {
   const [no_ijazah, setNoIjazah] = useState("");
@@ -38,9 +42,10 @@ const IjazahEdit = () => {
   }, [id]);
 
   const uploadToIPFS = async (file) => {
-    const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGUwOUJDQjZBYjAxRDQzMzlEMjY3MjVDRDcyQWFjMUEyYzUyRWJiOTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODQyNzc5OTU2NjgsIm5hbWUiOiJ0ZXN0aW5nIn0.gCHtwTQvqHYInM4qXKyhOtextW-fxkJlqYSR8NUfqyE";
+    const apiKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGUwOUJDQjZBYjAxRDQzMzlEMjY3MjVDRDcyQWFjMUEyYzUyRWJiOTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODQyNzc5OTU2NjgsIm5hbWUiOiJ0ZXN0aW5nIn0.gCHtwTQvqHYInM4qXKyhOtextW-fxkJlqYSR8NUfqyE";
     const storage = new Web3Storage({ token: apiKey });
-    const files = [new File([file], "arsip_ijazah")];
+    const files = [new File([file], `Arsip Ijazah ${nama}`)];
 
     try {
       const cid = await storage.put(files);
@@ -53,6 +58,12 @@ const IjazahEdit = () => {
 
   const updateIjazah = async (e) => {
     e.preventDefault();
+
+    if (!arsip_ijazah) {
+      showErrorNotification("File arsip ijazah belum dipilih.");
+      return;
+    }
+
     try {
       const cid = await uploadToIPFS(arsip_ijazah);
       await axios.patch(`http://localhost:5000/ijazah/${id}`, {
@@ -65,12 +76,49 @@ const IjazahEdit = () => {
         prodi: prodi,
         arsip_ijazah: cid,
       });
+      showSuccessNotification();
       navigate("/ijazah");
     } catch (error) {
       if (error.response) {
-        setMsg(error.response.data.msg);
+        showErrorNotification(error.response.data.msg);
       }
     }
+  };
+
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Data arsip ijazah siswa berhasil diupdate.",
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Data Arsip Ijazah Siswa Berhasil Diupdate",
+      icon: "success",
+      text: "Data arsip ijazah siswa berhasil diupdate.",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Error saat mengupdate data arsip ijazah: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Gagal Mengupdate Data Ijazah Arsip Ijazah",
+      icon: "error",
+      text: errorMsg,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
   };
 
   return (

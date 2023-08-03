@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Web3Storage } from "web3.storage";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 const IjazahCreate = () => {
   const [no_ijazah, setNoIjazah] = useState("");
@@ -12,13 +16,14 @@ const IjazahCreate = () => {
   const [nama_orangtua, setNamaOrangtua] = useState("");
   const [prodi, setProdi] = useState("");
   const [arsip_ijazah, setArsipIjazah] = useState("");
-  const [msg, setMsg] = useState("");
+  const [msg] = useState("");
   const navigate = useNavigate();
 
   const uploadToIPFS = async (file) => {
-    const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGUwOUJDQjZBYjAxRDQzMzlEMjY3MjVDRDcyQWFjMUEyYzUyRWJiOTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODQyNzc5OTU2NjgsIm5hbWUiOiJ0ZXN0aW5nIn0.gCHtwTQvqHYInM4qXKyhOtextW-fxkJlqYSR8NUfqyE";
+    const apiKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGUwOUJDQjZBYjAxRDQzMzlEMjY3MjVDRDcyQWFjMUEyYzUyRWJiOTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODQyNzc5OTU2NjgsIm5hbWUiOiJ0ZXN0aW5nIn0.gCHtwTQvqHYInM4qXKyhOtextW-fxkJlqYSR8NUfqyE";
     const storage = new Web3Storage({ token: apiKey });
-    const files = [new File([file], "arsip_ijazah")];
+    const files = [new File([file], `Arsip Ijazah ${nama}`)];
 
     try {
       const cid = await storage.put(files);
@@ -31,6 +36,12 @@ const IjazahCreate = () => {
 
   const SaveIjazah = async (e) => {
     e.preventDefault();
+
+    if (!arsip_ijazah) {
+      showErrorNotification("File arsip ijazah belum dipilih.");
+      return;
+    }
+
     try {
       const cid = await uploadToIPFS(arsip_ijazah);
       await axios.post("http://localhost:5000/ijazah", {
@@ -43,12 +54,49 @@ const IjazahCreate = () => {
         prodi: prodi,
         arsip_ijazah: cid,
       });
+      showSuccessNotification();
       navigate("/ijazah");
     } catch (error) {
       if (error.response) {
-        setMsg(error.response.data.msg);
+        showErrorNotification(error.response.data.msg);
       }
     }
+  };
+
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Data arsip ijazah siswa berhasil diarsipkan.",
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Success",
+      icon: "success",
+      text: "Data arsip ijazah siswa berhasil diarsipkan.",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Error saat mengarsipkan data: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Error",
+      icon: "error",
+      text: "Gagal saat mengarsipkan data ijazah siswa.",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
   };
 
   return (

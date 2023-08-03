@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { Web3Storage } from "web3.storage";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 const SertifikatEdit = () => {
   const [no_sertifikat, setNoSertifikat] = useState("");
@@ -34,23 +39,84 @@ const SertifikatEdit = () => {
     getSertifikatById();
   }, [id]);
 
+  const uploadToIPFS = async (file) => {
+    const apiKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGUwOUJDQjZBYjAxRDQzMzlEMjY3MjVDRDcyQWFjMUEyYzUyRWJiOTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODQyNzc5OTU2NjgsIm5hbWUiOiJ0ZXN0aW5nIn0.gCHtwTQvqHYInM4qXKyhOtextW-fxkJlqYSR8NUfqyE";
+    const storage = new Web3Storage({ token: apiKey });
+    const files = [new File([file], `Arsip Sertifikat ${nama}`)];
+
+    try {
+      const cid = await storage.put(files);
+      return cid;
+    } catch (error) {
+      console.error("Error uploading to IPFS:", error);
+      return null;
+    }
+  };
+
   const updateSertifikat = async (e) => {
     e.preventDefault();
+
+    if (!arsip_sertifikat) {
+      showErrorNotification(
+        "Arsip sertifikat uji kompetensi siswa belum dipilih."
+      );
+      return;
+    }
+
     try {
+      const cid = await uploadToIPFS(arsip_sertifikat);
       await axios.patch(`http://localhost:5000/sertifikat/${id}`, {
         no_sertifikat: no_sertifikat,
         nis: nis,
         nama: nama,
         jk: jk,
         keahlian: keahlian,
-        arsip_sertifikat: arsip_sertifikat,
+        arsip_sertifikat: cid,
       });
+      showSuccessNotification();
       navigate("/sertifikat");
     } catch (error) {
       if (error.response) {
-        setMsg(error.response.data.msg);
+        showErrorNotification(error.response.data.msg);
       }
     }
+  };
+
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Data arsip sertifikat uji kompetensi siswa berhasil diupdate.",
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Arsip Sertifikat Uji Kompetensi Siswa Berhasil Diupdate",
+      icon: "success",
+      text: "Data arsip sertifikat uji kompetensi siswa berhasil diupdate.",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Error saat mengupdate data: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Gagal Mengupdate Data Arsip Sertifikat Uji Kompetensi Siswa",
+      icon: "error",
+      text: errorMsg,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
   };
 
   return (
@@ -136,11 +202,12 @@ const SertifikatEdit = () => {
                 <label className="label">Arsip Sertifikat</label>
                 <div className="control">
                   <input
-                    type="text"
                     className="input"
-                    value={arsip_sertifikat}
-                    onChange={(e) => setArsipSertifikat(e.target.value)}
-                    placeholder="Isi arsip sertifikat siswa"
+                    type="file"
+                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                    name={arsip_sertifikat}
+                    onChange={(e) => setArsipSertifikat(e.target.files[0])}
+                    required
                   />
                 </div>
               </div>

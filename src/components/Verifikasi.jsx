@@ -20,23 +20,21 @@ const Verifikasi = () => {
                     placeholder="Masukkan Hash dari dokumen ijazah/sertifikat siswa"
                   />
                 </p>
-                <p class="control">
-                  <a className="button is-info">Verifikasi</a>
+                <p className="control">
+                  <button className="button is-info">Verifikasi</button>
                 </p>
               </div>
             </div>
 
             <table className="table is-striped is-hoverable is-fullwidth">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Hasil Verifikasi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                </tbody>
-              </table>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Hasil Verifikasi</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
           </div>
         </div>
       </div>

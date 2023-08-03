@@ -18,6 +18,19 @@ const IjazahList = () => {
     getIjazah();
   }, []);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  // Calculate the index range of items to display for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = ijazah.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Function to handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   const getIjazah = async () => {
     const response = await axios.get("http://localhost:5000/ijazah");
     setIjazah(response.data);
@@ -101,9 +114,9 @@ const IjazahList = () => {
     const isKesiswaanConfirmed = ijazah.konfirmasi_kesiswaan === "Dikonfirmasi";
 
     if (isKepsekConfirmed && isKesiswaanConfirmed) {
-      return "Valid";
+      return "Dikonfirmasi";
     } else {
-      return "Invalid";
+      return "Pending";
     }
   };
 
@@ -167,7 +180,7 @@ const IjazahList = () => {
             </tr>
           </thead>
           <tbody>
-            {ijazah.map(
+            {currentItems.map(
               (ijazah, index) =>
                 (!selectedProdi || selectedProdi === ijazah.prodi) && (
                   <tr key={ijazah.uuid}>
@@ -200,13 +213,13 @@ const IjazahList = () => {
                     </td>
                     {user && user.roles === "admin" && (
                       <>
-                        {getStatus(ijazah) === "Valid" && (
-                          <td className="button is-small is-success is-fullwidth mt-2">
+                        {getStatus(ijazah) === "Dikonfirmasi" && (
+                          <td className="tag is-small is-success is-fullwidth mt-2">
                             {getStatus(ijazah)}
                           </td>
                         )}
-                        {getStatus(ijazah) === "Invalid" && (
-                          <td className="button is-small is-warning is-fullwidth mt-2">
+                        {getStatus(ijazah) === "Pending" && (
+                          <td className="tag is-small is-warning is-fullwidth mt-2">
                             {getStatus(ijazah)}
                           </td>
                         )}
@@ -260,6 +273,30 @@ const IjazahList = () => {
           </tbody>
         </table>
       </div>
+      {/* Tampilan Pagination */}
+      <nav
+        className="pagination is-centered is-rounded is-small"
+        role="navigation"
+        aria-label="pagination"
+      >
+        <ul className="pagination-list">
+          {Array.from({ length: Math.ceil(ijazah.length / itemsPerPage) }).map(
+            (_, i) => (
+              <li key={i}>
+                <button
+                  className={`pagination-link${
+                    currentPage === i + 1 ? " is-current" : ""
+                  }`}
+                  aria-label={`Goto page ${i + 1}`}
+                  onClick={() => handlePageChange(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              </li>
+            )
+          )}
+        </ul>
+      </nav>
     </div>
   );
 };

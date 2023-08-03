@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Web3Storage } from "web3.storage";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 const SertifikatCreate = () => {
   const [no_sertifikat, setNoSertifikat] = useState("");
@@ -10,13 +14,14 @@ const SertifikatCreate = () => {
   const [jk, setJk] = useState("");
   const [keahlian, setKeahlian] = useState("");
   const [arsip_sertifikat, setArsipSertifikat] = useState("");
-  const [msg, setMsg] = useState("");
+  const [msg] = useState("");
   const navigate = useNavigate();
 
   const uploadToIPFS = async (file) => {
-    const apiKey = process.env.WEB3STORAGE_TOKEN;
+    const apiKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGUwOUJDQjZBYjAxRDQzMzlEMjY3MjVDRDcyQWFjMUEyYzUyRWJiOTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODQyNzc5OTU2NjgsIm5hbWUiOiJ0ZXN0aW5nIn0.gCHtwTQvqHYInM4qXKyhOtextW-fxkJlqYSR8NUfqyE";
     const storage = new Web3Storage({ token: apiKey });
-    const files = [new File([file], "arsip_sertifikat")];
+    const files = [new File([file], `Arsip Sertifikat ${nama}`)];
 
     try {
       const cid = await storage.put(files);
@@ -29,6 +34,12 @@ const SertifikatCreate = () => {
 
   const saveSertifikat = async (e) => {
     e.preventDefault();
+
+    if (!arsip_sertifikat) {
+      showErrorNotification("File arsip sertifikat belum dipilih.");
+      return;
+    }
+
     try {
       const cid = await uploadToIPFS(arsip_sertifikat);
       await axios.post("http://localhost:5000/sertifikat", {
@@ -39,12 +50,49 @@ const SertifikatCreate = () => {
         keahlian: keahlian,
         arsip_sertifikat: cid,
       });
+      showSuccessNotification();
       navigate("/sertifikat");
     } catch (error) {
       if (error.response) {
-        setMsg(error.response.data.msg);
+        showErrorNotification(error.response.data.msg);
       }
     }
+  };
+
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Data arsip sertifikat berhasil disimpan.",
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Arsip Sertifikat Berhasil Disimpan",
+      icon: "success",
+      text: "Data arsip sertifikat berhasil disimpan.",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Error saat menyimpan data: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Gagal Menyimpan Data Sertifikat",
+      icon: "error",
+      text: errorMsg,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
   };
 
   return (
@@ -52,7 +100,9 @@ const SertifikatCreate = () => {
       <div className="card is-shadowless">
         <div className="card-content">
           <h1 className="title">Kelola Arsip Sertifikat</h1>
-          <h2 className="subtitle">Menambahkan data arsip sertifikat uji kompetensi siswa</h2>
+          <h2 className="subtitle">
+            Menambahkan data arsip sertifikat uji kompetensi siswa
+          </h2>
           <div className="content">
             <form onSubmit={saveSertifikat}>
               <p className="has-text-centered">{msg}</p>
