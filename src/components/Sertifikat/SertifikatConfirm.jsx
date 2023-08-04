@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import axios from "axios";
+import Swal from "sweetalert2";
 import Modal from "../Modal";
 
 const SertifikatConfirm = () => {
@@ -10,10 +11,12 @@ const SertifikatConfirm = () => {
   const [selectedProdi, setSelectedProdi] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedSertifikat, setSelectedSertifikat] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
+    fetchToken();
     getSertifikat();
-  }, []);
+  }, [token]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -58,24 +61,31 @@ const SertifikatConfirm = () => {
     setSelectedProdi(event.target.value);
   };
 
-  // Function to upload data arsip sertifikat to the blockchain
+  const fetchToken = async () => {
+    try {
+      const enrollResponse = await axios.post(
+        "http://localhost:5001/user/enroll",
+        {
+          id: "admin",
+          secret: "adminpw",
+        }
+      );
+      const token = enrollResponse.data.token;
+      console.log("Fetched token:", token);
+      setToken(token);
+    } catch (error) {
+      console.error("Failed to fetch token:", error);
+    }
+  };
+
   const uploadToBlockchain = async (uuid) => {
     try {
-      // Call the API to enroll user and get the token
-      const enrollResponse = await axios.post("http://localhost:8803/user/enroll", {
-        id: "admin",
-        secret: "adminpw",
-      });
-      const token = enrollResponse.data.token;
-
-      // Prepare the data for the asset creation
       const selectedSertifikat = sertifikat.find((item) => item.uuid === uuid);
       const assetData = {
         method: "CreateAsset",
         args: [
           selectedSertifikat.no_sertifikat,
           selectedSertifikat.nis,
-          selectedSertifikat.date,
           selectedSertifikat.nama,
           selectedSertifikat.jk,
           selectedSertifikat.keahlian,
@@ -85,27 +95,31 @@ const SertifikatConfirm = () => {
         ],
       };
 
-      // Make the API request to create the asset on the blockchain
       const createAssetResponse = await axios.post(
-        "http://144.126.209.213:8803/invoke/ijazah/chaincode-ijazah",
+        "http://localhost:5001/invoke/sertifikat/chaincode-sertifikat",
         assetData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
+        { withCredentials: true }
       );
 
-      // Handle the response accordingly
-      console.log(createAssetResponse.data); // You can modify this to handle the response as needed
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Data arsip sertifikat siswa berhasil disimpan ke blockchain!",
+      });
 
-      // Optional: You can also show a success message or trigger some action after successful upload
+      console.log(createAssetResponse.data);
     } catch (error) {
-      // Handle errors
-      console.error("Error uploading to blockchain:", error);
-      // Optional: You can show an error message to the user or trigger some error handling
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Gagal mengarsipkan data sertifikat siswa ke blockchain!",
+      });
+      console.error("Gagal mengarsipkan data ke blockchain:", error);
     }
+  };
+
+  const handleUpload = (uuid) => {
+    uploadToBlockchain(uuid);
   };
 
   return (
@@ -203,7 +217,7 @@ const SertifikatConfirm = () => {
                         )}
                         <td>
                           <button
-                            onClick={() => uploadToBlockchain(sertifikat.uuid)}
+                            onClick={() => handleUpload(sertifikat.uuid)}
                             className="button is-small is-info is-fullwidth"
                           >
                             <IoCloudUploadOutline />

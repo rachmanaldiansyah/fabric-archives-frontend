@@ -16,7 +16,7 @@ const IjazahConfirm = () => {
   useEffect(() => {
     fetchToken();
     getIjazah();
-  }, []);
+  }, [token]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -77,7 +77,6 @@ const IjazahConfirm = () => {
     }
   };
   
-  
   const uploadToBlockchain = async (uuid) => {
     try {
       const selectedIjazah = ijazah.find((item) => item.uuid === uuid);
@@ -116,7 +115,6 @@ const IjazahConfirm = () => {
         title: "Error",
         text: "Gagal mengarsipkan data ijazah siswa ke blockchain!",
       });
-  
       console.error("Gagal mengarsipkan data ke blockchain:", error);
     }
   };
