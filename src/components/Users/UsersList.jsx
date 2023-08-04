@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { IoTrashOutline, IoCreateOutline } from "react-icons/io5";
+import Swal from "sweetalert2";
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -18,8 +20,22 @@ const UsersList = () => {
   };
 
   const deleteUsers = async (userId) => {
-    await axios.delete(`http://localhost:5000/users/${userId}`);
-    getUsers();
+    Swal.fire({
+      title: "Apakah Anda Yakin Akan Menghapus Data Ini?",
+      text: "Data arsip ijazah yang terhapus tidak akan bisa kembali!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, Hapus",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await axios.delete(`http://localhost:5000/users/${userId}`);
+        getUsers();
+        Swal.fire("Terhapus!", "Data pengguna berhasil dihapus.", "success");
+      }
+    });
   };
 
   return (
@@ -47,15 +63,15 @@ const UsersList = () => {
                 <td>
                   <Link
                     to={`/users/edit/${users.uuid}`}
-                    className="button is-small is-info mr-1"
+                    className="button is-small is-info is-fullwidth"
                   >
-                    Ubah
+                    <IoCreateOutline />
                   </Link>
                   <button
                     onClick={() => deleteUsers(users.uuid)}
-                    className="button is-small is-danger"
+                    className="button is-small is-danger is-fullwidth mt-1"
                   >
-                    Hapus
+                    <IoTrashOutline />
                   </button>
                 </td>
               </tr>

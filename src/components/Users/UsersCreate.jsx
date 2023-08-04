@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 const UsersCreate = () => {
   const [nama, setNama] = useState("");
@@ -11,8 +15,52 @@ const UsersCreate = () => {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Registrasi data pengguna berhasil!",
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Success",
+      icon: "success",
+      text: "Registrasi data pengguna berhasil!",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Gagal saat melakukan registrasi pengguna: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Error",
+      icon: "error",
+      text: "Gagal saat melakukan registrasi pengguna: " + errorMsg,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
   const SaveUsers = async (e) => {
     e.preventDefault();
+
+    if (!nama && !email && !password && !confPassword && !roles) {
+      showErrorNotification(
+        "Data registrasi pengguna tidak boleh kosong, silahkan diisi."
+      );
+      return;
+    }
+
     try {
       await axios.post("http://localhost:5000/users", {
         nama: nama,
@@ -21,10 +69,11 @@ const UsersCreate = () => {
         confPassword: confPassword,
         roles: roles,
       });
+      showSuccessNotification();
       navigate("/users");
     } catch (error) {
       if (error.response) {
-        setMsg(error.response.data.msg);
+        showErrorNotification(error.response.data.msg);
       }
     }
   };

@@ -48,13 +48,13 @@ const Welcome = () => {
       <nav className="level mt-2">
         <div className="level-item has-text-centered">
           <div>
-            <p className="heading">Arsip Ijazah di Database</p>
+            <p className="heading">Arsip Ijazah</p>
             <p className="title">{totalArsipIjazah}</p>
           </div>
         </div>
         <div className="level-item has-text-centered">
           <div>
-            <p className="heading">Arsip Sertifikat di Database</p>
+            <p className="heading">Arsip Sertifikat</p>
             <p className="title">{totalArsipSertifikat}</p>
           </div>
         </div>

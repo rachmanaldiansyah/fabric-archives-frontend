@@ -34,6 +34,42 @@ const IjazahCreate = () => {
     }
   };
 
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Data arsip ijazah siswa berhasil diarsipkan.",
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Success",
+      icon: "success",
+      text: "Data ijazah siswa berhasil diarsipkan!",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Gagal saat mengarsipkan data ijazah: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Error",
+      icon: "error",
+      text: "Gagal saat mengarsipkan data ijazah: " + errorMsg,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+  
   const SaveIjazah = async (e) => {
     e.preventDefault();
 
@@ -61,42 +97,6 @@ const IjazahCreate = () => {
         showErrorNotification(error.response.data.msg);
       }
     }
-  };
-
-  const showSuccessNotification = () => {
-    Toastify({
-      text: "Data arsip ijazah siswa berhasil diarsipkan.",
-      duration: 3000,
-      gravity: "bottom",
-      position: "right",
-      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-    }).showToast();
-
-    Swal.fire({
-      title: "Success",
-      icon: "success",
-      text: "Data arsip ijazah siswa berhasil diarsipkan.",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "OK",
-    });
-  };
-
-  const showErrorNotification = (errorMsg) => {
-    Toastify({
-      text: "Error saat mengarsipkan data: " + errorMsg,
-      duration: 3000,
-      gravity: "bottom",
-      position: "right",
-      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
-    }).showToast();
-
-    Swal.fire({
-      title: "Error",
-      icon: "error",
-      text: "Gagal saat mengarsipkan data ijazah siswa.",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "OK",
-    });
   };
 
   return (

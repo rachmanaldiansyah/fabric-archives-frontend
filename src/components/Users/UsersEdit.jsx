@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 const UsersEdit = () => {
   const [nama, setNama] = useState("");
@@ -28,8 +32,53 @@ const UsersEdit = () => {
     getUsersById();
   }, [id]);
 
+  
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Data pengguna berhasil diubah!",
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Success",
+      icon: "success",
+      text: "Data pengguna berhasil diubah!",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Gagal saat mengubah data pengguna: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Error",
+      icon: "error",
+      text: "Gagal saat mengubah data pengguna: " + errorMsg,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
   const updateUsers = async (e) => {
     e.preventDefault();
+
+    if (!nama && !email && !password && !confPassword && !roles) {
+      showErrorNotification(
+        "Data registrasi pengguna tidak boleh kosong, silahkan diisi."
+      );
+      return;
+    }
+
     try {
       await axios.patch(`http://localhost:5000/users/${id}`, {
         nama: nama,
@@ -38,10 +87,11 @@ const UsersEdit = () => {
         confPassword: confPassword,
         roles: roles,
       });
+      showSuccessNotification();
       navigate("/users");
     } catch (error) {
       if (error.response) {
-        setMsg(error.response.data.msg);
+        showErrorNotification(error.response.data.msg);
       }
     }
   };

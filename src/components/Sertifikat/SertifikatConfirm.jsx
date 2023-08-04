@@ -26,17 +26,18 @@ const SertifikatConfirm = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = sertifikat.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Function to handle page change
+  // fungsi untuk meng-handle halaman
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
+  // fungsi untuk mendapatkan data arsip sertifikat di database
   const getSertifikat = async () => {
     const response = await axios.get("http://localhost:5000/sertifikat");
     setSertifikat(response.data);
   };
 
-  // fungsi untuk mendapatkan status valid/invalid
+  // fungsi untuk mendapatkan status konfirmasi
   const getStatus = (sertifikat) => {
     const isKepsekConfirmed = sertifikat.konfirmasi_kepsek === "Dikonfirmasi";
     const isKesiswaanConfirmed = sertifikat.konfirmasi_mitra === "Dikonfirmasi";

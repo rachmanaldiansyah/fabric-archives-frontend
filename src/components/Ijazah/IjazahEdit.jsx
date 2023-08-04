@@ -87,7 +87,7 @@ const IjazahEdit = () => {
 
   const showSuccessNotification = () => {
     Toastify({
-      text: "Data arsip ijazah siswa berhasil diupdate.",
+      text: "Data arsip ijazah siswa berhasil diubah!",
       duration: 3000,
       gravity: "bottom",
       position: "right",
@@ -95,9 +95,9 @@ const IjazahEdit = () => {
     }).showToast();
 
     Swal.fire({
-      title: "Data Arsip Ijazah Siswa Berhasil Diupdate",
+      title: "Success",
       icon: "success",
-      text: "Data arsip ijazah siswa berhasil diupdate.",
+      text: "Data arsip ijazah siswa berhasil diubah!",
       confirmButtonColor: "#3085d6",
       confirmButtonText: "OK",
     });
@@ -105,7 +105,7 @@ const IjazahEdit = () => {
 
   const showErrorNotification = (errorMsg) => {
     Toastify({
-      text: "Error saat mengupdate data arsip ijazah: " + errorMsg,
+      text: "Error saat mengubah data arsip ijazah: " + errorMsg,
       duration: 3000,
       gravity: "bottom",
       position: "right",
@@ -113,9 +113,9 @@ const IjazahEdit = () => {
     }).showToast();
 
     Swal.fire({
-      title: "Gagal Mengupdate Data Ijazah Arsip Ijazah",
+      title: "Error",
       icon: "error",
-      text: errorMsg,
+      text: "Gagal saat mengubah data arsip ijazah: " + errorMsg,
       confirmButtonColor: "#3085d6",
       confirmButtonText: "OK",
     });
@@ -240,7 +240,7 @@ const IjazahEdit = () => {
               <div className="field">
                 <div className="control">
                   <button type="submit" className="button is-success">
-                    Update
+                    Ubah
                   </button>
                 </div>
               </div>

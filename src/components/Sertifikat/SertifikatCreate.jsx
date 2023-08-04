@@ -32,11 +32,47 @@ const SertifikatCreate = () => {
     }
   };
 
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Data arsip sertifikat siswa berhasil diarsipkakn!",
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Success",
+      icon: "success",
+      text: "Data arsip sertifikat uji kompetensi siswa berhasil diarsipkan!",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Gagal saat mengarsipkan data sertifikat: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Error",
+      icon: "error",
+      text: "Gagal saat mengarsipkan data sertifikat" + errorMsg,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+  
   const saveSertifikat = async (e) => {
     e.preventDefault();
 
     if (!arsip_sertifikat) {
-      showErrorNotification("File arsip sertifikat belum dipilih.");
+      showErrorNotification("File arsip sertifikat uji kompetensi belum dipilih.");
       return;
     }
 
@@ -57,42 +93,6 @@ const SertifikatCreate = () => {
         showErrorNotification(error.response.data.msg);
       }
     }
-  };
-
-  const showSuccessNotification = () => {
-    Toastify({
-      text: "Data arsip sertifikat berhasil disimpan.",
-      duration: 3000,
-      gravity: "bottom",
-      position: "right",
-      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-    }).showToast();
-
-    Swal.fire({
-      title: "Arsip Sertifikat Berhasil Disimpan",
-      icon: "success",
-      text: "Data arsip sertifikat berhasil disimpan.",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "OK",
-    });
-  };
-
-  const showErrorNotification = (errorMsg) => {
-    Toastify({
-      text: "Error saat menyimpan data: " + errorMsg,
-      duration: 3000,
-      gravity: "bottom",
-      position: "right",
-      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
-    }).showToast();
-
-    Swal.fire({
-      title: "Gagal Menyimpan Data Sertifikat",
-      icon: "error",
-      text: errorMsg,
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "OK",
-    });
   };
 
   return (

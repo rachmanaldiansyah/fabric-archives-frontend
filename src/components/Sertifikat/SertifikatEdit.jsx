@@ -54,12 +54,48 @@ const SertifikatEdit = () => {
     }
   };
 
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Data arsip sertifikat siswa berhasil diubah!",
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Success",
+      icon: "success",
+      text: "Data arsip sertifikat uji kompetensi siswa berhasil diubah!",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Gagal saat mengubah data arsip sertifikat: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Error",
+      icon: "error",
+      text: "Gagal saat mengubah data arsip sertifikat: " + errorMsg,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
   const updateSertifikat = async (e) => {
     e.preventDefault();
 
     if (!arsip_sertifikat) {
       showErrorNotification(
-        "Arsip sertifikat uji kompetensi siswa belum dipilih."
+        "File arsip sertifikat uji kompetensi belum dipilih."
       );
       return;
     }
@@ -81,42 +117,6 @@ const SertifikatEdit = () => {
         showErrorNotification(error.response.data.msg);
       }
     }
-  };
-
-  const showSuccessNotification = () => {
-    Toastify({
-      text: "Data arsip sertifikat uji kompetensi siswa berhasil diupdate.",
-      duration: 3000,
-      gravity: "bottom",
-      position: "right",
-      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-    }).showToast();
-
-    Swal.fire({
-      title: "Arsip Sertifikat Uji Kompetensi Siswa Berhasil Diupdate",
-      icon: "success",
-      text: "Data arsip sertifikat uji kompetensi siswa berhasil diupdate.",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "OK",
-    });
-  };
-
-  const showErrorNotification = (errorMsg) => {
-    Toastify({
-      text: "Error saat mengupdate data: " + errorMsg,
-      duration: 3000,
-      gravity: "bottom",
-      position: "right",
-      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
-    }).showToast();
-
-    Swal.fire({
-      title: "Gagal Mengupdate Data Arsip Sertifikat Uji Kompetensi Siswa",
-      icon: "error",
-      text: errorMsg,
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "OK",
-    });
   };
 
   return (
@@ -214,7 +214,7 @@ const SertifikatEdit = () => {
               <div className="field">
                 <div className="control">
                   <button type="submit" className="button is-success">
-                    Update
+                    Ubah
                   </button>
                 </div>
               </div>

@@ -21,21 +21,23 @@ const IjazahConfirm = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  // Calculate the index range of items to display for the current page
+  // menghitung halaman yang akan ditampilkan
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = ijazah.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Function to handle page change
+  // fungsi untuk meng-handle halaman
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
+  // fungsi untuk mendapatkan data arsip ijazah dari database
   const getIjazah = async () => {
     const response = await axios.get("http://localhost:5000/ijazah");
     setIjazah(response.data);
   };
 
+  // fungsi untuk mendapatkan status konfirmasi
   const getStatus = (ijazah) => {
     const isKepsekConfirmed = ijazah.konfirmasi_kepsek === "Dikonfirmasi";
     const isKesiswaanConfirmed = ijazah.konfirmasi_kesiswaan === "Dikonfirmasi";
@@ -47,19 +49,23 @@ const IjazahConfirm = () => {
     }
   };
 
+  // fungsi untuk membuka modal
   const openModal = (arsipIjazah) => {
     setSelectedIjazah(arsipIjazah);
     setModalIsOpen(true);
   };
 
+  // fungsi untuk menutup modal
   const closeModal = () => {
     setModalIsOpen(false);
   };
 
+  // fungsi untuk melakukan filter prodi
   const handleProdiFilterChange = (event) => {
     setSelectedProdi(event.target.value);
   };
   
+  // fungsi untuk mendapatkan token dengan melakukan enroll user
   const fetchToken = async () => {
     try {
       const enrollResponse = await axios.post(
@@ -77,6 +83,7 @@ const IjazahConfirm = () => {
     }
   };
   
+  // fungsi untuk mengarsipkan data ijazah siswa ke jaringan blockchain
   const uploadToBlockchain = async (uuid) => {
     try {
       const selectedIjazah = ijazah.find((item) => item.uuid === uuid);
@@ -88,8 +95,8 @@ const IjazahConfirm = () => {
           selectedIjazah.nis,
           selectedIjazah.nama,
           selectedIjazah.jk,
-          selectedIjazah.prodi,
           selectedIjazah.nama_orangtua,
+          selectedIjazah.prodi,
           selectedIjazah.arsip_ijazah,
           getStatus(selectedIjazah),
           getStatus(selectedIjazah),
@@ -107,7 +114,7 @@ const IjazahConfirm = () => {
         title: "Success",
         text: "Data arsip ijazah siswa berhasil disimpan ke blockchain!",
       });
-  
+
       console.log(createAssetResponse.data);
     } catch (error) {
       Swal.fire({
@@ -119,6 +126,7 @@ const IjazahConfirm = () => {
     }
   };
 
+  // fungsi untuk handle upload ke blockchain
   const handleUpload = (uuid) => {
     uploadToBlockchain(uuid);
   };
