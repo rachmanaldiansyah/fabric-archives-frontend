@@ -65,7 +65,7 @@ const SertifikatConfirm = () => {
   const fetchToken = async () => {
     try {
       const enrollResponse = await axios.post(
-        "http://localhost:5001/user/enroll",
+        "http://localhost:5002/user/enroll",
         {
           id: "admin",
           secret: "adminpw",
@@ -97,7 +97,7 @@ const SertifikatConfirm = () => {
       };
 
       const createAssetResponse = await axios.post(
-        "http://localhost:5001/invoke/sertifikat/chaincode-sertifikat",
+        "http://localhost:5002/invoke/sertifikat/chaincode-sertifikat",
         assetData,
         { withCredentials: true }
       );
