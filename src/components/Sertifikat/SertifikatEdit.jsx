@@ -120,11 +120,18 @@ const SertifikatEdit = () => {
   };
 
   return (
-    <div>
+    <div className="container box">
+      <div className="hero is-info is-bold box">
+        <h1 className="title mt-2">
+          Kelola Daftar Arsip Sertifikat Uji Kompetensi
+        </h1>
+        <h2 className="subtitle">
+          Mengubah data arsip sertifikat ujikom siswa
+        </h2>
+      </div>
+
       <div className="card is-shadowless">
         <div className="card-content">
-          <h1 className="title">Kelola Arsip Sertifikat</h1>
-          <h2 className="subtitle">Mengubah data arsip sertifikat Baru</h2>
           <div className="content">
             <form onSubmit={updateSertifikat}>
               <p className="has-text-centered">{msg}</p>
@@ -213,8 +220,8 @@ const SertifikatEdit = () => {
               </div>
               <div className="field">
                 <div className="control">
-                  <button type="submit" className="button is-success">
-                    Ubah
+                  <button type="submit" className="button mt-4 is-info is-fullwidth">
+                    Ubah Data Arsip Sertifikat
                   </button>
                 </div>
               </div>

@@ -69,7 +69,7 @@ const IjazahCreate = () => {
       confirmButtonText: "OK",
     });
   };
-  
+
   const SaveIjazah = async (e) => {
     e.preventDefault();
 
@@ -100,11 +100,14 @@ const IjazahCreate = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container box">
+      <div className="hero is-info is-bold box">
+        <h1 className="title mt-2">Kelola Arsip Ijazah Siswa</h1>
+        <h2 className="subtitle">Mengarsipkan data ijazah siswa</h2>
+      </div>
+
       <div className="card is-shadowless">
         <div className="card-content">
-          <h1 className="title">Kelola Data Arsip Ijazah</h1>
-          <h2 className="subtitle">Menambahkan data arsip ijazah siswa</h2>
           <div className="content">
             <form onSubmit={SaveIjazah}>
               <p className="has-text-centered">{msg}</p>

@@ -67,12 +67,14 @@ const SertifikatCreate = () => {
       confirmButtonText: "OK",
     });
   };
-  
+
   const saveSertifikat = async (e) => {
     e.preventDefault();
 
     if (!arsip_sertifikat) {
-      showErrorNotification("File arsip sertifikat uji kompetensi belum dipilih.");
+      showErrorNotification(
+        "File arsip sertifikat uji kompetensi belum dipilih."
+      );
       return;
     }
 
@@ -96,13 +98,16 @@ const SertifikatCreate = () => {
   };
 
   return (
-    <div>
+    <div className="container box">
+      <div className="hero is-info is-bold box">
+        <h1 className="title mt-2">Kelola Arsip Sertifikat Uji Kompetensi</h1>
+        <h2 className="subtitle">
+          Mengarsipkan data sertifikat ujikom siswa
+        </h2>
+      </div>
+
       <div className="card is-shadowless">
         <div className="card-content">
-          <h1 className="title">Kelola Arsip Sertifikat</h1>
-          <h2 className="subtitle">
-            Menambahkan data arsip sertifikat uji kompetensi siswa
-          </h2>
           <div className="content">
             <form onSubmit={saveSertifikat}>
               <p className="has-text-centered">{msg}</p>

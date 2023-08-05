@@ -11,7 +11,7 @@ const Verifikasi = () => {
               Silahkan melakukan verifikasi dengan memasukan hash dari dokumen
               ijazah atau sertifikat siswa.
             </h2>
-            <div className="box">
+            <div className="container box">
               <div className="field is-grouped">
                 <p className="control is-expanded">
                   <input
@@ -26,15 +26,22 @@ const Verifikasi = () => {
               </div>
             </div>
 
-            <table className="table is-striped is-hoverable is-fullwidth">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Hasil Verifikasi</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+            <div className="table-container box">
+              <table className="table is-striped is-hoverable is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>No Ijazah</th>
+                    <th>NISN</th>
+                    <th>Nama Siswa</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Program Studi</th>
+                    <th>Arsip Ijazah</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

@@ -1,17 +1,27 @@
-import React from 'react';
-import Navbar from '../components/Navbar';
-import Sidebar from '../components/SideBar';
+import React from "react";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/SideBar";
 
 const Layout = ({ children }) => {
   return (
     <React.Fragment>
       <Navbar />
-      <div className="columns mt-6 is-mobile is-multiline" style={{ minHeight: "100vh" }}>
-        <div className="column is-2 is-narrow-touch"><Sidebar /></div>
-        <div className="column has-background-light">
-          <main>{children}</main>
+      <section className="container">
+        <div className="container mt-4">
+          <div className="columns is-desktop">
+            <div className="column is-3-desktop">
+              <div className="box mt-6">
+                <Sidebar />
+              </div>
+            </div>
+            <div className="column is-9-desktop">
+              <div className="content mt-6">
+                <main>{children}</main>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
     </React.Fragment>
   );
 };

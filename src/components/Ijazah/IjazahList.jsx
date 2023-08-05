@@ -134,9 +134,12 @@ const IjazahList = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="title mt-2">Kelola Daftar Arsip Ijazah</h1>
-      <h2 className="subtitle">Daftar data arsip ijazah siswa</h2>
+    <div className="container box">
+      <div className="hero is-info is-bold box">
+        <h1 className="title mt-2">Kelola Daftar Arsip Ijazah</h1>
+        <h2 className="subtitle">Daftar data arsip ijazah siswa</h2>
+      </div>
+
       <div className="container mb-2">
         <div className="control">
           <select
@@ -156,6 +159,7 @@ const IjazahList = () => {
           </select>
         </div>
       </div>
+      
       <div className="table-container">
         <table className="table is-striped is-fullwidth is-hoverable">
           <thead>
@@ -275,7 +279,7 @@ const IjazahList = () => {
       </div>
       {/* Tampilan Pagination */}
       <nav
-        className="pagination is-centered is-rounded is-small"
+        className="pagination is-centered is-rounded"
         role="navigation"
         aria-label="pagination"
       >

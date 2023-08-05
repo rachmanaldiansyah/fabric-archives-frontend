@@ -32,7 +32,6 @@ const UsersEdit = () => {
     getUsersById();
   }, [id]);
 
-  
   const showSuccessNotification = () => {
     Toastify({
       text: "Data pengguna berhasil diubah!",
@@ -97,11 +96,14 @@ const UsersEdit = () => {
   };
 
   return (
-    <div>
+    <div className="container box">
+      <div className="hero is-info is-bold box">
+        <h1 className="title mt-2">Kelola Data Pengguna</h1>
+        <h2 className="subtitle">Mengubah data pengguna</h2>
+      </div>
+
       <div className="card is-shadowless">
         <div className="card-content">
-          <h1 className="title">Kelola Data Pengguna</h1>
-          <h2 className="subtitle">Mengubah data pengguna</h2>
           <div className="content">
             <form onSubmit={updateUsers}>
               <p className="has-text-centered">{msg}</p>

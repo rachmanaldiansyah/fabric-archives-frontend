@@ -30,36 +30,44 @@ const Welcome = () => {
     }
   };
 
-  const hitungTotalArsip = (arsipData) => {
+  const getTotalArsipById = (arsipData) => {
     if (!arsipData) return 0;
-    return arsipData.reduce((total, arsip) => total + arsip.jumlah, 0);
+    const uniqueUUIDs = [...new Set(arsipData.map((arsip) => arsip.uuid))];
+    return uniqueUUIDs.length;
   };
 
-  const totalArsipIjazah = hitungTotalArsip(ijazah);
-  const totalArsipSertifikat = hitungTotalArsip(sertifikat);
+  const totalArsipIjazah = getTotalArsipById(ijazah);
+  const totalArsipSertifikat = getTotalArsipById(sertifikat);
 
   return (
-    <div className="container">
-      <h1 className="title">Dashboard</h1>
-      <h2 className="subtitle">
-        Selamat Datang, <strong>{user && user.nama} !</strong>
-      </h2>
+    <div className="container box">
+      <section className="hero is-info is-bold box">
+        <div className="hero-body">
+          <div className="container">
+            <h1 className="title">Dashboard</h1>
+            <h2 className="subtitle">
+              Selamat Datang, <strong>{user && user.nama}!</strong>
+            </h2>
+          </div>
+        </div>
+      </section>
 
-      <nav className="level mt-2">
-        <div className="level-item has-text-centered">
-          <div>
-            <p className="heading">Arsip Ijazah</p>
-            <p className="title">{totalArsipIjazah}</p>
+      <section className="container">
+        <div className="columns is-centered is-multiline">
+          <div className="column is-6-mobile is-4-tablet is-3-desktop">
+            <div className="box hero is-info is-bold has-text-centered">
+              <p className="heading">Arsip Ijazah</p>
+              <p className="title">{totalArsipIjazah}</p>
+            </div>
+          </div>
+          <div className="column is-6-mobile is-4-tablet is-3-desktop">
+            <div className="box hero is-info has-text-centered">
+              <p className="heading">Arsip Sertifikat</p>
+              <p className="title">{totalArsipSertifikat}</p>
+            </div>
           </div>
         </div>
-        <div className="level-item has-text-centered">
-          <div>
-            <p className="heading">Arsip Sertifikat</p>
-            <p className="title">{totalArsipSertifikat}</p>
-          </div>
-        </div>
-        {/* ... */}
-      </nav>
+      </section>
     </div>
   );
 };

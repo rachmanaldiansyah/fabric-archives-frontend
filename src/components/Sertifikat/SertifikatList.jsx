@@ -138,13 +138,16 @@ const SertifikatList = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="title mt-2">
-        Kelola Daftar Arsip Sertifikat Uji Kompetensi
-      </h1>
-      <h2 className="subtitle">
-        Daftar data arsip sertifikat uji kompetensi siswa
-      </h2>
+    <div className="container box">
+      <div className="hero is-info is-bold box">
+        <h1 className="title mt-2">
+          Kelola Daftar Arsip Sertifikat Uji Kompetensi
+        </h1>
+        <h2 className="subtitle">
+          Daftar data arsip sertifikat uji kompetensi siswa
+        </h2>
+      </div>
+
       <div className="container mb-2">
         <div className="control">
           <select
@@ -164,6 +167,7 @@ const SertifikatList = () => {
           </select>
         </div>
       </div>
+      
       <div className="table-container">
         <table className="table is-striped is-fullwidth">
           <thead>
@@ -182,7 +186,7 @@ const SertifikatList = () => {
                 </>
               )}
               {user && user.roles === "kepala sekolah" && <th>Actions</th>}
-              {user && user.roles === "mitra penerbit" && <th>Actions</th>}
+              {user && user.roles === "mitra" && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -261,7 +265,7 @@ const SertifikatList = () => {
                         )}
                       </td>
                     )}
-                    {user && user.roles === "mitra penerbit" && (
+                    {user && user.roles === "mitra" && (
                       <td>
                         {isSertifikatConfirmed(sertifikat.uuid) ? (
                           <span className="tag is-success">Terkonfirmasi</span>
@@ -283,26 +287,26 @@ const SertifikatList = () => {
       </div>
       {/* Tampilan Pagination */}
       <nav
-        className="pagination is-centered is-rounded is-small"
+        className="pagination is-centered is-rounded"
         role="navigation"
         aria-label="pagination"
       >
         <ul className="pagination-list">
-          {Array.from({ length: Math.ceil(sertifikat.length / itemsPerPage) }).map(
-            (_, i) => (
-              <li key={i}>
-                <button
-                  className={`pagination-link${
-                    currentPage === i + 1 ? " is-current" : ""
-                  }`}
-                  aria-label={`Goto page ${i + 1}`}
-                  onClick={() => handlePageChange(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              </li>
-            )
-          )}
+          {Array.from({
+            length: Math.ceil(sertifikat.length / itemsPerPage),
+          }).map((_, i) => (
+            <li key={i}>
+              <button
+                className={`pagination-link${
+                  currentPage === i + 1 ? " is-current" : ""
+                }`}
+                aria-label={`Goto page ${i + 1}`}
+                onClick={() => handlePageChange(i + 1)}
+              >
+                {i + 1}
+              </button>
+            </li>
+          ))}
         </ul>
       </nav>
     </div>

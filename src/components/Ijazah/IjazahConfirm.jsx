@@ -64,7 +64,7 @@ const IjazahConfirm = () => {
   const handleProdiFilterChange = (event) => {
     setSelectedProdi(event.target.value);
   };
-  
+
   // fungsi untuk mendapatkan token dengan melakukan enroll user
   const fetchToken = async () => {
     try {
@@ -82,7 +82,7 @@ const IjazahConfirm = () => {
       console.error("Failed to fetch token:", error);
     }
   };
-  
+
   // fungsi untuk mengarsipkan data ijazah siswa ke jaringan blockchain
   const uploadToBlockchain = async (uuid) => {
     try {
@@ -102,13 +102,13 @@ const IjazahConfirm = () => {
           getStatus(selectedIjazah),
         ],
       };
-  
+
       const createAssetResponse = await axios.post(
         "http://localhost:5001/invoke/ijazah/chaincode-ijazah",
         assetData,
         { withCredentials: true }
       );
-  
+
       Swal.fire({
         icon: "success",
         title: "Success",
@@ -132,9 +132,11 @@ const IjazahConfirm = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="title mt-2">Kelola Daftar Arsip Ijazah</h1>
-      <h2 className="subtitle">Daftar data arsip ijazah siswa</h2>
+    <div className="container box">
+      <div className="hero is-info is-bold box">
+        <h1 className="title mt-2">Kelola Daftar Arsip Ijazah</h1>
+        <h2 className="subtitle">Daftar data arsip ijazah siswa</h2>
+      </div>
       <div className="container mb-2">
         <div className="control">
           <select
@@ -169,12 +171,12 @@ const IjazahConfirm = () => {
               {user && user.roles === "kepala sekolah" && (
                 <>
                   <th>Status</th>
-                  <th>Actions</th>
                 </>
               )}
               {user && user.roles === "kesiswaan" && (
                 <>
                   <th>Status</th>
+                  <th>Actions</th>
                 </>
               )}
             </tr>
@@ -224,14 +226,6 @@ const IjazahConfirm = () => {
                             </td>
                           )}
                         </td>
-                        <td>
-                          <button
-                            onClick={() => handleUpload(ijazah.uuid)}
-                            className="button is-small is-info is-fullwidth"
-                          >
-                            <IoCloudUploadOutline />
-                          </button>
-                        </td>
                       </>
                     )}
                     {user && user.roles === "kesiswaan" && (
@@ -248,6 +242,14 @@ const IjazahConfirm = () => {
                             </td>
                           )}
                         </td>
+                        <td>
+                          <button
+                            onClick={() => handleUpload(ijazah.uuid)}
+                            className="button is-small is-info is-fullwidth"
+                          >
+                            <IoCloudUploadOutline />
+                          </button>
+                        </td>
                       </>
                     )}
                   </tr>
@@ -258,7 +260,7 @@ const IjazahConfirm = () => {
       </div>
       {/* Tampilan Pagination */}
       <nav
-        className="pagination is-small is-rounded is-centered"
+        className="pagination is-rounded is-centered"
         role="navigation"
         aria-label="pagination"
       >

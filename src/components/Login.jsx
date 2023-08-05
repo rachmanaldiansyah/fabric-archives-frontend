@@ -3,15 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { LoginUser, reset } from "../features/AuthSlices";
 import Logo from "../img/logo-mtc.png";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
-    (state) => state.auth
-  );
+  const { user, isSuccess, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (user || isSuccess) {
@@ -20,8 +20,35 @@ function Login() {
     dispatch(reset());
   }, [user, isSuccess, dispatch, navigate]);
 
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Login berhasil, selamat datang " + email,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Gagal saat melakukan login: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+  };
+
   const Auth = (e) => {
     e.preventDefault();
+
+    if (!email && !password) {
+      showErrorNotification("Masukan email dan password anda.");
+      return;
+    }
+
+    showSuccessNotification();
     dispatch(LoginUser({ email, password }));
   };
 
@@ -32,11 +59,6 @@ function Login() {
           <div className="columns is-centered">
             <div className="column is-4">
               <form onSubmit={Auth} className="box">
-                {isError && (
-                  <div className="notification is-primary has-text-centered">
-                    {message}
-                  </div>
-                )}
                 <p className="title has-text-centered">LOGIN PENGGUNA</p>
                 <div className="columns is-centered">
                   <div className="column is-half">

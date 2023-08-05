@@ -39,9 +39,12 @@ const UsersList = () => {
   };
 
   return (
-    <div>
-      <h1 className="title">Kelola Pengguna</h1>
-      <h2 className="subtitle">Daftar Data Pengguna Sistem</h2>
+    <div className="container box">
+      <div className="hero is-info is-bold box">
+        <h1 className="title mt-2">Kelola Data Pengguna</h1>
+        <h2 className="subtitle">Daftar data pengguna</h2>
+      </div>
+
       <div className="table-container">
         <table className="table is-striped is-hoverable is-fullwidth">
           <thead>

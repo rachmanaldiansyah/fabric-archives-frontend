@@ -124,11 +124,16 @@ const SertifikatConfirm = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="title mt-2">Kelola Daftar Arsip Sertifikat</h1>
-      <h2 className="subtitle">
-        Daftar data arsip sertifikat uji kompetensi siswa
-      </h2>
+    <div className="container box">
+      <div className="hero is-info is-bold box">
+        <h1 className="title mt-2">
+          Kelola Daftar Arsip Sertifikat Uji Kompetensi
+        </h1>
+        <h2 className="subtitle">
+          Daftar data arsip sertifikat uji kompetensi siswa
+        </h2>
+      </div>
+
       <div className="container mb-2">
         <div className="control">
           <select
@@ -162,12 +167,12 @@ const SertifikatConfirm = () => {
               {user && user.roles === "kepala sekolah" && (
                 <>
                   <th>Status</th>
-                  <th>Actions</th>
                 </>
               )}
-              {user && user.roles === "mitra penerbit" && (
+              {user && user.roles === "mitra" && (
                 <>
                   <th>Status</th>
+                  <th>Actions</th>
                 </>
               )}
             </tr>
@@ -216,17 +221,9 @@ const SertifikatConfirm = () => {
                             {getStatus(sertifikat)}
                           </td>
                         )}
-                        <td>
-                          <button
-                            onClick={() => handleUpload(sertifikat.uuid)}
-                            className="button is-small is-info is-fullwidth"
-                          >
-                            <IoCloudUploadOutline />
-                          </button>
-                        </td>
                       </>
                     )}
-                    {user && user.roles === "mitra penerbit" && (
+                    {user && user.roles === "mitra" && (
                       <>
                         {getStatus(sertifikat) === "Dikonfirmasi" && (
                           <td className="tag is-small is-success is-fullwidth mt-2">
@@ -238,6 +235,14 @@ const SertifikatConfirm = () => {
                             {getStatus(sertifikat)}
                           </td>
                         )}
+                        <td>
+                          <button
+                            onClick={() => handleUpload(sertifikat.uuid)}
+                            className="button is-small is-info is-fullwidth"
+                          >
+                            <IoCloudUploadOutline />
+                          </button>
+                        </td>
                       </>
                     )}
                   </tr>
@@ -248,7 +253,7 @@ const SertifikatConfirm = () => {
       </div>
       {/* Tampilan Pagination */}
       <nav
-        className="pagination is-small is-rounded is-centered"
+        className="pagination is-rounded is-centered"
         role="navigation"
         aria-label="pagination"
       >

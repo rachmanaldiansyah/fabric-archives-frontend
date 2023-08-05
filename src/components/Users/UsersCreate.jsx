@@ -83,7 +83,7 @@ const UsersCreate = () => {
       <div className="card is-shadowless">
         <div className="card-content">
           <h1 className="title">Kelola Data Pengguna</h1>
-          <h2 className="subtitle">Menambahk data pengguna baru</h2>
+          <h2 className="subtitle">Menambahkan data pengguna baru</h2>
           <div className="content">
             <form onSubmit={SaveUsers}>
               <p className="has-text-centered">{msg}</p>

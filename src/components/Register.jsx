@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 const Register = () => {
   const [nama, setNama] = useState("");
@@ -10,12 +12,43 @@ const Register = () => {
   const [confPassword, setConfPassword] = useState("");
   const [roles, setRoles] = useState("");
   const [nip, setNip] = useState("");
-  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const { isLoading } = useSelector((state) => state.auth);
 
-  const saveUsers = async (e) => {
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Registrasi data pengguna berhasil!",
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Gagal saat melakukan registrasi pengguna: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+  };
+
+  const SaveUsers = async (e) => {
     e.preventDefault();
+
+    if (!nama && !email && !password && !confPassword && !roles) {
+      showErrorNotification(
+        "Data registrasi pengguna tidak boleh kosong, silahkan diisi."
+      );
+      return;
+    } else if (password !== confPassword) {
+      showErrorNotification(
+        "Konfirmasi password salah, silahkan ulangi."
+      )
+    }
+
     try {
       await axios.post("http://localhost:5000/users", {
         nama: nama,
@@ -25,10 +58,11 @@ const Register = () => {
         roles: roles,
         nip: nip,
       });
+      showSuccessNotification();
       navigate("/");
     } catch (error) {
       if (error.response) {
-        setMsg(error.response.data.msg);
+        showErrorNotification(error.response.data.msg);
       }
     }
   };
@@ -65,8 +99,7 @@ const Register = () => {
         <div className="container">
           <div className="columns is-centered">
             <div className="column is-4">
-              <form onSubmit={saveUsers} className="box">
-                <p className="has-text-centered">{msg}</p>
+              <form onSubmit={SaveUsers} className="box">
                 <p className="title has-text-centered">REGISTRASI PENGGUNA</p>
                 <div className="field">
                   <label className="label">Nama</label>
@@ -130,7 +163,7 @@ const Register = () => {
                         <option value="admin">Admin</option>
                         <option value="kepala sekolah">Kepala Sekolah</option>
                         <option value="kesiswaan">Kesiswaan</option>
-                        <option value="mitra penerbit">Mitra</option>
+                        <option value="mitra">Mitra</option>
                       </select>
                     </div>
                   </div>
