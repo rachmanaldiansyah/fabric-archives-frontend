@@ -121,7 +121,7 @@ const SertifikatEdit = () => {
 
   return (
     <div className="container box">
-      <div className="hero is-info is-bold box">
+      <div className="hero is-primary is-bold box">
         <h1 className="title mt-2">
           Kelola Daftar Arsip Sertifikat Uji Kompetensi
         </h1>
@@ -220,8 +220,8 @@ const SertifikatEdit = () => {
               </div>
               <div className="field">
                 <div className="control">
-                  <button type="submit" className="button mt-4 is-info is-fullwidth">
-                    Ubah Data Arsip Sertifikat
+                  <button type="submit" className="button mt-4 is-primary">
+                    Ubah
                   </button>
                 </div>
               </div>

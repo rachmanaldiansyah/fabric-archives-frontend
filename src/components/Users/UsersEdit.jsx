@@ -97,7 +97,7 @@ const UsersEdit = () => {
 
   return (
     <div className="container box">
-      <div className="hero is-info is-bold box">
+      <div className="hero is-primary is-bold box">
         <h1 className="title mt-2">Kelola Data Pengguna</h1>
         <h2 className="subtitle">Mengubah data pengguna</h2>
       </div>

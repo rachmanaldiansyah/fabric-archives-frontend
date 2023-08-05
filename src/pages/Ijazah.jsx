@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Layout from "./Layout"
+import Layout from "./Layout";
 import IjazahList from "../components/Ijazah/IjazahList";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,13 +22,7 @@ const Ijazah = () => {
 
   return (
     <Layout>
-      <div className="container">
-        <div className="columns is-centered">
-          <div className="column is-12">
-            <IjazahList />
-          </div>
-        </div>
-      </div>
+      <IjazahList />
     </Layout>
   );
 };

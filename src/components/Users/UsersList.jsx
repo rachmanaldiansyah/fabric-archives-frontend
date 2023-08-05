@@ -11,6 +11,19 @@ const UsersList = () => {
     getUsers();
   }, []);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  // Calculate the index range of items to display for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = users.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Function to handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   const getUsers = async () => {
     const response = await axios.get("http://localhost:5000/users");
     const sortedUsers = response.data.sort((a, b) =>
@@ -40,13 +53,13 @@ const UsersList = () => {
 
   return (
     <div className="container box">
-      <div className="hero is-info is-bold box">
+      <div className="hero is-primary is-bold box">
         <h1 className="title mt-2">Kelola Data Pengguna</h1>
         <h2 className="subtitle">Daftar data pengguna</h2>
       </div>
 
       <div className="table-container">
-        <table className="table is-striped is-hoverable is-fullwidth">
+        <table className="table is-narrow is-striped is-fullwidth is-hoverable">
           <thead>
             <tr>
               <th>No</th>
@@ -57,7 +70,7 @@ const UsersList = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((users, index) => (
+            {currentItems.map((users, index) => (
               <tr key={users.uuid}>
                 <td>{index + 1}</td>
                 <td>{users.nama}</td>
@@ -81,6 +94,30 @@ const UsersList = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      {/* Tampilan Pagination */}
+      <div
+        className="pagination is-centered is-rounded"
+        role="navigation"
+        aria-label="pagination"
+      >
+        <ul className="pagination-list">
+          {Array.from({
+            length: Math.ceil(users.length / itemsPerPage),
+          }).map((_, i) => (
+            <li key={i}>
+              <button
+                className={`pagination-link${
+                  currentPage === i + 1 ? " is-current" : ""
+                }`}
+                aria-label={`Goto page ${i + 1}`}
+                onClick={() => handlePageChange(i + 1)}
+              >
+                {i + 1}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

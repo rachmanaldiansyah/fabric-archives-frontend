@@ -101,7 +101,7 @@ const IjazahCreate = () => {
 
   return (
     <div className="container box">
-      <div className="hero is-info is-bold box">
+      <div className="hero is-primary is-bold box">
         <h1 className="title mt-2">Kelola Arsip Ijazah Siswa</h1>
         <h2 className="subtitle">Mengarsipkan data ijazah siswa</h2>
       </div>

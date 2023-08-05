@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Layout from "../pages/Layout"
+import Layout from "../pages/Layout";
 import SertifikatList from "../components/Sertifikat/SertifikatList";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,13 +22,7 @@ const SertifikatFormList = () => {
 
   return (
     <Layout>
-      <div className="container">
-        <div className="columns is-centered">
-          <div className="column is-12">
-            <SertifikatList />
-          </div>
-        </div>
-      </div>
+      <SertifikatList />
     </Layout>
   );
 };

@@ -32,7 +32,7 @@ function Login() {
 
   const showErrorNotification = (errorMsg) => {
     Toastify({
-      text: "Gagal saat melakukan login: " + errorMsg,
+      text: errorMsg,
       duration: 3000,
       gravity: "bottom",
       position: "right",
@@ -40,11 +40,20 @@ function Login() {
     }).showToast();
   };
 
+  const validateEmail = (email) => {
+    // Simple email validation using regex
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  }
+
   const Auth = (e) => {
     e.preventDefault();
 
-    if (!email && !password) {
-      showErrorNotification("Masukan email dan password anda.");
+    if (!email || !password) {
+      showErrorNotification("Masukkan email dan password anda.");
+      return;
+    } else if (!validateEmail(email)) {
+      showErrorNotification("Format email tidak valid, silahkan periksa kembali.");
       return;
     }
 
@@ -53,7 +62,7 @@ function Login() {
   };
 
   return (
-    <section className="hero has-background-grey-light is-fullheight is-fullwidth">
+    <section className="hero has-background-grey-lighter is-fullheight is-fullwidth">
       <div className="hero-body">
         <div className="container">
           <div className="columns is-centered">

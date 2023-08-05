@@ -2,7 +2,7 @@ import React from "react";
 
 const Verifikasi = () => {
   return (
-    <section className="hero has-background-grey-light is-fullheight is-fullwidth">
+    <section className="hero has-background-grey-lighter is-fullheight is-fullwidth">
       <div className="hero-body">
         <div className="container has-text-centered">
           <div className="column is-6 is-offset-3">

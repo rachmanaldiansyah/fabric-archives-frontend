@@ -139,7 +139,7 @@ const SertifikatList = () => {
 
   return (
     <div className="container box">
-      <div className="hero is-info is-bold box">
+      <div className="hero is-primary is-bold box">
         <h1 className="title mt-2">
           Kelola Daftar Arsip Sertifikat Uji Kompetensi
         </h1>
@@ -149,9 +149,8 @@ const SertifikatList = () => {
       </div>
 
       <div className="container mb-2">
-        <div className="control">
+        <div className="control select is-primary">
           <select
-            className="select"
             id="prodiFilter"
             value={selectedProdi}
             onChange={handleProdiFilterChange}
@@ -169,7 +168,7 @@ const SertifikatList = () => {
       </div>
       
       <div className="table-container">
-        <table className="table is-striped is-fullwidth">
+        <table className="table is-narrow is-striped is-fullwidth is-hoverable">
           <thead>
             <tr>
               <th>No</th>

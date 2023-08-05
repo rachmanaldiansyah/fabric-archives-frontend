@@ -6,8 +6,8 @@ const Layout = ({ children }) => {
   return (
     <React.Fragment>
       <Navbar />
-      <section className="container">
-        <div className="container mt-4">
+      <section className="hero has-background-grey-lighter is-fullheight is-fullwidth mt-4 pl-4 pr-4">
+        <div className="hero body">
           <div className="columns is-desktop">
             <div className="column is-3-desktop">
               <div className="box mt-6">

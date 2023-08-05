@@ -21,7 +21,7 @@ const Sidebar = () => {
             <span className="icon is-small">
               <IoGridOutline />
             </span>
-            <span>Dashboard</span>
+            <span className="ml-1">Dashboard</span>
           </NavLink>
         </li>
         {user && user.roles === "admin" && (
@@ -30,7 +30,7 @@ const Sidebar = () => {
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
-              <span>Daftar Ijazah</span>
+              <span className="ml-1">Daftar Ijazah</span>
             </NavLink>
           </li>
         )}
@@ -40,7 +40,7 @@ const Sidebar = () => {
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
-              <span>Daftar Ijazah</span>
+              <span className="ml-1">Daftar Ijazah</span>
             </NavLink>
           </li>
         )}
@@ -50,7 +50,7 @@ const Sidebar = () => {
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
-              <span>Daftar Ijazah</span>
+              <span className="ml-1">Daftar Ijazah</span>
             </NavLink>
           </li>
         )}
@@ -60,7 +60,7 @@ const Sidebar = () => {
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
-              <span>Daftar Sertifikat</span>
+              <span className="ml-1">Daftar Sertifikat</span>
             </NavLink>
           </li>
         )}
@@ -70,7 +70,7 @@ const Sidebar = () => {
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
-              <span>Daftar Sertifikat</span>
+              <span className="ml-1">Daftar Sertifikat</span>
             </NavLink>
           </li>
         )}
@@ -80,7 +80,7 @@ const Sidebar = () => {
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
-              <span>Daftar Sertifikat</span>
+              <span className="ml-1">Daftar Sertifikat</span>
             </NavLink>
           </li>
         )}
@@ -94,7 +94,7 @@ const Sidebar = () => {
                 <span className="icon is-small">
                   <IoPeopleOutline />
                 </span>
-                <span>Kelola Pengguna</span>
+                <span className="ml-1">Kelola Pengguna</span>
               </NavLink>
             </li>
             <li>
@@ -102,7 +102,7 @@ const Sidebar = () => {
                 <span className="icon is-small">
                   <IoFileTrayFullOutline />
                 </span>
-                <span>Arsipkan Ijazah</span>
+                <span className="ml-1">Arsipkan Ijazah</span>
               </NavLink>
             </li>
             <li>
@@ -110,7 +110,7 @@ const Sidebar = () => {
                 <span className="icon is-small">
                   <IoFileTrayFullOutline />
                 </span>
-                <span>Arsipkan Sertifikat</span>
+                <span className="ml-1">Arsipkan Sertifikat</span>
               </NavLink>
             </li>
           </ul>
@@ -125,7 +125,7 @@ const Sidebar = () => {
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
-                <span>Konfirmasi Ijazah</span>
+                <span className="ml-1">Konfirmasi Ijazah</span>
               </NavLink>
             </li>
             <li>
@@ -133,7 +133,7 @@ const Sidebar = () => {
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
-                <span>Konfirmasi Sertifikat</span>
+                <span className="ml-1">Konfirmasi Sertifikat</span>
               </NavLink>
             </li>
           </ul>
@@ -148,7 +148,7 @@ const Sidebar = () => {
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
-                <span>Konfirmasi Ijazah</span>
+                <span className="ml-1">Konfirmasi Ijazah</span>
               </NavLink>
             </li>
           </ul>
@@ -163,7 +163,7 @@ const Sidebar = () => {
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
-                <span>Konfirmasi Sertifikat</span>
+                <span className="ml-1">Konfirmasi Sertifikat</span>
               </NavLink>
             </li>
           </ul>

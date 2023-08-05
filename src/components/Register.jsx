@@ -27,7 +27,7 @@ const Register = () => {
 
   const showErrorNotification = (errorMsg) => {
     Toastify({
-      text: "Gagal saat melakukan registrasi pengguna: " + errorMsg,
+      text: errorMsg,
       duration: 3000,
       gravity: "bottom",
       position: "right",
@@ -35,18 +35,24 @@ const Register = () => {
     }).showToast();
   };
 
+  const validateEmail = (email) => {
+    // Simple email validation using regex
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  }
+
   const SaveUsers = async (e) => {
     e.preventDefault();
 
-    if (!nama && !email && !password && !confPassword && !roles) {
-      showErrorNotification(
-        "Data registrasi pengguna tidak boleh kosong, silahkan diisi."
-      );
+    if (!nama || !email || !password || !confPassword || !roles) {
+      showErrorNotification("Data registrasi pengguna tidak boleh kosong, silahkan diisi.");
       return;
     } else if (password !== confPassword) {
-      showErrorNotification(
-        "Konfirmasi password salah, silahkan ulangi."
-      )
+      showErrorNotification("Konfirmasi password salah, silahkan ulangi.");
+      return;
+    } else if (!validateEmail(email)) {
+      showErrorNotification("Format email tidak valid, silahkan periksa kembali.");
+      return;
     }
 
     try {
