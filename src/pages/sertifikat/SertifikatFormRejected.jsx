@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import Layout from "./Layout";
-import IjazahEdit from "../components/Ijazah/IjazahEdit";
+import Layout from "../Layout";
+import SertifikatRejected from "../../components/Sertifikat/SertifikatRejected";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getMe } from "../features/AuthSlices";
+import { getMe } from "../../features/AuthSlices";
 
-const IjazahFormEdit = () => {
+const SertifikatFormRejected = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
@@ -25,9 +25,9 @@ const IjazahFormEdit = () => {
 
   return (
     <Layout>
-      <IjazahEdit />
+      <SertifikatRejected />
     </Layout>
   );
 };
 
-export default IjazahFormEdit;
+export default SertifikatFormRejected;

@@ -23,7 +23,12 @@ const Welcome = () => {
   const getConfirmedIjazah = async () => {
     try {
       const response = await axios.get("http://localhost:5000/ijazah");
-      setConfirmedIjazah(response.data);
+      const confirmedIjazah = response.data.filter(
+        (item) =>
+          item.konfirmasi_kepsek === "Dikonfirmasi" &&
+          item.konfirmasi_kesiswaan === "Dikonfirmasi"
+      );
+      setConfirmedIjazah(confirmedIjazah);
     } catch (error) {
       console.error("Error fetching confirmed ijazah data:", error);
     }
@@ -32,7 +37,12 @@ const Welcome = () => {
   const getConfirmedSertifikat = async () => {
     try {
       const response = await axios.get("http://localhost:5000/sertifikat");
-      setConfirmedSertifikat(response.data);
+      const confirmedSertifikat = response.data.filter(
+        (item) =>
+          item.konfirmasi_kepsek === "Dikonfirmasi" &&
+          item.konfirmasi_mitra === "Dikonfirmasi"
+      );
+      setConfirmedSertifikat(confirmedSertifikat);
     } catch (error) {
       console.error("Error fetching confirmed sertifikat data:", error);
     }

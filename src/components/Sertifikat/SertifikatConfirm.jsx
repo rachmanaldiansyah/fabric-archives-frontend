@@ -18,13 +18,27 @@ const SertifikatConfirm = () => {
     getSertifikat();
   }, [token]);
 
+  // Fungsi untuk melakukan filter hanya menampilkan data arsip yang statusnya telah dikonfirmasi
+  const filterConfirmedSertifikat = () => {
+    return sertifikat.filter((item) => {
+      const isKepsekConfirmed = item.konfirmasi_kepsek === "Dikonfirmasi";
+      const isMitraConfirmed = item.konfirmasi_mitra === "Dikonfirmasi";
+      return isKepsekConfirmed && isMitraConfirmed;
+    });
+  };
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  // Calculate the index range of items to display for the current page
+  // menghitung halaman yang akan ditampilkan
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = sertifikat.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Mendapatkan data arsip yang statusnya telah dikonfirmasi
+  const confirmedSertifikat = filterConfirmedSertifikat();
+
+  // Menggunakan data arsip yang statusnya telah dikonfirmasi sebagai data yang akan ditampilkan
+  const currentItems = confirmedSertifikat.slice(indexOfFirstItem, indexOfLastItem);
 
   // fungsi untuk meng-handle halaman
   const handlePageChange = (pageNumber) => {

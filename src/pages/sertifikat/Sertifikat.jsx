@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import Layout from "../pages/Layout";
-import SertifikatList from "../components/Sertifikat/SertifikatList";
+import Layout from "../Layout";
+import SertifikatList from "../../components/Sertifikat/SertifikatList";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getMe } from "../features/AuthSlices";
+import { getMe } from "../../features/AuthSlices";
 
 const SertifikatFormList = () => {
   const dispatch = useDispatch();

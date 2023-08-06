@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Modal from "../Modal";
 import Swal from "sweetalert2";
-import { IoTrashOutline, IoCreateOutline } from "react-icons/io5";
+import { IoTrashOutline, IoCreateOutline, IoHandRightOutline, IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 
 const IjazahList = () => {
   const [ijazah, setIjazah] = useState([]);
@@ -109,6 +109,29 @@ const IjazahList = () => {
     return confirmedIjazah.includes(ijazahId);
   };
 
+  const tolakIjazah = async (ijazahId) => {
+    try {
+      const response = await axios({
+        url: `http://localhost:5000/ijazah/${ijazahId}`,
+        method: "PATCH",
+        data: {
+          konfirmasi_kepsek: "Ditolak",
+        },
+      });
+      setConfirmedIjazah((prevConfirmedIjazah) => [
+        ...prevConfirmedIjazah,
+        response.data,
+      ]);
+      Swal.fire(
+        "Ditolak!",
+        "Data Arsip Ijazah Telah Ditolak oleh Kepala Sekolah.",
+        "success"
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getStatus = (ijazah) => {
     const isKepsekConfirmed = ijazah.konfirmasi_kepsek === "Dikonfirmasi";
     const isKesiswaanConfirmed = ijazah.konfirmasi_kesiswaan === "Dikonfirmasi";
@@ -158,7 +181,7 @@ const IjazahList = () => {
           </select>
         </div>
       </div>
-      
+
       <div className="table-container">
         <table className="table is-narrow is-striped is-fullwidth is-hoverable">
           <thead>
@@ -197,7 +220,7 @@ const IjazahList = () => {
                     <td>{ijazah.prodi}</td>
                     <td>
                       <button
-                        className="button is-small is-fullwidth is-primary"
+                        className="button is-small is-fullwidth is-primary mt-1"
                         onClick={() =>
                           openModal(
                             "https://" + ijazah.arsip_ijazah + ".ipfs.w3s.link"
@@ -247,12 +270,22 @@ const IjazahList = () => {
                         {isIjazahConfirmed(ijazah.uuid) ? (
                           <span className="tag is-success">Terkonfirmasi</span>
                         ) : (
-                          <button
-                            onClick={() => konfirmasiKepalaSekolah(ijazah.uuid)}
-                            className="button is-small is-info"
-                          >
-                            Konfirmasi
-                          </button>
+                          <>
+                            <button
+                              onClick={() =>
+                                konfirmasiKepalaSekolah(ijazah.uuid)
+                              }
+                              className="button is-small is-info mt-1"
+                            >
+                              <IoCheckmarkDoneCircleOutline />
+                            </button>
+                            <button
+                              onClick={() => tolakIjazah(ijazah.uuid)}
+                              className="button is-small is-danger mt-1"
+                            >
+                              <IoHandRightOutline />
+                            </button>
+                          </>
                         )}
                       </td>
                     )}
@@ -265,7 +298,7 @@ const IjazahList = () => {
                             onClick={() => konfirmasiKesiswaan(ijazah.uuid)}
                             className="button is-small is-info"
                           >
-                            Konfirmasi
+                            <IoCheckmarkDoneCircleOutline />
                           </button>
                         )}
                       </td>

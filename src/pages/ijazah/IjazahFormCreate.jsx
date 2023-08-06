@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import Layout from "./Layout";
-import IjazahCreate from "../components/Ijazah/IjazahCreate";
+import Layout from "../../pages/Layout";
+import IjazahCreate from "../../components/Ijazah/IjazahCreate";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getMe } from "../features/AuthSlices";
+import { getMe } from "../../features/AuthSlices";
 
 const IjazahFormCreate = () => {
   const dispatch = useDispatch();

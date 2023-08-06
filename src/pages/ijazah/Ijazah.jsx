@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import SertifikatConfirm from "../components/Sertifikat/SertifikatConfirm";
+import Layout from "../../pages/Layout";
+import IjazahList from "../../components/Ijazah/IjazahList";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getMe } from "../features/AuthSlices";
-import Layout from "./Layout";
+import { getMe } from "../../features/AuthSlices";
 
-const SertifikatFormConfirm = () => {
+const Ijazah = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError } = useSelector((state) => state.auth);
@@ -22,15 +22,9 @@ const SertifikatFormConfirm = () => {
 
   return (
     <Layout>
-      <div className="container">
-        <div className="columns is-centered">
-          <div className="column is-12">
-            <SertifikatConfirm />
-          </div>
-        </div>
-      </div>
+      <IjazahList />
     </Layout>
   );
 };
 
-export default SertifikatFormConfirm;
+export default Ijazah;

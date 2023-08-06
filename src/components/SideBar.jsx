@@ -6,6 +6,7 @@ import {
   IoGridOutline,
   IoLibraryOutline,
   IoPeopleOutline,
+  IoTrashBinOutline
 } from "react-icons/io5";
 import { useSelector } from "react-redux";
 
@@ -98,7 +99,7 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to={"/ijazah/create"}>
+              <NavLink to={"/ijazah/arsipkan"}>
                 <span className="icon is-small">
                   <IoFileTrayFullOutline />
                 </span>
@@ -106,11 +107,27 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to={"/sertifikat/create"}>
+              <NavLink to={"/sertifikat/arsipkan"}>
                 <span className="icon is-small">
                   <IoFileTrayFullOutline />
                 </span>
                 <span className="ml-1">Arsipkan Sertifikat</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={"/ijazah/rejected"}>
+                <span className="icon is-small">
+                  <IoTrashBinOutline />
+                </span>
+                <span className="ml-1">Ijazah Ditolak</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={"/sertifikat/rejected"}>
+                <span className="icon is-small">
+                  <IoTrashBinOutline />
+                </span>
+                <span className="ml-1">Sertifikat Ditolak</span>
               </NavLink>
             </li>
           </ul>

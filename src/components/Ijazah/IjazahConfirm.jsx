@@ -18,13 +18,27 @@ const IjazahConfirm = () => {
     getIjazah();
   }, [token]);
 
+  // Fungsi untuk melakukan filter hanya menampilkan data arsip yang statusnya telah dikonfirmasi
+  const filterConfirmedIjazah = () => {
+    return ijazah.filter((item) => {
+      const isKepsekConfirmed = item.konfirmasi_kepsek === "Dikonfirmasi";
+      const isKesiswaanConfirmed = item.konfirmasi_kesiswaan === "Dikonfirmasi";
+      return isKepsekConfirmed && isKesiswaanConfirmed;
+    });
+  };
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
   // menghitung halaman yang akan ditampilkan
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = ijazah.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Mendapatkan data arsip yang statusnya telah dikonfirmasi
+  const confirmedIjazah = filterConfirmedIjazah();
+
+  // Menggunakan data arsip yang statusnya telah dikonfirmasi sebagai data yang akan ditampilkan
+  const currentItems = confirmedIjazah.slice(indexOfFirstItem, indexOfLastItem);
 
   // fungsi untuk meng-handle halaman
   const handlePageChange = (pageNumber) => {
