@@ -110,66 +110,201 @@ const Welcome = () => {
 
       <section className="section">
         <div className="columns is-centered is-multiline">
-          <div className="column">
-            <div className="box hero is-warning has-text-centered">
-              <p className="heading">Total Pengguna</p>
-              <p className="title">{totalPengguna}</p>
-            </div>
-          </div>
-          <div className="column">
-            <div className="box hero is-warning is-bold has-text-centered">
-              <p className="heading">Total Arsip Ijazah</p>
-              <p className="title">{totalArsipIjazah}</p>
-            </div>
-          </div>
-          <div className="column">
-            <div className="box hero is-warning has-text-centered">
-              <p className="heading">Total Arsip Sertifikat</p>
-              <p className="title">{totalArsipSertifikat}</p>
-            </div>
-          </div>
-        </div>
-
-        <h2 className="subtitle">Data Ijazah yang Telah Dikonfirmasi</h2>
-        <div className="columns is-multiline">
-          {confirmedIjazah.slice(startIndex, endIndex).map((ijazahItem) => (
-            <div
-              key={ijazahItem.id}
-              className="column is-6-tablet is-4-desktop"
-            >
-              <div className="notification box">
-                <p className="has-text-dark">
-                  Nama Siswa: <strong>{ijazahItem.nama}</strong>
-                </p>
-                <p className="has-text-dark">
-                  Nomor Ijazah: <strong>{ijazahItem.no_ijazah}</strong>
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <h2 className="subtitle">Data Sertifikat yang Telah Dikonfirmasi</h2>
-        <div className="columns is-multiline">
-          {confirmedSertifikat
-            .slice(startIndex, endIndex)
-            .map((sertifikatItem) => (
-              <div
-                key={sertifikatItem.id}
-                className="column is-6-tablet is-4-desktop"
-              >
-                <div className="notification box">
-                  <p className="has-text-dark">
-                    Nama Siswa: <strong>{sertifikatItem.nama}</strong>
-                  </p>
-                  <p className="has-text-dark">
-                    Nomor Sertifikat:{" "}
-                    <strong>{sertifikatItem.no_sertifikat}</strong>
-                  </p>
+          {user && user.roles === "admin" && (
+            <>
+              <div className="column">
+                <div className="box hero is-warning has-text-centered">
+                  <p className="heading">Total Pengguna</p>
+                  <p className="title">{totalPengguna}</p>
                 </div>
               </div>
-            ))}
+              <div className="column">
+                <div className="box hero is-warning is-bold has-text-centered">
+                  <p className="heading">Total Arsip Ijazah</p>
+                  <p className="title">{totalArsipIjazah}</p>
+                </div>
+              </div>
+              <div className="column">
+                <div className="box hero is-warning has-text-centered">
+                  <p className="heading">Total Arsip Sertifikat</p>
+                  <p className="title">{totalArsipSertifikat}</p>
+                </div>
+              </div>
+            </>
+          )}
+          {user && user.roles === "kepala sekolah" && (
+            <>
+              <div className="column">
+                <div className="box hero is-warning is-bold has-text-centered">
+                  <p className="heading">Total Arsip Ijazah</p>
+                  <p className="title">{totalArsipIjazah}</p>
+                </div>
+              </div>
+              <div className="column">
+                <div className="box hero is-warning has-text-centered">
+                  <p className="heading">Total Arsip Sertifikat</p>
+                  <p className="title">{totalArsipSertifikat}</p>
+                </div>
+              </div>
+            </>
+          )}
+          {user && user.roles === "kesiswaan" && (
+            <div className="column">
+              <div className="box hero is-warning is-bold has-text-centered">
+                <p className="heading">Total Arsip Ijazah</p>
+                <p className="title">{totalArsipIjazah}</p>
+              </div>
+            </div>
+          )}
+          {user && user.roles === "mitra" && (
+            <div className="column">
+              <div className="box hero is-warning has-text-centered">
+                <p className="heading">Total Arsip Sertifikat</p>
+                <p className="title">{totalArsipSertifikat}</p>
+              </div>
+            </div>
+          )}
         </div>
+
+        {user && user.roles === "admin" && (
+          <>
+            <h2 className="subtitle">Data Ijazah yang Telah Dikonfirmasi</h2>
+            <div className="columns is-multiline">
+              {confirmedIjazah.slice(startIndex, endIndex).map((ijazahItem) => (
+                <div
+                  key={ijazahItem.id}
+                  className="column is-6-tablet is-4-desktop"
+                >
+                  <div className="notification box">
+                    <p className="has-text-dark">
+                      Nama Siswa: <strong>{ijazahItem.nama}</strong>
+                    </p>
+                    <p className="has-text-dark">
+                      Nomor Ijazah: <strong>{ijazahItem.no_ijazah}</strong>
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <h2 className="subtitle">
+              Data Sertifikat yang Telah Dikonfirmasi
+            </h2>
+            <div className="columns is-multiline">
+              {confirmedSertifikat
+                .slice(startIndex, endIndex)
+                .map((sertifikatItem) => (
+                  <div
+                    key={sertifikatItem.id}
+                    className="column is-6-tablet is-4-desktop"
+                  >
+                    <div className="notification box">
+                      <p className="has-text-dark">
+                        Nama Siswa: <strong>{sertifikatItem.nama}</strong>
+                      </p>
+                      <p className="has-text-dark">
+                        Nomor Sertifikat:{" "}
+                        <strong>{sertifikatItem.no_sertifikat}</strong>
+                      </p>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </>
+        )}
+        {user && user.roles === "kepala sekolah" && (
+          <>
+            <h2 className="subtitle">Data Ijazah yang Telah Dikonfirmasi</h2>
+            <div className="columns is-multiline">
+              {confirmedIjazah.slice(startIndex, endIndex).map((ijazahItem) => (
+                <div
+                  key={ijazahItem.id}
+                  className="column is-6-tablet is-4-desktop"
+                >
+                  <div className="notification box">
+                    <p className="has-text-dark">
+                      Nama Siswa: <strong>{ijazahItem.nama}</strong>
+                    </p>
+                    <p className="has-text-dark">
+                      Nomor Ijazah: <strong>{ijazahItem.no_ijazah}</strong>
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <h2 className="subtitle">
+              Data Sertifikat yang Telah Dikonfirmasi
+            </h2>
+            <div className="columns is-multiline">
+              {confirmedSertifikat
+                .slice(startIndex, endIndex)
+                .map((sertifikatItem) => (
+                  <div
+                    key={sertifikatItem.id}
+                    className="column is-6-tablet is-4-desktop"
+                  >
+                    <div className="notification box">
+                      <p className="has-text-dark">
+                        Nama Siswa: <strong>{sertifikatItem.nama}</strong>
+                      </p>
+                      <p className="has-text-dark">
+                        Nomor Sertifikat:{" "}
+                        <strong>{sertifikatItem.no_sertifikat}</strong>
+                      </p>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </>
+        )}
+        {user && user.roles === "kesiswaan" && (
+          <>
+            <h2 className="subtitle">Data Ijazah yang Telah Dikonfirmasi</h2>
+            <div className="columns is-multiline">
+              {confirmedIjazah.slice(startIndex, endIndex).map((ijazahItem) => (
+                <div
+                  key={ijazahItem.id}
+                  className="column is-6-tablet is-4-desktop"
+                >
+                  <div className="notification box">
+                    <p className="has-text-dark">
+                      Nama Siswa: <strong>{ijazahItem.nama}</strong>
+                    </p>
+                    <p className="has-text-dark">
+                      Nomor Ijazah: <strong>{ijazahItem.no_ijazah}</strong>
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+        {user && user.roles === "mitra" && (
+          <>
+            <h2 className="subtitle">
+              Data Sertifikat yang Telah Dikonfirmasi
+            </h2>
+            <div className="columns is-multiline">
+              {confirmedSertifikat
+                .slice(startIndex, endIndex)
+                .map((sertifikatItem) => (
+                  <div
+                    key={sertifikatItem.id}
+                    className="column is-6-tablet is-4-desktop"
+                  >
+                    <div className="notification box">
+                      <p className="has-text-dark">
+                        Nama Siswa: <strong>{sertifikatItem.nama}</strong>
+                      </p>
+                      <p className="has-text-dark">
+                        Nomor Sertifikat:{" "}
+                        <strong>{sertifikatItem.no_sertifikat}</strong>
+                      </p>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </>
+        )}
 
         {/* Pagination */}
         {totalPages > 1 && (
