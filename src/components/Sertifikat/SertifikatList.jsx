@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Modal from "../Modal";
 import Swal from "sweetalert2";
-import { IoTrashOutline, IoCreateOutline } from "react-icons/io5";
+import { IoTrashOutline, IoCreateOutline, IoHandRightOutline, IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 
 const SertifikatList = () => {
   const [sertifikat, setSertifikat] = useState([]);
@@ -109,6 +109,29 @@ const SertifikatList = () => {
     }
   };
 
+  const tolakSertifikat = async (sertifikatId) => {
+    try {
+      const response = await axios({
+        url: `http://localhost:5000/sertifikat/${sertifikatId}`,
+        method: "PATCH",
+        data: {
+          konfirmasi_kepsek: "Ditolak",
+        },
+      });
+      setConfirmedSertifikat((prevConfirmedSertifikat) => [
+        ...prevConfirmedSertifikat,
+        response.data,
+      ]);
+      Swal.fire(
+        "Ditolak!",
+        "Data Arsip Ijazah Telah Ditolak oleh Kepala Sekolah.",
+        "success"
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const isSertifikatConfirmed = (sertifikatId) => {
     return confirmedSertifikat.includes(sertifikatId);
   };
@@ -166,7 +189,7 @@ const SertifikatList = () => {
           </select>
         </div>
       </div>
-      
+
       <div className="table-container">
         <table className="table is-narrow is-striped is-fullwidth is-hoverable">
           <thead>
@@ -201,7 +224,7 @@ const SertifikatList = () => {
                     <td>{sertifikat.keahlian}</td>
                     <td>
                       <button
-                        className="button is-small is-primary is-fullwidth"
+                        className="button is-small is-primary is-fullwidth mt-1"
                         onClick={() =>
                           openModal(
                             "https://" +
@@ -253,14 +276,22 @@ const SertifikatList = () => {
                         {isSertifikatConfirmed(sertifikat.uuid) ? (
                           <span className="tag is-success">Terkonfirmasi</span>
                         ) : (
-                          <button
-                            onClick={() =>
-                              konfirmasiKepalaSekolah(sertifikat.uuid)
-                            }
-                            className="button is-small is-info"
-                          >
-                            Konfirmasi
-                          </button>
+                          <>
+                            <button
+                              onClick={() =>
+                                konfirmasiKepalaSekolah(sertifikat.uuid)
+                              }
+                              className="button is-fullwidth is-small is-info mt-1"
+                            >
+                              <IoCheckmarkDoneCircleOutline />
+                            </button>
+                            <button
+                              onClick={() => tolakSertifikat(sertifikat.uuid)}
+                              className="button is-fullwidth is-small is-danger mt-1"
+                            >
+                              <IoHandRightOutline />
+                            </button>
+                          </>
                         )}
                       </td>
                     )}
@@ -271,9 +302,9 @@ const SertifikatList = () => {
                         ) : (
                           <button
                             onClick={() => konfirmasiMitra(sertifikat.uuid)}
-                            className="button is-small is-info"
+                            className="button is-fullwidth is-small is-info mt-1"
                           >
-                            Konfirmasi
+                            <IoCheckmarkDoneCircleOutline />
                           </button>
                         )}
                       </td>

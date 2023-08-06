@@ -275,13 +275,13 @@ const IjazahList = () => {
                               onClick={() =>
                                 konfirmasiKepalaSekolah(ijazah.uuid)
                               }
-                              className="button is-small is-info mt-1"
+                              className="button is-fullwidth is-small is-info mt-1"
                             >
                               <IoCheckmarkDoneCircleOutline />
                             </button>
                             <button
                               onClick={() => tolakIjazah(ijazah.uuid)}
-                              className="button is-small is-danger mt-1"
+                              className="button is-fullwidth is-small is-danger mt-1"
                             >
                               <IoHandRightOutline />
                             </button>
@@ -296,7 +296,7 @@ const IjazahList = () => {
                         ) : (
                           <button
                             onClick={() => konfirmasiKesiswaan(ijazah.uuid)}
-                            className="button is-small is-info"
+                            className="button is-fullwidth is-small is-info mt-1"
                           >
                             <IoCheckmarkDoneCircleOutline />
                           </button>
