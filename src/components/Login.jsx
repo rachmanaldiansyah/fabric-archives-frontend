@@ -41,7 +41,6 @@ function Login() {
   };
 
   const validateEmail = (email) => {
-    // Simple email validation using regex
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
   }

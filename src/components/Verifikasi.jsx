@@ -18,7 +18,7 @@ const Verifikasi = () => {
         { withCredentials: true }
       );
       setVerificationResult(verifyAssetResponse.data);
-      setVerificationError(null); // Reset error message
+      setVerificationError(null);
     } catch (error) {
       console.error("Failed to verify asset:", error);
       setVerificationResult(null);

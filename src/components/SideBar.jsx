@@ -6,15 +6,25 @@ import {
   IoGridOutline,
   IoLibraryOutline,
   IoPeopleOutline,
-  IoTrashBinOutline
+  IoTrashBinOutline,
 } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import "../styles/global.css";
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
 
   return (
     <aside className="menu">
+      {user && (
+        <div className="user-profile">
+          <img src={user.profilePicture} alt="Avatar" className="user-avatar" />
+          <div className="user-info">
+            <p className="user-name">{user.nama}</p>
+            <p className="user-roles">{user.roles}</p>
+          </div>
+        </div>
+      )}
       <p className="menu-label mt-4 has-text-dark">General</p>
       <ul className="menu-list">
         <li>

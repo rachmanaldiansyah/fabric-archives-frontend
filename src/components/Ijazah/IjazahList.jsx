@@ -4,7 +4,12 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Modal from "../Modal";
 import Swal from "sweetalert2";
-import { IoTrashOutline, IoCreateOutline, IoHandRightOutline, IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import {
+  IoTrashOutline,
+  IoCreateOutline,
+  IoHandRightOutline,
+  IoCheckmarkDoneCircleOutline,
+} from "react-icons/io5";
 
 const IjazahList = () => {
   const [ijazah, setIjazah] = useState([]);

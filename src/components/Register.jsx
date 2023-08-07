@@ -39,19 +39,23 @@ const Register = () => {
     // Simple email validation using regex
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
-  }
+  };
 
   const SaveUsers = async (e) => {
     e.preventDefault();
 
     if (!nama || !email || !password || !confPassword || !roles) {
-      showErrorNotification("Data registrasi pengguna tidak boleh kosong, silahkan diisi.");
+      showErrorNotification(
+        "Data registrasi pengguna tidak boleh kosong, silahkan diisi."
+      );
       return;
     } else if (password !== confPassword) {
       showErrorNotification("Konfirmasi password salah, silahkan ulangi.");
       return;
     } else if (!validateEmail(email)) {
-      showErrorNotification("Format email tidak valid, silahkan periksa kembali.");
+      showErrorNotification(
+        "Format email tidak valid, silahkan periksa kembali."
+      );
       return;
     }
 
@@ -73,13 +77,12 @@ const Register = () => {
     }
   };
 
-  // fungsi untuk menampilkan field nip apabila roles telah dipilih
   const renderNipInputField = () => {
     if (
       roles === "admin" ||
       roles === "kepala sekolah" ||
       roles === "kesiswaan" ||
-      roles === "mitra penerbit"
+      roles === "mitra"
     ) {
       return (
         <div className="field">

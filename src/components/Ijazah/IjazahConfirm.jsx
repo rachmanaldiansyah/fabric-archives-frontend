@@ -126,7 +126,7 @@ const IjazahConfirm = () => {
       Swal.fire({
         icon: "success",
         title: "Success",
-        text: "Data arsip ijazah siswa berhasil disimpan ke blockchain!",
+        text: `Data arsip ijazah siswa berhasil disimpan ke blockchain!`,
       });
 
       console.log(createAssetResponse.data);
