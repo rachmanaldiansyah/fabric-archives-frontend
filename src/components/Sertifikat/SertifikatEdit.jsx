@@ -122,11 +122,11 @@ const SertifikatEdit = () => {
   return (
     <div className="container box">
       <div className="hero is-primary is-bold box">
-        <h1 className="title mt-2">
+        <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">
           Kelola Daftar Arsip Sertifikat Uji Kompetensi
         </h1>
-        <h2 className="subtitle">
-          Mengubah data arsip sertifikat ujikom siswa
+        <h2 className="subtitle is-family-sans-serif is-capitalized has-text-dark has-text-centered has-text-weight-light">
+          Mengubah data arsip sertifikat uji kompetensis siswa
         </h2>
       </div>
 

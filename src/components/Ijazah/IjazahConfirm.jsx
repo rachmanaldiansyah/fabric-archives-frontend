@@ -90,7 +90,7 @@ const IjazahConfirm = () => {
         }
       );
       const token = enrollResponse.data.token;
-      console.log("Fetched token:", token);
+      // console.log("Fetched token:", token);
       setToken(token);
     } catch (error) {
       console.error("Failed to fetch token:", error);
@@ -123,10 +123,11 @@ const IjazahConfirm = () => {
         { withCredentials: true }
       );
 
+      const { response } = createAssetResponse.data;
       Swal.fire({
         icon: "success",
         title: "Success",
-        text: `Data arsip ijazah siswa berhasil disimpan ke blockchain!`,
+        text: `${response}`,
       });
 
       console.log(createAssetResponse.data);
@@ -148,8 +149,12 @@ const IjazahConfirm = () => {
   return (
     <div className="container box">
       <div className="hero is-primary is-bold box">
-        <h1 className="title mt-2">Kelola Daftar Arsip Ijazah</h1>
-        <h2 className="subtitle">Daftar data arsip ijazah siswa</h2>
+        <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">
+          Kelola Daftar Arsip Ijazah Siswa
+        </h1>
+        <h2 className="subtitle is-family-sans-serif is-capitalized has-text-dark has-text-centered has-text-weight-light">
+          Daftar arsip ijazah siswa yang telah dikonfirmasi
+        </h2>
       </div>
       <div className="container mb-2">
         <div className="control select is-primary">

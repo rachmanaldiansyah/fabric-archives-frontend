@@ -7,8 +7,8 @@ import Swal from "sweetalert2";
 import { IoTrashOutline, IoCreateOutline, IoHandRightOutline, IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 
 const SertifikatList = () => {
-  const [sertifikat, setSertifikat] = useState([]);
   const { user } = useSelector((state) => state.auth);
+  const [sertifikat, setSertifikat] = useState([]);
   const [selectedProdi, setSelectedProdi] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedSertifikat, setSelectedSertifikat] = useState(null);
@@ -163,10 +163,10 @@ const SertifikatList = () => {
   return (
     <div className="container box">
       <div className="hero is-primary is-bold box">
-        <h1 className="title mt-2">
+        <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">
           Kelola Daftar Arsip Sertifikat Uji Kompetensi
         </h1>
-        <h2 className="subtitle">
+        <h2 className="subtitle is-family-sans-serif is-capitalized has-text-dark has-text-centered has-text-weight-light">
           Daftar data arsip sertifikat uji kompetensi siswa
         </h2>
       </div>

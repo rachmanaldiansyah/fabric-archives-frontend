@@ -100,9 +100,11 @@ const SertifikatCreate = () => {
   return (
     <div className="container box">
       <div className="hero is-primary is-bold box">
-        <h1 className="title mt-2">Kelola Arsip Sertifikat Uji Kompetensi</h1>
-        <h2 className="subtitle">
-          Mengarsipkan data sertifikat ujikom siswa
+        <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">
+          Kelola Daftar Arsip Sertifikat Uji Kompetensi
+        </h1>
+        <h2 className="subtitle is-family-sans-serif is-capitalized has-text-dark has-text-centered has-text-weight-light">
+          Mengarsipkan data sertifikat uji kompetensi siswa
         </h2>
       </div>
 

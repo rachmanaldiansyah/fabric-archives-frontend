@@ -98,8 +98,12 @@ const UsersEdit = () => {
   return (
     <div className="container box">
       <div className="hero is-primary is-bold box">
-        <h1 className="title mt-2">Kelola Data Pengguna</h1>
-        <h2 className="subtitle">Mengubah data pengguna</h2>
+        <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">
+          Kelola Daftar Akun Pengguna
+        </h1>
+        <h2 className="subtitle is-family-sans-serif is-capitalized has-text-dark has-text-centered has-text-weight-light">
+          Mengubah data akun pengguna
+        </h2>
       </div>
 
       <div className="card is-shadowless">

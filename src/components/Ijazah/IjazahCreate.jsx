@@ -102,8 +102,12 @@ const IjazahCreate = () => {
   return (
     <div className="container box">
       <div className="hero is-primary is-bold box">
-        <h1 className="title mt-2">Kelola Arsip Ijazah Siswa</h1>
-        <h2 className="subtitle">Mengarsipkan data ijazah siswa</h2>
+        <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">
+          Kelola Daftar Arsip Ijazah Siswa
+        </h1>
+        <h2 className="subtitle is-family-sans-serif is-capitalized has-text-dark has-text-centered has-text-weight-light">
+          Mengarsipkan data ijazah siswa
+        </h2>
       </div>
 
       <div className="card is-shadowless">

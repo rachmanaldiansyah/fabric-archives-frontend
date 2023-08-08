@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import Modal from "../Modal";
 
 const SertifikatConfirm = () => {
-  const [sertifikat, setSertifikat] = useState([]);
   const { user } = useSelector((state) => state.auth);
+  const [sertifikat, setSertifikat] = useState([]);
   const [selectedProdi, setSelectedProdi] = useState("");
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedSertifikat, setSelectedSertifikat] = useState(null);
   const [token, setToken] = useState(null);
 
   useEffect(() => {
@@ -38,7 +36,10 @@ const SertifikatConfirm = () => {
   const confirmedSertifikat = filterConfirmedSertifikat();
 
   // Menggunakan data arsip yang statusnya telah dikonfirmasi sebagai data yang akan ditampilkan
-  const currentItems = confirmedSertifikat.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = confirmedSertifikat.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   // fungsi untuk meng-handle halaman
   const handlePageChange = (pageNumber) => {
@@ -63,15 +64,6 @@ const SertifikatConfirm = () => {
     }
   };
 
-  const openModal = (arsipSertifikat) => {
-    setSelectedSertifikat(arsipSertifikat);
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
   const handleProdiFilterChange = (event) => {
     setSelectedProdi(event.target.value);
   };
@@ -86,7 +78,7 @@ const SertifikatConfirm = () => {
         }
       );
       const token = enrollResponse.data.token;
-      console.log("Fetched token:", token);
+      // console.log("Fetched token:", token);
       setToken(token);
     } catch (error) {
       console.error("Failed to fetch token:", error);
@@ -116,18 +108,18 @@ const SertifikatConfirm = () => {
         { withCredentials: true }
       );
 
+      const { response } = createAssetResponse.data;
       Swal.fire({
         icon: "success",
         title: "Success",
-        text: "Data arsip sertifikat siswa berhasil disimpan ke blockchain!",
+        text: `${response}`,
       });
-
       console.log(createAssetResponse.data);
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Gagal mengarsipkan data sertifikat siswa ke blockchain!",
+        text: "Gagal mengarsipkan data sertifikat ke blockchain!",
       });
       console.error("Gagal mengarsipkan data ke blockchain:", error);
     }
@@ -140,11 +132,11 @@ const SertifikatConfirm = () => {
   return (
     <div className="container box">
       <div className="hero is-primary is-bold box">
-        <h1 className="title mt-2">
+        <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">
           Kelola Daftar Arsip Sertifikat Uji Kompetensi
         </h1>
-        <h2 className="subtitle">
-          Daftar data arsip sertifikat uji kompetensi siswa
+        <h2 className="subtitle is-family-sans-serif is-capitalized has-text-dark has-text-centered has-text-weight-light">
+          Daftar arsip sertifikat siswa yang telah di konfirmasi
         </h2>
       </div>
 
@@ -202,25 +194,13 @@ const SertifikatConfirm = () => {
                     <td>{sertifikat.jk}</td>
                     <td>{sertifikat.keahlian}</td>
                     <td>
-                      <button
+                      <Link
+                        to={`https://${sertifikat.arsip_sertifikat}.ipfs.w3s.link`}
+                        target="_blank"
                         className="button is-small is-primary is-fullwidth"
-                        onClick={() =>
-                          openModal(
-                            "https://" +
-                              sertifikat.arsip_sertifikat +
-                              ".ipfs.w3s.link"
-                          )
-                        }
                       >
                         Arsip Sertifikat
-                      </button>
-                      {modalIsOpen && (
-                        <Modal
-                          title="Arsip Sertifikat"
-                          content={selectedSertifikat}
-                          onClose={closeModal}
-                        />
-                      )}
+                      </Link>
                     </td>
                     {user && user.roles === "kepala sekolah" && (
                       <>

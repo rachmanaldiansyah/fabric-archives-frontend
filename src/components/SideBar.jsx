@@ -9,19 +9,24 @@ import {
   IoTrashBinOutline,
 } from "react-icons/io5";
 import { useSelector } from "react-redux";
-import "../styles/global.css";
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <aside className="menu">
+    <aside className="menu has-background-white">
       {user && (
-        <div className="user-profile">
-          <img src={user.profilePicture} alt="Avatar" className="user-avatar" />
-          <div className="user-info">
-            <p className="user-name">{user.nama}</p>
-            <p className="user-roles">{user.roles}</p>
+        <div className="menu has-background-white">
+          <div className="menu-list">
+            <p className="has-text-dark has-text-centered has-text-weight-bold is-uppercase is-underlined is-family-sans-serif">
+              Info Pengguna
+            </p>
+            <p className="has-text-dark has-text-centered has-text-weight-medium is-capitalized is-family-sans-serif mt-4">
+              {user.nama}
+            </p>
+            <p className="has-text-dark has-text-centered has-text-weight-light is-uppercase is-family-sans-serif mt-2">
+              {user.roles}
+            </p>
           </div>
         </div>
       )}

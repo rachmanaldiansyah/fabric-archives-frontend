@@ -22,7 +22,9 @@ const Verifikasi = () => {
     } catch (error) {
       console.error("Failed to verify asset:", error);
       setVerificationResult(null);
-      setVerificationError("Data arsip ijazah siswa tidak ditemukan, nomor ijazah yang dimasukan tidak valid."); // Set error message
+      setVerificationError(
+        "Data arsip ijazah siswa tidak ditemukan, nomor ijazah yang dimasukan tidak valid."
+      );
     }
   };
 
@@ -42,7 +44,9 @@ const Verifikasi = () => {
     } catch (error) {
       console.error("Failed to verify asset:", error);
       setVerificationResult(null);
-      setVerificationError("Data arsip sertifikat siswa tidak ditemukan, nomor sertifikat yang dimasukan tidak valid.");
+      setVerificationError(
+        "Data arsip sertifikat siswa tidak ditemukan, nomor sertifikat yang dimasukan tidak valid."
+      );
     }
   };
 

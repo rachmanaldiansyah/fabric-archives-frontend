@@ -81,9 +81,16 @@ const UsersCreate = () => {
   return (
     <div>
       <div className="card is-shadowless">
+        <div className="hero is-primary is-bold box">
+          <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">
+            Kelola Daftar Akun Pengguna
+          </h1>
+          <h2 className="subtitle is-family-sans-serif is-capitalized has-text-dark has-text-centered has-text-weight-light">
+            Menambah akun pengguna sistem
+          </h2>
+        </div>
+
         <div className="card-content">
-          <h1 className="title">Kelola Data Pengguna</h1>
-          <h2 className="subtitle">Menambahkan data pengguna baru</h2>
           <div className="content">
             <form onSubmit={SaveUsers}>
               <p className="has-text-centered">{msg}</p>
