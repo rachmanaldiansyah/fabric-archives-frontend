@@ -60,7 +60,9 @@ const SertifikatEdit = () => {
       duration: 3000,
       gravity: "bottom",
       position: "right",
-      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+      style: {
+        background: "linear-gradient(to right, #00b09b, #96c93d)",
+      }
     }).showToast();
 
     Swal.fire({
@@ -78,7 +80,9 @@ const SertifikatEdit = () => {
       duration: 3000,
       gravity: "bottom",
       position: "right",
-      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+      style: {
+        background: "linear-gradient(to right, #ff0000, #940000)",
+      }
     }).showToast();
 
     Swal.fire({

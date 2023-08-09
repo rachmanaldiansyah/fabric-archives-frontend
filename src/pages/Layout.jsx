@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/SideBar";
+import Footer from "../components/Footer";
 
 const Layout = ({ children }) => {
   return (
@@ -15,13 +16,14 @@ const Layout = ({ children }) => {
               </div>
             </div>
             <div className="column is-9-desktop">
-              <div className="content mt-6">
+              <div className="content mt-6 mb-4">
                 <main>{children}</main>
               </div>
             </div>
           </div>
         </div>
       </section>
+      <Footer />
     </React.Fragment>
   );
 };

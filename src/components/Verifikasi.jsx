@@ -28,6 +28,12 @@ const Verifikasi = () => {
     }
   };
 
+  const handleHashInputChange = (e) => {
+    const inputValue = e.target.value;
+    const sanitizedValue = inputValue.replace(/\s/g, "");
+    setHashValue(sanitizedValue);
+  };
+
   const verifyArsipSertifikat = async () => {
     try {
       const verifyAsset = {
@@ -68,7 +74,7 @@ const Verifikasi = () => {
                     type="text"
                     placeholder="Masukkan nomor ijazah atau sertifikat siswa"
                     value={hashValue}
-                    onChange={(e) => setHashValue(e.target.value)}
+                    onChange={handleHashInputChange}
                   />
                 </div>
                 <div className="control">

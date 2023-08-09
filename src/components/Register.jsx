@@ -21,7 +21,9 @@ const Register = () => {
       duration: 3000,
       gravity: "bottom",
       position: "right",
-      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+      style: {
+        background: "linear-gradient(to right, #00b09b, #96c93d)",
+      }
     }).showToast();
   };
 
@@ -31,7 +33,9 @@ const Register = () => {
       duration: 3000,
       gravity: "bottom",
       position: "right",
-      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+      style: {
+        background: "linear-gradient(to right, #ff0000, #940000)",
+      }
     }).showToast();
   };
 
@@ -169,7 +173,7 @@ const Register = () => {
                         <option value="" disabled>
                           Pilih Hak Akses
                         </option>
-                        <option value="admin">Admin</option>
+                        <option value="admin">Staff Tata Usaha</option>
                         <option value="kepala sekolah">Kepala Sekolah</option>
                         <option value="kesiswaan">Kesiswaan</option>
                         <option value="mitra">Mitra</option>

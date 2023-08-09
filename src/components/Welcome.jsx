@@ -100,15 +100,15 @@ const Welcome = () => {
       <section className="hero is-primary is-bold box">
         <div className="hero-body">
           <div className="container">
-            <h1 className="title">Dashboard</h1>
-            <h2 className="subtitle">
-              Selamat Datang, <strong>{user && user.nama}!</strong>
+            <h1 className="title is-family-sans-serif is-capitalized has-text-weight-semibold">Dashboard</h1>
+            <h2 className="subtitle is-family-sans-serif is-capitalized has-text-dark has-text-weight-light">
+              Selamat Datang, <strong className="has-text-dark has-text-weight-semibold">{user && user.nama}!</strong>
             </h2>
           </div>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section pt-4">
         <div className="columns is-centered is-multiline">
           {user && user.roles === "admin" && (
             <>
@@ -168,14 +168,14 @@ const Welcome = () => {
 
         {user && user.roles === "admin" && (
           <>
-            <h2 className="subtitle">Data Ijazah yang Telah Dikonfirmasi</h2>
+            <h2 className="subtitle is-family-sans-serif is-capitalized is-underlined has-text-centered has-text-dark has-text-weight-light">Data Ijazah yang Telah Dikonfirmasi</h2>
             <div className="columns is-multiline">
               {confirmedIjazah.slice(startIndex, endIndex).map((ijazahItem) => (
                 <div
                   key={ijazahItem.id}
                   className="column is-6-tablet is-4-desktop"
                 >
-                  <div className="notification box">
+                  <div className="notification hero box is-warning">
                     <p className="has-text-dark">
                       Nama Siswa: <strong>{ijazahItem.nama}</strong>
                     </p>
@@ -186,7 +186,7 @@ const Welcome = () => {
                 </div>
               ))}
             </div>
-            <h2 className="subtitle">
+            <h2 className="subtitle is-family-sans-serif is-capitalized is-underlined has-text-centered has-text-dark has-text-weight-light">
               Data Sertifikat yang Telah Dikonfirmasi
             </h2>
             <div className="columns is-multiline">
@@ -197,7 +197,7 @@ const Welcome = () => {
                     key={sertifikatItem.id}
                     className="column is-6-tablet is-4-desktop"
                   >
-                    <div className="notification box">
+                    <div className="notification hero box is-warning">
                       <p className="has-text-dark">
                         Nama Siswa: <strong>{sertifikatItem.nama}</strong>
                       </p>
@@ -213,14 +213,14 @@ const Welcome = () => {
         )}
         {user && user.roles === "kepala sekolah" && (
           <>
-            <h2 className="subtitle">Data Ijazah yang Telah Dikonfirmasi</h2>
+            <h2 className="subtitle is-family-sans-serif is-capitalized is-underlined has-text-centered has-text-dark has-text-weight-light">Data Ijazah yang Telah Dikonfirmasi</h2>
             <div className="columns is-multiline">
               {confirmedIjazah.slice(startIndex, endIndex).map((ijazahItem) => (
                 <div
                   key={ijazahItem.id}
                   className="column is-6-tablet is-4-desktop"
                 >
-                  <div className="notification box">
+                  <div className="notification box hero box is-warning">
                     <p className="has-text-dark">
                       Nama Siswa: <strong>{ijazahItem.nama}</strong>
                     </p>
@@ -231,7 +231,7 @@ const Welcome = () => {
                 </div>
               ))}
             </div>
-            <h2 className="subtitle">
+            <h2 className="subtitle is-family-sans-serif is-capitalized is-underlined has-text-centered has-text-dark has-text-weight-light">
               Data Sertifikat yang Telah Dikonfirmasi
             </h2>
             <div className="columns is-multiline">
@@ -242,7 +242,7 @@ const Welcome = () => {
                     key={sertifikatItem.id}
                     className="column is-6-tablet is-4-desktop"
                   >
-                    <div className="notification box">
+                    <div className="notification box hero box is-warning">
                       <p className="has-text-dark">
                         Nama Siswa: <strong>{sertifikatItem.nama}</strong>
                       </p>
@@ -258,14 +258,14 @@ const Welcome = () => {
         )}
         {user && user.roles === "kesiswaan" && (
           <>
-            <h2 className="subtitle">Data Ijazah yang Telah Dikonfirmasi</h2>
+            <h2 className="subtitle is-family-sans-serif is-capitalized is-underlined has-text-centered has-text-dark has-text-weight-light">Data Ijazah yang Telah Dikonfirmasi</h2>
             <div className="columns is-multiline">
               {confirmedIjazah.slice(startIndex, endIndex).map((ijazahItem) => (
                 <div
                   key={ijazahItem.id}
                   className="column is-6-tablet is-4-desktop"
                 >
-                  <div className="notification box">
+                  <div className="notification box hero box is-warning ">
                     <p className="has-text-dark">
                       Nama Siswa: <strong>{ijazahItem.nama}</strong>
                     </p>
@@ -280,7 +280,7 @@ const Welcome = () => {
         )}
         {user && user.roles === "mitra" && (
           <>
-            <h2 className="subtitle">
+            <h2 className="subtitle is-family-sans-serif is-capitalized is-underlined has-text-centered has-text-dark has-text-weight-light">
               Data Sertifikat yang Telah Dikonfirmasi
             </h2>
             <div className="columns is-multiline">
@@ -291,7 +291,7 @@ const Welcome = () => {
                     key={sertifikatItem.id}
                     className="column is-6-tablet is-4-desktop"
                   >
-                    <div className="notification box">
+                    <div className="notification box hero box is-warning ">
                       <p className="has-text-dark">
                         Nama Siswa: <strong>{sertifikatItem.nama}</strong>
                       </p>
