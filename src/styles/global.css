@@ -1,14 +1,39 @@
+/* Import font Google */
 @import url("https://fonts.googleapis.com/css2?family=Coming+Soon&family=Open+Sans:wght@300;400;500;600;700&display=swap");
 
+/* Set font family for the entire body */
 body {
   font-family: "Open Sans", sans-serif;
 }
 
-.table-container {
-  overflow: auto;
+/* Style to control the appearance of the dropdown button */
+.has-dropdown-icon .dropdown-icon {
+  transition: transform 0.2s ease-in-out;
 }
 
-.menu {
-  padding: 20px;
-  background-color: #f5f5f5;
+/* Style for the dropdown button when it's open */
+.has-dropdown-icon.active .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+/* Style for the dropdown when it's open */
+.menu-list.is-active {
+  display: block;
+}
+
+/* Style for submenu */
+.submenu-list {
+  display: none; /* Initially hide the submenu */
+  padding-left: 1rem; /* Adjust padding as needed */
+}
+
+/* Style for submenu when it's open */
+.menu-list.is-active .submenu-list {
+  display: block;
+}
+
+/* Gaya untuk menu yang aktif */
+.active-menu {
+  background-color: #f0f0f0; /* Ganti dengan warna latar belakang yang Anda inginkan */
+  color: #333; /* Ganti dengan warna teks yang kontras dengan latar belakang */
 }

@@ -7,6 +7,8 @@ import {
   IoLibraryOutline,
   IoPeopleOutline,
   IoTrashBinOutline,
+  IoRibbonOutline,
+  IoSchoolOutline,
 } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -145,7 +147,11 @@ const Sidebar = () => {
       <p className="menu-label mt-4 has-text-dark">General</p>
       <ul className="menu-list">
         <li>
-          <NavLink to={"/dashboard"}>
+          <NavLink
+            to={"/dashboard"}
+            activeClassName="active-menu"
+            onClick={() => handleButtonClick("dashboard")}
+          >
             <span className="icon is-small">
               <IoGridOutline />
             </span>
@@ -154,7 +160,11 @@ const Sidebar = () => {
         </li>
         {user && user.roles === "admin" && (
           <li>
-            <NavLink to={"/ijazah"}>
+            <NavLink
+              to={"/ijazah"}
+              activeClassName="active-menu"
+              onClick={() => handleButtonClick("daftar-ijazah")}
+            >
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -164,7 +174,11 @@ const Sidebar = () => {
         )}
         {user && user.roles === "kepala sekolah" && (
           <li>
-            <NavLink to={"/ijazah/confirm"}>
+            <NavLink
+              to={"/ijazah/confirm"}
+              activeClassName="active-menu"
+              onClick={() => handleButtonClick("daftar-ijazah")}
+            >
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -174,7 +188,11 @@ const Sidebar = () => {
         )}
         {user && user.roles === "kesiswaan" && (
           <li>
-            <NavLink to={"/ijazah/confirm"}>
+            <NavLink
+              to={"/ijazah/confirm"}
+              activeClassName="active-menu"
+              onClick={() => handleButtonClick("daftar-ijazah")}
+            >
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -184,7 +202,11 @@ const Sidebar = () => {
         )}
         {user && user.roles === "admin" && (
           <li>
-            <NavLink to={"/sertifikat"}>
+            <NavLink
+              to={"/sertifikat"}
+              activeClassName="active-menu"
+              onClick={() => handleButtonClick("daftar-sertifikat")}
+            >
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -194,7 +216,11 @@ const Sidebar = () => {
         )}
         {user && user.roles === "kepala sekolah" && (
           <li>
-            <NavLink to={"/sertifikat/confirm"}>
+            <NavLink
+              to={"/sertifikat/confirm"}
+              activeClassName="active-menu"
+              onClick={() => handleButtonClick("daftar-sertifikat")}
+            >
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -204,7 +230,11 @@ const Sidebar = () => {
         )}
         {user && user.roles === "mitra" && (
           <li>
-            <NavLink to={"/sertifikat/confirm"}>
+            <NavLink
+              to={"/sertifikat/confirm"}
+              activeClassName="active-menu"
+              onClick={() => handleButtonClick("daftar-sertifikat")}
+            >
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -218,7 +248,11 @@ const Sidebar = () => {
           <p className="menu-label mt-2 has-text-dark">Admin</p>
           <ul className="menu-list">
             <li>
-              <NavLink to={"/users"}>
+              <NavLink
+                to={"/users"}
+                activeClassName="active-menu"
+                onClick={() => handleButtonClick("kelola-pengguna")}
+              >
                 <span className="icon is-small">
                   <IoPeopleOutline />
                 </span>
@@ -226,23 +260,61 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to={"/ijazah/arsipkan"}>
+              <a
+                className={`has-dropdown-icon ${
+                  isDropdownOpen1 ? "active" : ""
+                }`}
+                onClick={toggleDropdown1}
+              >
                 <span className="icon is-small">
                   <IoFileTrayFullOutline />
                 </span>
-                <span className="ml-1">Arsipkan Ijazah</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to={"/sertifikat/arsipkan"}>
-                <span className="icon is-small">
-                  <IoFileTrayFullOutline />
+                <span className="ml-1">Kelola Pengarsipan</span>
+                <span className="icon is-small ml-1">
+                  <i
+                    className={`dropdown-icon ${
+                      isDropdownOpen1 ? "rotate-up" : ""
+                    }`}
+                  >
+                    &#9662;
+                  </i>
                 </span>
-                <span className="ml-1">Arsipkan Sertifikat</span>
-              </NavLink>
+              </a>
+              <ul
+                className={`menu-list ${
+                  isDropdownOpen1 ? "is-active" : ""
+                }`}
+              >
+                <li
+                  className={`submenu-list ${
+                    isSubmenuOpen1 ? "is-active" : ""
+                  }`}
+                  onClick={toggleSubmenu1}
+                >
+                  <NavLink
+                    to={"/ijazah/arsipkan"}
+                    activeClassName="active-menu"
+                  >
+                    <IoSchoolOutline /> Arsip Ijazah
+                  </NavLink>
+                </li>
+                <li
+                  className={`submenu-list ${
+                    isSubmenuOpen1 ? "is-active" : ""
+                  }`}
+                  onClick={toggleSubmenu1}
+                >
+                  <NavLink
+                    to={"/sertifikat/arsipkan"}
+                    activeClassName="active-menu"
+                  >
+                    <IoRibbonOutline /> Arsip Sertifikat
+                  </NavLink>
+                </li>
+              </ul>
             </li>
             <li>
-              <NavLink to={"/ijazah/rejected"}>
+              <NavLink>
                 <span className="icon is-small">
                   <IoTrashBinOutline />
                 </span>
@@ -275,7 +347,11 @@ const Sidebar = () => {
           <p className="menu-label has-text-dark">Kepala Sekolah</p>
           <ul className="menu-list">
             <li>
-              <NavLink to={`/ijazah`}>
+              <NavLink
+                to={`/ijazah`}
+                activeClassName="active-menu"
+                onClick={() => handleButtonClick("konfirmasi-ijazah")}
+              >
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
@@ -288,7 +364,11 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to={`/sertifikat`}>
+              <NavLink
+                to={`/sertifikat`}
+                activeClassName="active-menu"
+                onClick={() => handleButtonClick("konfirmasi-sertifikat")}
+              >
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
@@ -308,7 +388,11 @@ const Sidebar = () => {
           <p className="menu-label has-text-dark">Kesiswaan</p>
           <ul className="menu-list">
             <li>
-              <NavLink to={"/ijazah"}>
+              <NavLink
+                to={"/ijazah"}
+                activeClassName="active-menu"
+                onClick={() => handleButtonClick("konfirmasi-ijazah")}
+              >
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
@@ -328,7 +412,11 @@ const Sidebar = () => {
           <p className="menu-label has-text-dark">Mitra Sertifikasi</p>
           <ul className="menu-list">
             <li>
-              <NavLink to={"/sertifikat"}>
+              <NavLink
+                to={"/sertifikat"}
+                activeClassName="active-menu"
+                onClick={() => handleButtonClick("konfirmasi-sertifikat")}
+              >
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
