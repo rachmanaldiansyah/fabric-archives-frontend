@@ -121,11 +121,11 @@ const Sidebar = () => {
 
   const countIjazahPending = () => {
     return ijazahPending.length;
-  }
+  };
 
   const countSertifikatPending = () => {
     return sertifikatPending.length;
-  }
+  };
 
   return (
     <aside className="menu has-background-white">
@@ -147,11 +147,7 @@ const Sidebar = () => {
       <p className="menu-label mt-4 has-text-dark">General</p>
       <ul className="menu-list">
         <li>
-          <NavLink
-            to={"/dashboard"}
-            activeClassName="active-menu"
-            onClick={() => handleButtonClick("dashboard")}
-          >
+          <NavLink to={"/dashboard"}>
             <span className="icon is-small">
               <IoGridOutline />
             </span>
@@ -160,11 +156,7 @@ const Sidebar = () => {
         </li>
         {user && user.roles === "admin" && (
           <li>
-            <NavLink
-              to={"/ijazah"}
-              activeClassName="active-menu"
-              onClick={() => handleButtonClick("daftar-ijazah")}
-            >
+            <NavLink to={"/ijazah"}>
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -174,11 +166,7 @@ const Sidebar = () => {
         )}
         {user && user.roles === "kepala sekolah" && (
           <li>
-            <NavLink
-              to={"/ijazah/confirm"}
-              activeClassName="active-menu"
-              onClick={() => handleButtonClick("daftar-ijazah")}
-            >
+            <NavLink to={"/ijazah/confirm"}>
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -188,11 +176,7 @@ const Sidebar = () => {
         )}
         {user && user.roles === "kesiswaan" && (
           <li>
-            <NavLink
-              to={"/ijazah/confirm"}
-              activeClassName="active-menu"
-              onClick={() => handleButtonClick("daftar-ijazah")}
-            >
+            <NavLink to={"/ijazah/confirm"}>
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -202,11 +186,7 @@ const Sidebar = () => {
         )}
         {user && user.roles === "admin" && (
           <li>
-            <NavLink
-              to={"/sertifikat"}
-              activeClassName="active-menu"
-              onClick={() => handleButtonClick("daftar-sertifikat")}
-            >
+            <NavLink to={"/sertifikat"}>
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -216,11 +196,7 @@ const Sidebar = () => {
         )}
         {user && user.roles === "kepala sekolah" && (
           <li>
-            <NavLink
-              to={"/sertifikat/confirm"}
-              activeClassName="active-menu"
-              onClick={() => handleButtonClick("daftar-sertifikat")}
-            >
+            <NavLink to={"/sertifikat/confirm"}>
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -230,11 +206,7 @@ const Sidebar = () => {
         )}
         {user && user.roles === "mitra" && (
           <li>
-            <NavLink
-              to={"/sertifikat/confirm"}
-              activeClassName="active-menu"
-              onClick={() => handleButtonClick("daftar-sertifikat")}
-            >
+            <NavLink to={"/sertifikat/confirm"}>
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -248,11 +220,7 @@ const Sidebar = () => {
           <p className="menu-label mt-2 has-text-dark">Admin</p>
           <ul className="menu-list">
             <li>
-              <NavLink
-                to={"/users"}
-                activeClassName="active-menu"
-                onClick={() => handleButtonClick("kelola-pengguna")}
-              >
+              <NavLink to={"/users"}>
                 <span className="icon is-small">
                   <IoPeopleOutline />
                 </span>
@@ -270,27 +238,10 @@ const Sidebar = () => {
                   <IoFileTrayFullOutline />
                 </span>
                 <span className="ml-1">Kelola Pengarsipan</span>
-                <span className="icon is-small ml-1">
-                  <i
-                    className={`dropdown-icon ${
-                      isDropdownOpen1 ? "rotate-up" : ""
-                    }`}
-                  >
-                    &#9662;
-                  </i>
-                </span>
+                <span className="icon is-small ml-1"></span>
               </a>
-              <ul
-                className={`menu-list ${
-                  isDropdownOpen1 ? "is-active" : ""
-                }`}
-              >
-                <li
-                  className={`submenu-list ${
-                    isSubmenuOpen1 ? "is-active" : ""
-                  }`}
-                  onClick={toggleSubmenu1}
-                >
+              <ul>
+                <li>
                   <NavLink
                     to={"/ijazah/arsipkan"}
                     activeClassName="active-menu"
@@ -298,12 +249,7 @@ const Sidebar = () => {
                     <IoSchoolOutline /> Arsip Ijazah
                   </NavLink>
                 </li>
-                <li
-                  className={`submenu-list ${
-                    isSubmenuOpen1 ? "is-active" : ""
-                  }`}
-                  onClick={toggleSubmenu1}
-                >
+                <li>
                   <NavLink
                     to={"/sertifikat/arsipkan"}
                     activeClassName="active-menu"
@@ -314,7 +260,7 @@ const Sidebar = () => {
               </ul>
             </li>
             <li>
-              <NavLink>
+              <NavLink to={"/ijazah/rejected"}>
                 <span className="icon is-small">
                   <IoTrashBinOutline />
                 </span>
@@ -347,11 +293,7 @@ const Sidebar = () => {
           <p className="menu-label has-text-dark">Kepala Sekolah</p>
           <ul className="menu-list">
             <li>
-              <NavLink
-                to={`/ijazah`}
-                activeClassName="active-menu"
-                onClick={() => handleButtonClick("konfirmasi-ijazah")}
-              >
+              <NavLink to={`/ijazah`}>
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
@@ -364,11 +306,7 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink
-                to={`/sertifikat`}
-                activeClassName="active-menu"
-                onClick={() => handleButtonClick("konfirmasi-sertifikat")}
-              >
+              <NavLink to={`/sertifikat`}>
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
@@ -388,11 +326,7 @@ const Sidebar = () => {
           <p className="menu-label has-text-dark">Kesiswaan</p>
           <ul className="menu-list">
             <li>
-              <NavLink
-                to={"/ijazah"}
-                activeClassName="active-menu"
-                onClick={() => handleButtonClick("konfirmasi-ijazah")}
-              >
+              <NavLink to={"/ijazah"}>
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
@@ -412,11 +346,7 @@ const Sidebar = () => {
           <p className="menu-label has-text-dark">Mitra Sertifikasi</p>
           <ul className="menu-list">
             <li>
-              <NavLink
-                to={"/sertifikat"}
-                activeClassName="active-menu"
-                onClick={() => handleButtonClick("konfirmasi-sertifikat")}
-              >
+              <NavLink to={"/sertifikat"}>
                 <span className="icon is-small">
                   <IoCheckmarkCircleOutline />
                 </span>
