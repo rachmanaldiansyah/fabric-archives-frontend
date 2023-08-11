@@ -15,6 +15,7 @@ import SertifikatFormCreate from "./pages/sertifikat/SertifikatFormCreate";
 import SertifikatFormEdit from "./pages/sertifikat/SertifikatFormEdit";
 import SertifikatFormRejected from "./pages/sertifikat/SertifikatFormRejected";
 import Verifikasi from "./components/Verifikasi";
+import IjazahFormDetail from "./pages/ijazah/IjazahFormDetail";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/ijazah/edit/:id" element={<IjazahFormEdit />} />
           <Route path="/ijazah/confirm" element={<IjazahFormConfirm />} />
           <Route path="/ijazah/rejected" element={<IjazahFormRejected />} />
+          <Route path="/ijazah/detail/:id" element={<IjazahFormDetail />} />
           <Route path="/sertifikat" element={<Sertifikat />} />
           <Route path="/sertifikat/arsipkan" element={<SertifikatFormCreate />} />
           <Route path="/sertifikat/edit/:id" element={<SertifikatFormEdit />} />

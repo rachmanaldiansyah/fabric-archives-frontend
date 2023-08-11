@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Modal from "../Modal";
 import Swal from "sweetalert2";
 import {
   IoTrashOutline,
@@ -12,11 +11,9 @@ import {
 } from "react-icons/io5";
 
 const IjazahList = () => {
-  const [ijazah, setIjazah] = useState([]);
   const { user } = useSelector((state) => state.auth);
+  const [ijazah, setIjazah] = useState([]);
   const [selectedProdi, setSelectedProdi] = useState("");
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedIjazah, setSelectedIjazah] = useState(null);
   const [confirmedIjazah, setConfirmedIjazah] = useState([]);
 
   useEffect(() => {
@@ -129,7 +126,7 @@ const IjazahList = () => {
       ]);
       Swal.fire(
         "Ditolak!",
-        "Data Arsip Ijazah Telah Ditolak oleh Kepala Sekolah.",
+        "Data Arsip Ijazah Telah Ditolak oleh Kesiswaan.",
         "success"
       );
     } catch (error) {
@@ -146,15 +143,6 @@ const IjazahList = () => {
     } else {
       return "Pending";
     }
-  };
-
-  const openModal = (arsipIjazah) => {
-    setSelectedIjazah(arsipIjazah);
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
   };
 
   const handleProdiFilterChange = (event) => {
@@ -218,10 +206,12 @@ const IjazahList = () => {
             {currentItems.map(
               (ijazah, index) =>
                 (!selectedProdi || selectedProdi === ijazah.prodi) &&
-                ((user.roles === "admin") ||
+                (user.roles === "admin" ||
                   (user.roles === "kepala sekolah" &&
-                    getStatus(ijazah) === "Dikonfirmasi") ||
-                  (user.roles === "kesiswaan" && getStatus(ijazah) === "Pending")) && (
+                    !isIjazahConfirmed(ijazah.uuid) &&
+                    ijazah.konfirmasi_kesiswaan === "Dikonfirmasi") ||
+                  (user.roles === "kesiswaan" &&
+                    getStatus(ijazah) === "Pending")) && (
                   <tr key={ijazah.uuid}>
                     <td>{index + 1}</td>
                     <td>{ijazah.no_ijazah}</td>
@@ -232,23 +222,13 @@ const IjazahList = () => {
                     <td>{ijazah.nama_orangtua}</td>
                     <td>{ijazah.prodi}</td>
                     <td>
-                      <button
-                        className="button is-small is-fullwidth is-primary mt-1"
-                        onClick={() =>
-                          openModal(
-                            "https://" + ijazah.arsip_ijazah + ".ipfs.w3s.link"
-                          )
-                        }
+                      <Link
+                        to={`https://${ijazah.arsip_ijazah}.ipfs.w3s.link`}
+                        target="_blank"
+                        className="button is-small is-primary is-fullwidth mt-1"
                       >
                         Arsip Ijazah
-                      </button>
-                      {modalIsOpen && (
-                        <Modal
-                          title="Arsip Ijazah"
-                          content={selectedIjazah}
-                          onClose={closeModal}
-                        />
-                      )}
+                      </Link>
                     </td>
                     {user && user.roles === "admin" && (
                       <>

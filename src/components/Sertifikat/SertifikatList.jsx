@@ -207,7 +207,12 @@ const SertifikatList = () => {
           <tbody>
             {currentItems.map(
               (sertifikat, index) =>
-                (!selectedProdi || selectedProdi === sertifikat.keahlian) && (
+                (!selectedProdi || selectedProdi === sertifikat.keahlian) &&
+                (user.roles === "admin" ||
+                  (user.roles === "kepala sekolah" &&
+                    !isSertifikatConfirmed(sertifikat.uuid)) ||
+                  (user.roles === "mitra" &&
+                    getStatus(sertifikat) === "Pending")) && (
                   <tr key={sertifikat.uuid}>
                     <td>{index + 1}</td>
                     <td>{sertifikat.no_sertifikat}</td>

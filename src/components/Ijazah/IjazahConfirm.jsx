@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import axios from "axios";
 import Swal from "sweetalert2";
-import Modal from "../Modal";
 
 const IjazahConfirm = () => {
   const { user } = useSelector((state) => state.auth);
   const [ijazah, setIjazah] = useState([]);
   const [selectedProdi, setSelectedProdi] = useState("");
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedIjazah, setSelectedIjazah] = useState(null);
   const [token, setToken] = useState(null);
 
   useEffect(() => {
@@ -61,17 +59,6 @@ const IjazahConfirm = () => {
     } else {
       return "Pending";
     }
-  };
-
-  // fungsi untuk membuka modal
-  const openModal = (arsipIjazah) => {
-    setSelectedIjazah(arsipIjazah);
-    setModalIsOpen(true);
-  };
-
-  // fungsi untuk menutup modal
-  const closeModal = () => {
-    setModalIsOpen(false);
   };
 
   // fungsi untuk melakukan filter prodi
@@ -212,23 +199,13 @@ const IjazahConfirm = () => {
                     <td>{ijazah.jk}</td>
                     <td>{ijazah.prodi}</td>
                     <td>
-                      <button
-                        className="button is-small is-fullwidth is-primary"
-                        onClick={() =>
-                          openModal(
-                            "https://" + ijazah.arsip_ijazah + ".ipfs.w3s.link"
-                          )
-                        }
+                      <Link
+                        to={`https://${ijazah.arsip_ijazah}.ipfs.w3s.link`}
+                        target="_blank"
+                        className="button is-small is-primary is-fullwidth"
                       >
                         Arsip Ijazah
-                      </button>
-                      {modalIsOpen && (
-                        <Modal
-                          title="Arsip Ijazah"
-                          content={selectedIjazah}
-                          onClose={closeModal}
-                        />
-                      )}
+                      </Link>
                     </td>
                     {user && user.roles === "kepala sekolah" && (
                       <>
@@ -263,7 +240,7 @@ const IjazahConfirm = () => {
                         <td>
                           <button
                             onClick={() => handleUpload(ijazah.uuid)}
-                            className="button is-small is-info is-fullwidth"
+                            className="button is-small is-warning is-fullwidth"
                           >
                             <IoCloudUploadOutline />
                           </button>

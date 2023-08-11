@@ -1,99 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Web3Storage } from "web3.storage";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 
-const SertifikatCreate = () => {
-  const [no_sertifikat, setNoSertifikat] = useState("");
+const IjazahDetail = () => {
+  const [no_ijazah, setNoIjazah] = useState("");
+  const [nisn, setNisn] = useState("");
   const [nis, setNis] = useState("");
   const [nama, setNama] = useState("");
   const [jk, setJk] = useState("");
-  const [keahlian, setKeahlian] = useState("");
-  const [arsip_sertifikat, setArsipSertifikat] = useState("");
-  const [msg] = useState("");
+  const [nama_orangtua, setNamaOrangtua] = useState("");
+  const [prodi, setProdi] = useState("");
+  const [arsip_ijazah, setArsipIjazah] = useState("");
+  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const uploadToIPFS = async (file) => {
-    const apiKey =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGUwOUJDQjZBYjAxRDQzMzlEMjY3MjVDRDcyQWFjMUEyYzUyRWJiOTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODQyNzc5OTU2NjgsIm5hbWUiOiJ0ZXN0aW5nIn0.gCHtwTQvqHYInM4qXKyhOtextW-fxkJlqYSR8NUfqyE";
-    const storage = new Web3Storage({ token: apiKey });
-    const files = [new File([file], `Arsip Sertifikat ${nama}`)];
-
-    try {
-      const cid = await storage.put(files);
-      return cid;
-    } catch (error) {
-      console.error("Error uploading to IPFS:", error);
-      return null;
-    }
-  };
-
-  const showSuccessNotification = () => {
-    Toastify({
-      text: "Data arsip sertifikat siswa berhasil diarsipkakn!",
-      duration: 3000,
-      gravity: "bottom",
-      position: "right",
-      style: {
-        background: "linear-gradient(to right, #00b09b, #96c93d)",
+  useEffect(() => {
+    const getIjazahById = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/ijazah/${id}`);
+        const data = response.data;
+        setNoIjazah(data.no_ijazah);
+        setNisn(data.nisn);
+        setNis(data.nis);
+        setNama(data.nama);
+        setJk(data.jk);
+        setNamaOrangtua(data.nama_orangtua);
+        setProdi(data.prodi);
+        setArsipIjazah(data.arsip_ijazah);
+      } catch (error) {
+        if (error.response) {
+          setMsg(error.data.msg);
+        }
       }
-    }).showToast();
+    };
+    getIjazahById();
+  }, [id]);
 
-    Swal.fire({
-      title: "Success",
-      icon: "success",
-      text: "Data arsip sertifikat uji kompetensi siswa berhasil diarsipkan!",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "OK",
-    });
-  };
-
-  const showErrorNotification = (errorMsg) => {
-    Toastify({
-      text: "Gagal saat mengarsipkan data sertifikat: " + errorMsg,
-      duration: 3000,
-      gravity: "bottom",
-      position: "right",
-      style: {
-        background: "linear-gradient(to right, #ff0000, #940000)",
-      }
-    }).showToast();
-
-    Swal.fire({
-      title: "Error",
-      icon: "error",
-      text: "Gagal saat mengarsipkan data sertifikat" + errorMsg,
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "OK",
-    });
-  };
-
-  const saveSertifikat = async (e) => {
+  const updateIjazah = async (e) => {
     e.preventDefault();
 
-    if (!arsip_sertifikat) {
-      showErrorNotification(
-        "File arsip sertifikat uji kompetensi belum dipilih."
-      );
-      return;
-    }
-
     try {
-      const cid = await uploadToIPFS(arsip_sertifikat);
-      await axios.post("http://localhost:5000/sertifikat", {
-        no_sertifikat: no_sertifikat,
+      await axios.patch(`http://localhost:5000/ijazah/${id}`, {
+        no_ijazah: no_ijazah,
+        nisn: nisn,
         nis: nis,
         nama: nama,
         jk: jk,
-        keahlian: keahlian,
-        arsip_sertifikat: cid,
+        nama_orangtua: nama_orangtua,
+        prodi: prodi,
+        arsip_ijazah: arsip_ijazah,
       });
       showSuccessNotification();
-      navigate("/sertifikat");
+      navigate("/ijazah");
     } catch (error) {
       if (error.response) {
         showErrorNotification(error.response.data.msg);
@@ -101,36 +64,84 @@ const SertifikatCreate = () => {
     }
   };
 
+  const showSuccessNotification = () => {
+    Toastify({
+      text: "Data arsip ijazah siswa berhasil dikonfirmasi!",
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Success",
+      icon: "success",
+      text: "Data arsip ijazah siswa berhasil dikonfirmasi!",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
+  const showErrorNotification = (errorMsg) => {
+    Toastify({
+      text: "Gagal saat meng-konfirmasi data arsip ijazah: " + errorMsg,
+      duration: 3000,
+      gravity: "bottom",
+      position: "right",
+      backgroundColor: "linear-gradient(to right, #ff0000, #940000)",
+    }).showToast();
+
+    Swal.fire({
+      title: "Error",
+      icon: "error",
+      text: "Gagal saat meng-konfirmasi data arsip ijazah: " + errorMsg,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
+    });
+  };
+
   return (
     <div className="container box">
       <div className="hero is-primary is-bold box">
         <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">
-          Kelola Daftar Arsip Sertifikat Uji Kompetensi
+          Kelola Daftar Arsip Ijazah Siswa
         </h1>
         <h2 className="subtitle is-family-sans-serif is-capitalized has-text-dark has-text-centered has-text-weight-light">
-          Mengarsipkan data sertifikat uji kompetensi siswa
+          Detail arsip ijazah siswa
         </h2>
       </div>
 
       <div className="card is-shadowless">
         <div className="card-content">
           <div className="content">
-            <form onSubmit={saveSertifikat}>
+            <form onSubmit={updateIjazah}>
               <p className="has-text-centered">{msg}</p>
               <div className="field">
-                <label className="label">No Sertifikat</label>
+                <label className="label">No Ijazah</label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
-                    value={no_sertifikat}
-                    onChange={(e) => setNoSertifikat(e.target.value)}
-                    placeholder="Isi nomor sertifikat siswa"
+                    value={no_ijazah}
+                    onChange={(e) => setNoIjazah(e.target.value)}
+                    placeholder="Isi nomor ijazah siswa"
                   />
                 </div>
               </div>
               <div className="field">
-                <label className="label">Nomor Induk</label>
+                <label className="label">NISN</label>
+                <div className="control">
+                  <input
+                    type="text"
+                    className="input"
+                    value={nisn}
+                    onChange={(e) => setNisn(e.target.value)}
+                    placeholder="Isi nomor siswa induk nasional"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Nomor Induk Siswa</label>
                 <div className="control">
                   <input
                     type="text"
@@ -168,15 +179,27 @@ const SertifikatCreate = () => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Keahlian Kompetensi</label>
+                <label className="label">Nama Orang Tua/Wali</label>
+                <div className="control">
+                  <input
+                    type="text"
+                    className="input"
+                    value={nama_orangtua}
+                    onChange={(e) => setNamaOrangtua(e.target.value)}
+                    placeholder="Isi nama lengkap orang tua siswa"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Program Keahlian</label>
                 <div className="control">
                   <div className="select is-fullwidth">
                     <select
-                      value={keahlian}
-                      onChange={(e) => setKeahlian(e.target.value)}
+                      value={prodi}
+                      onChange={(e) => setProdi(e.target.value)}
                     >
                       <option value="" selected disabled>
-                        Pilih Keahlian Kompetensi
+                        Pilih Program Keahlian
                       </option>
                       <option value="Teknik Komputer & Jaringan">
                         Teknik Komputer & Jaringan
@@ -188,22 +211,21 @@ const SertifikatCreate = () => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Arsip Sertifikat</label>
+                <label className="label">Arsip Ijazah</label>
                 <div className="control">
                   <input
+                    type="text"
                     className="input"
-                    type="file"
-                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                    name={arsip_sertifikat}
-                    onChange={(e) => setArsipSertifikat(e.target.files[0])}
-                    required
+                    value={arsip_ijazah}
+                    onChange={(e) => setArsipIjazah(e.target.value)}
+                    placeholder="Isi nama lengkap orang tua siswa"
                   />
                 </div>
               </div>
               <div className="field">
                 <div className="control">
-                  <button type="submit" className="button is-success">
-                    Arsipkan
+                  <button type="submit" className="button mt-4 is-primary">
+                    Konfirmasi Arsip
                   </button>
                 </div>
               </div>
@@ -215,4 +237,4 @@ const SertifikatCreate = () => {
   );
 };
 
-export default SertifikatCreate;
+export default IjazahDetail;

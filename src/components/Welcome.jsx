@@ -81,7 +81,7 @@ const Welcome = () => {
     return uniqueUUIDs.length;
   };
 
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
   const totalPages = Math.ceil(confirmedIjazah.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
