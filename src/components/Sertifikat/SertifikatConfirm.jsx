@@ -177,6 +177,11 @@ const SertifikatConfirm = () => {
               {user && user.roles === "mitra" && (
                 <>
                   <th>Status</th>
+                </>
+              )}
+              {user && user.roles === "kesiswaan" && (
+                <>
+                  <th>Status</th>
                   <th>Actions</th>
                 </>
               )}
@@ -217,6 +222,20 @@ const SertifikatConfirm = () => {
                       </>
                     )}
                     {user && user.roles === "mitra" && (
+                      <>
+                        {getStatus(sertifikat) === "Dikonfirmasi" && (
+                          <td className="tag is-small is-success is-fullwidth mt-2">
+                            {getStatus(sertifikat)}
+                          </td>
+                        )}
+                        {getStatus(sertifikat) === "Pending" && (
+                          <td className="tag is-small is-warning is-fullwidth mt-2">
+                            {getStatus(sertifikat)}
+                          </td>
+                        )}
+                      </>
+                    )}
+                    {user && user.roles === "kesiswaan" && (
                       <>
                         {getStatus(sertifikat) === "Dikonfirmasi" && (
                           <td className="tag is-small is-success is-fullwidth mt-2">

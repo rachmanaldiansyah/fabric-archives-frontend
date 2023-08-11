@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
         <div className="hero body">
           <div className="columns is-desktop">
             <div className="column is-3-desktop">
-              <div className="box mt-6">
+              <div className="box mt-6 mb-2">
                 <Sidebar />
               </div>
             </div>

@@ -131,7 +131,7 @@ const Sidebar = () => {
     <aside className="menu has-background-white">
       {user && (
         <div className="menu has-background-white">
-          <div className="menu-list">
+          <div className="menu-list pt-4 pb-4">
             <p className="has-text-dark has-text-centered has-text-weight-bold is-uppercase is-underlined is-family-sans-serif">
               Info Pengguna
             </p>
@@ -144,7 +144,9 @@ const Sidebar = () => {
           </div>
         </div>
       )}
-      <p className="menu-label mt-4 has-text-dark">General</p>
+      <p className="menu-label mt-4 has-text-weight-semibold has-text-dark">
+        General
+      </p>
       <ul className="menu-list">
         <li>
           <NavLink to={"/dashboard"}>
@@ -204,6 +206,16 @@ const Sidebar = () => {
             </NavLink>
           </li>
         )}
+        {user && user.roles === "kesiswaan" && (
+          <li>
+            <NavLink to={"/sertifikat/confirm"}>
+              <span className="icon is-small">
+                <IoLibraryOutline />
+              </span>
+              <span className="ml-1">Daftar Sertifikat</span>
+            </NavLink>
+          </li>
+        )}
         {user && user.roles === "mitra" && (
           <li>
             <NavLink to={"/sertifikat/confirm"}>
@@ -217,7 +229,9 @@ const Sidebar = () => {
       </ul>
       {user && user.roles === "admin" && (
         <div>
-          <p className="menu-label mt-2 has-text-dark">Admin</p>
+          <p className="menu-label mt-2 has-text-weight-semibold has-text-dark">
+            Admin
+          </p>
           <ul className="menu-list">
             <li>
               <NavLink to={"/users"}>
@@ -228,18 +242,11 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li>
-              <a
-                className={`has-dropdown-icon ${
-                  isDropdownOpen1 ? "active" : ""
-                }`}
-                onClick={toggleDropdown1}
-              >
-                <span className="icon is-small">
-                  <IoFileTrayFullOutline />
-                </span>
-                <span className="ml-1">Kelola Pengarsipan</span>
-                <span className="icon is-small ml-1"></span>
-              </a>
+              <span className="icon is-small ml-3 mt-2">
+                <IoFileTrayFullOutline />
+              </span>
+              <span className="ml-1">Kelola Pengarsipan</span>
+              <span className="icon is-small ml-1"></span>
               <ul>
                 <li>
                   <NavLink
@@ -260,37 +267,48 @@ const Sidebar = () => {
               </ul>
             </li>
             <li>
-              <NavLink to={"/ijazah/rejected"}>
-                <span className="icon is-small">
-                  <IoTrashBinOutline />
-                </span>
-                <span className="ml-1">Ijazah Ditolak</span>
-                {countRejectedIjazah() > 0 && (
-                  <span className="tag is-danger is-rounded ml-2">
-                    {countRejectedIjazah()}
-                  </span>
-                )}
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to={"/sertifikat/rejected"}>
-                <span className="icon is-small">
-                  <IoTrashBinOutline />
-                </span>
-                <span className="ml-1">Sertifikat Ditolak</span>
-                {countRejectedSertifikat() > 0 && (
-                  <span className="tag is-danger is-rounded ml-2">
-                    {countRejectedSertifikat()}
-                  </span>
-                )}
-              </NavLink>
+              <span className="icon is-small ml-3 mt-2">
+                <IoTrashBinOutline />
+              </span>
+              <span className="ml-1">Kelola Arsip Tertolak</span>
+              <span className="icon is-small ml-1"></span>
+              <ul>
+                <li>
+                  <NavLink to={"/ijazah/rejected"}>
+                    <span className="icon is-small">
+                      <IoSchoolOutline />
+                    </span>
+                    <span className="ml-1">Arsip Ijazah</span>
+                    {countRejectedIjazah() > 0 && (
+                      <span className="tag is-danger is-rounded ml-2">
+                        {countRejectedIjazah()}
+                      </span>
+                    )}
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to={"/sertifikat/rejected"}>
+                    <span className="icon is-small">
+                      <IoRibbonOutline />
+                    </span>
+                    <span className="ml-1">Arsip Sertifikat</span>
+                    {countRejectedSertifikat() > 0 && (
+                      <span className="tag is-danger is-rounded ml-2">
+                        {countRejectedSertifikat()}
+                      </span>
+                    )}
+                  </NavLink>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>
       )}
       {user && user.roles === "kepala sekolah" && (
         <div>
-          <p className="menu-label has-text-dark">Kepala Sekolah</p>
+          <p className="menu-label has-text-weight-semibold has-text-dark mt-2">
+            Kepala Sekolah
+          </p>
           <ul className="menu-list">
             <li>
               <NavLink to={`/ijazah`}>
@@ -323,7 +341,9 @@ const Sidebar = () => {
       )}
       {user && user.roles === "kesiswaan" && (
         <div>
-          <p className="menu-label has-text-dark">Kesiswaan</p>
+          <p className="menu-label has-text-weight-semibold has-text-dark mt-2">
+            Kesiswaan
+          </p>
           <ul className="menu-list">
             <li>
               <NavLink to={"/ijazah"}>
@@ -343,7 +363,9 @@ const Sidebar = () => {
       )}
       {user && user.roles === "mitra" && (
         <div>
-          <p className="menu-label has-text-dark">Mitra Sertifikasi</p>
+          <p className="menu-label has-text-weight-semibold has-text-dark mt-2">
+            Mitra Sertifikasi
+          </p>
           <ul className="menu-list">
             <li>
               <NavLink to={"/sertifikat"}>
