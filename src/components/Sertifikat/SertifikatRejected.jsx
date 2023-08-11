@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { IoTrashOutline } from "react-icons/io5";
 
 const SertifikatRejected = () => {
@@ -17,7 +16,7 @@ const SertifikatRejected = () => {
     try {
       const response = await axios.get("http://localhost:5000/sertifikat");
       const sertifikatDitolak = response.data.filter(
-        (item) => item.konfirmasi_kepsek === "Ditolak"
+        (item) => item.konfirmasi_mitra === "Ditolak"
       );
       setSertifikatDitolak(sertifikatDitolak);
     } catch (error) {
@@ -88,9 +87,8 @@ const SertifikatRejected = () => {
                   <td>{sertifikat.nama}</td>
                   <td>{sertifikat.jk}</td>
                   <td>{sertifikat.keahlian}</td>
-                  <td>{sertifikat.arsip_sertifikat}</td>
                   <td>
-                    <Link
+                    <a
                       href={
                         "https://" +
                         sertifikat.arsip_sertifikat +
@@ -101,7 +99,7 @@ const SertifikatRejected = () => {
                       rel="noopener noreferrer"
                     >
                       Arsip Sertifikat
-                    </Link>
+                    </a>
                   </td>
                   {user && user.roles === "admin" && (
                     <td>

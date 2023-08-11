@@ -120,7 +120,7 @@ const IjazahList = () => {
         url: `http://localhost:5000/ijazah/${ijazahId}`,
         method: "PATCH",
         data: {
-          konfirmasi_kepsek: "Ditolak",
+          konfirmasi_kesiswaan: "Ditolak",
         },
       });
       setConfirmedIjazah((prevConfirmedIjazah) => [
@@ -217,7 +217,11 @@ const IjazahList = () => {
           <tbody>
             {currentItems.map(
               (ijazah, index) =>
-                (!selectedProdi || selectedProdi === ijazah.prodi) && (
+                (!selectedProdi || selectedProdi === ijazah.prodi) &&
+                ((user.roles === "admin") ||
+                  (user.roles === "kepala sekolah" &&
+                    getStatus(ijazah) === "Dikonfirmasi") ||
+                  (user.roles === "kesiswaan" && getStatus(ijazah) === "Pending")) && (
                   <tr key={ijazah.uuid}>
                     <td>{index + 1}</td>
                     <td>{ijazah.no_ijazah}</td>
@@ -276,14 +280,22 @@ const IjazahList = () => {
                     )}
                     {user && user.roles === "kepala sekolah" && (
                       <td>
-                        {isIjazahConfirmed(ijazah.uuid) ? (
-                          <span className="tag is-success">Terkonfirmasi</span>
-                        ) : (
+                        {!isIjazahConfirmed(ijazah.uuid) && (
+                          <button
+                            onClick={() => konfirmasiKepalaSekolah(ijazah.uuid)}
+                            className="button is-fullwidth is-small is-info mt-1"
+                          >
+                            <IoCheckmarkDoneCircleOutline />
+                          </button>
+                        )}
+                      </td>
+                    )}
+                    {user && user.roles === "kesiswaan" && (
+                      <td>
+                        {!isIjazahConfirmed(ijazah.uuid) && (
                           <>
                             <button
-                              onClick={() =>
-                                konfirmasiKepalaSekolah(ijazah.uuid)
-                              }
+                              onClick={() => konfirmasiKesiswaan(ijazah.uuid)}
                               className="button is-fullwidth is-small is-info mt-1"
                             >
                               <IoCheckmarkDoneCircleOutline />
@@ -295,20 +307,6 @@ const IjazahList = () => {
                               <IoHandRightOutline />
                             </button>
                           </>
-                        )}
-                      </td>
-                    )}
-                    {user && user.roles === "kesiswaan" && (
-                      <td>
-                        {isIjazahConfirmed(ijazah.uuid) ? (
-                          <span className="tag is-success">Terkonfirmasi</span>
-                        ) : (
-                          <button
-                            onClick={() => konfirmasiKesiswaan(ijazah.uuid)}
-                            className="button is-fullwidth is-small is-info mt-1"
-                          >
-                            <IoCheckmarkDoneCircleOutline />
-                          </button>
                         )}
                       </td>
                     )}

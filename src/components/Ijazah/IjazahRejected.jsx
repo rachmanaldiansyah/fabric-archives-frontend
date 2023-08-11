@@ -16,7 +16,7 @@ const IjazahRejected = () => {
     try {
       const response = await axios.get("http://localhost:5000/ijazah");
       const ijazahDitolak = response.data.filter(
-        (item) => item.konfirmasi_kepsek === "Ditolak"
+        (item) => item.konfirmasi_kesiswaan === "Ditolak"
       );
       setIjazahDitolak(ijazahDitolak);
     } catch (error) {

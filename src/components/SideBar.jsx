@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {
   IoCheckmarkCircleOutline,
@@ -9,9 +9,121 @@ import {
   IoTrashBinOutline,
 } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
+  const [ijazahDitolak, setIjazahDitolak] = useState([]);
+  const [sertifikatDitolak, setSertifikatDitolak] = useState([]);
+  const [ijazahKonfirmasi, setIjazahKonfirmasi] = useState([]);
+  const [sertifikatKonfirmasi, setSertifikatKonfirmasi] = useState([]);
+  const [ijazahPending, setIjazahPending] = useState([]);
+  const [sertifikatPending, setSertifikatPending] = useState([]);
+
+  useEffect(() => {
+    getIjazahDitolak();
+    getSertifikatDitolak();
+    getIjazahKonfirmasi();
+    getSertifikatKonfirmasi();
+    getIjazahPending();
+    getSertifikatPending();
+  }, []);
+
+  const getIjazahKonfirmasi = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/ijazah");
+      const ijazahKonfirmasi = response.data.filter(
+        (item) => item.konfirmasi_kesiswaan === "Dikonfirmasi"
+      );
+      setIjazahKonfirmasi(ijazahKonfirmasi);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getSertifikatKonfirmasi = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/sertifikat");
+      const sertifikatKonfirmasi = response.data.filter(
+        (item) => item.konfirmasi_mitra === "Dikonfirmasi"
+      );
+      setSertifikatKonfirmasi(sertifikatKonfirmasi);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getIjazahPending = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/ijazah");
+      const ijazahPending = response.data.filter(
+        (item) => item.konfirmasi_kesiswaan === "False"
+      );
+      setIjazahPending(ijazahPending);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  const getSertifikatPending = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/sertifikat");
+      const sertifikatPending = response.data.filter(
+        (item) => item.konfirmasi_mitra === "False"
+      );
+      setSertifikatPending(sertifikatPending);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  const getIjazahDitolak = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/ijazah");
+      const ijazahDitolak = response.data.filter(
+        (item) => item.konfirmasi_kesiswaan === "Ditolak"
+      );
+      setIjazahDitolak(ijazahDitolak);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const getSertifikatDitolak = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/sertifikat");
+      const sertifikatDitolak = response.data.filter(
+        (item) => item.konfirmasi_mitra === "Ditolak"
+      );
+      setSertifikatDitolak(sertifikatDitolak);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const countRejectedIjazah = () => {
+    return ijazahDitolak.length;
+  };
+
+  const countRejectedSertifikat = () => {
+    return sertifikatDitolak.length;
+  };
+
+  const countIjazahKonfirmasi = () => {
+    return ijazahKonfirmasi.length;
+  };
+
+  const countSertifikatKonfirmasi = () => {
+    return sertifikatKonfirmasi.length;
+  };
+
+  const countIjazahPending = () => {
+    return ijazahPending.length;
+  }
+
+  const countSertifikatPending = () => {
+    return sertifikatPending.length;
+  }
 
   return (
     <aside className="menu has-background-white">
@@ -135,6 +247,11 @@ const Sidebar = () => {
                   <IoTrashBinOutline />
                 </span>
                 <span className="ml-1">Ijazah Ditolak</span>
+                {countRejectedIjazah() > 0 && (
+                  <span className="tag is-danger is-rounded ml-2">
+                    {countRejectedIjazah()}
+                  </span>
+                )}
               </NavLink>
             </li>
             <li>
@@ -143,6 +260,11 @@ const Sidebar = () => {
                   <IoTrashBinOutline />
                 </span>
                 <span className="ml-1">Sertifikat Ditolak</span>
+                {countRejectedSertifikat() > 0 && (
+                  <span className="tag is-danger is-rounded ml-2">
+                    {countRejectedSertifikat()}
+                  </span>
+                )}
               </NavLink>
             </li>
           </ul>
@@ -158,6 +280,11 @@ const Sidebar = () => {
                   <IoCheckmarkCircleOutline />
                 </span>
                 <span className="ml-1">Konfirmasi Ijazah</span>
+                {countIjazahKonfirmasi() > 0 && (
+                  <span className="tag is-danger is-rounded ml-2">
+                    {countIjazahKonfirmasi()}
+                  </span>
+                )}
               </NavLink>
             </li>
             <li>
@@ -166,6 +293,11 @@ const Sidebar = () => {
                   <IoCheckmarkCircleOutline />
                 </span>
                 <span className="ml-1">Konfirmasi Sertifikat</span>
+                {countSertifikatKonfirmasi() > 0 && (
+                  <span className="tag is-danger is-rounded ml-2">
+                    {countSertifikatKonfirmasi()}
+                  </span>
+                )}
               </NavLink>
             </li>
           </ul>
@@ -181,6 +313,11 @@ const Sidebar = () => {
                   <IoCheckmarkCircleOutline />
                 </span>
                 <span className="ml-1">Konfirmasi Ijazah</span>
+                {countIjazahPending() > 0 && (
+                  <span className="tag is-danger is-rounded ml-2">
+                    {countIjazahPending()}
+                  </span>
+                )}
               </NavLink>
             </li>
           </ul>
@@ -196,6 +333,11 @@ const Sidebar = () => {
                   <IoCheckmarkCircleOutline />
                 </span>
                 <span className="ml-1">Konfirmasi Sertifikat</span>
+                {countSertifikatPending() > 0 && (
+                  <span className="tag is-danger is-rounded ml-2">
+                    {countSertifikatPending()}
+                  </span>
+                )}
               </NavLink>
             </li>
           </ul>

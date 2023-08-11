@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Modal from "../Modal";
 import Swal from "sweetalert2";
-import { IoTrashOutline, IoCreateOutline, IoHandRightOutline, IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import {
+  IoTrashOutline,
+  IoCreateOutline,
+  IoHandRightOutline,
+  IoCheckmarkDoneCircleOutline,
+} from "react-icons/io5";
 
 const SertifikatList = () => {
   const { user } = useSelector((state) => state.auth);
   const [sertifikat, setSertifikat] = useState([]);
   const [selectedProdi, setSelectedProdi] = useState("");
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedSertifikat, setSelectedSertifikat] = useState(null);
   const [confirmedSertifikat, setConfirmedSertifikat] = useState([]);
 
   useEffect(() => {
@@ -115,7 +117,7 @@ const SertifikatList = () => {
         url: `http://localhost:5000/sertifikat/${sertifikatId}`,
         method: "PATCH",
         data: {
-          konfirmasi_kepsek: "Ditolak",
+          konfirmasi_mitra: "Ditolak",
         },
       });
       setConfirmedSertifikat((prevConfirmedSertifikat) => [
@@ -124,7 +126,7 @@ const SertifikatList = () => {
       ]);
       Swal.fire(
         "Ditolak!",
-        "Data Arsip Ijazah Telah Ditolak oleh Kepala Sekolah.",
+        "Data arsip sertifikat uji kompetensi siswa ditolak.",
         "success"
       );
     } catch (error) {
@@ -145,15 +147,6 @@ const SertifikatList = () => {
     } else {
       return "Pending";
     }
-  };
-
-  const openModal = (arsipSertifikat) => {
-    setSelectedSertifikat(arsipSertifikat);
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
   };
 
   const handleProdiFilterChange = (event) => {
@@ -223,25 +216,18 @@ const SertifikatList = () => {
                     <td>{sertifikat.jk}</td>
                     <td>{sertifikat.keahlian}</td>
                     <td>
-                      <button
-                        className="button is-small is-primary is-fullwidth mt-1"
-                        onClick={() =>
-                          openModal(
-                            "https://" +
-                              sertifikat.arsip_sertifikat +
-                              ".ipfs.w3s.link"
-                          )
+                      <a
+                        href={
+                          "https://" +
+                          sertifikat.arsip_sertifikat +
+                          ".ipfs.w3s.link"
                         }
+                        className="button is-small is-fullwidth is-primary mt-1"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         Arsip Sertifikat
-                      </button>
-                      {modalIsOpen && (
-                        <Modal
-                          title="Arsip Sertifikat"
-                          content={selectedSertifikat}
-                          onClose={closeModal}
-                        />
-                      )}
+                      </a>
                     </td>
                     {user && user.roles === "admin" && (
                       <>
@@ -276,11 +262,25 @@ const SertifikatList = () => {
                         {isSertifikatConfirmed(sertifikat.uuid) ? (
                           <span className="tag is-success">Terkonfirmasi</span>
                         ) : (
+                          <button
+                            onClick={() =>
+                              konfirmasiKepalaSekolah(sertifikat.uuid)
+                            }
+                            className="button is-fullwidth is-small is-info mt-1"
+                          >
+                            <IoCheckmarkDoneCircleOutline />
+                          </button>
+                        )}
+                      </td>
+                    )}
+                    {user && user.roles === "mitra" && (
+                      <td>
+                        {isSertifikatConfirmed(sertifikat.uuid) ? (
+                          <span className="tag is-success">Terkonfirmasi</span>
+                        ) : (
                           <>
                             <button
-                              onClick={() =>
-                                konfirmasiKepalaSekolah(sertifikat.uuid)
-                              }
+                              onClick={() => konfirmasiMitra(sertifikat.uuid)}
                               className="button is-fullwidth is-small is-info mt-1"
                             >
                               <IoCheckmarkDoneCircleOutline />
@@ -292,20 +292,6 @@ const SertifikatList = () => {
                               <IoHandRightOutline />
                             </button>
                           </>
-                        )}
-                      </td>
-                    )}
-                    {user && user.roles === "mitra" && (
-                      <td>
-                        {isSertifikatConfirmed(sertifikat.uuid) ? (
-                          <span className="tag is-success">Terkonfirmasi</span>
-                        ) : (
-                          <button
-                            onClick={() => konfirmasiMitra(sertifikat.uuid)}
-                            className="button is-fullwidth is-small is-info mt-1"
-                          >
-                            <IoCheckmarkDoneCircleOutline />
-                          </button>
                         )}
                       </td>
                     )}
