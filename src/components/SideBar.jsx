@@ -12,6 +12,7 @@ import {
 } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Logo from "../img/logo-mtc.png";
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
@@ -134,8 +135,9 @@ const Sidebar = () => {
           <div className="menu-list pt-4 pb-4">
             <p className="has-text-dark has-text-centered has-text-weight-bold is-uppercase is-underlined is-family-sans-serif">
               Info Pengguna
+              <img src={Logo} className="mt-2" width="150" height="150" alt="logo-mtc" />
             </p>
-            <p className="has-text-dark has-text-centered has-text-weight-medium is-capitalized is-family-sans-serif mt-4">
+            <p className="has-text-dark has-text-centered has-text-weight-medium is-capitalized is-family-sans-serif mt-2">
               {user.nama}
             </p>
             <p className="has-text-dark has-text-centered has-text-weight-light is-uppercase is-family-sans-serif mt-2">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { LoginUser, reset } from "../features/AuthSlices";
+import { FaEnvelope, FaUnlock } from "react-icons/fa";
 import Logo from "../img/logo-mtc.png";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
@@ -20,6 +21,20 @@ function Login() {
     dispatch(reset());
   }, [user, isSuccess, dispatch, navigate]);
 
+  const handleInputChange = (e, setterFunction) => {
+    const inputValue = e.target.value;
+
+    // Menghilangkan spasi dari input value
+    const sanitizedValue = inputValue.replace(/\s/g, "");
+
+    // Update state hanya jika nilai sudah dihilangkan spasi
+    if (sanitizedValue !== inputValue) {
+      setterFunction(sanitizedValue);
+    } else {
+      setterFunction(inputValue);
+    }
+  };
+
   const showSuccessNotification = () => {
     Toastify({
       text: "Login berhasil, selamat datang " + email,
@@ -28,7 +43,7 @@ function Login() {
       position: "right",
       style: {
         background: "linear-gradient(to right, #00b09b, #96c93d)",
-      }
+      },
     }).showToast();
   };
 
@@ -40,14 +55,14 @@ function Login() {
       position: "right",
       style: {
         background: "linear-gradient(to right, #ff0000, #940000)",
-      }
+      },
     }).showToast();
   };
 
   const validateEmail = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
-  }
+  };
 
   const Auth = (e) => {
     e.preventDefault();
@@ -56,7 +71,9 @@ function Login() {
       showErrorNotification("Masukkan email dan password anda.");
       return;
     } else if (!validateEmail(email)) {
-      showErrorNotification("Format email tidak valid, silahkan periksa kembali.");
+      showErrorNotification(
+        "Format email tidak valid, silahkan periksa kembali."
+      );
       return;
     }
 
@@ -71,7 +88,9 @@ function Login() {
           <div className="columns is-centered">
             <div className="column is-4">
               <form onSubmit={Auth} className="box">
-                <p className="title has-text-centered has-text-weight-semibold is-uppercase mt-2">Login Pengguna</p>
+                <p className="title has-text-centered has-text-weight-semibold is-uppercase mt-2">
+                  Login Pengguna
+                </p>
                 <div className="columns is-centered">
                   <div className="column is-half">
                     <img
@@ -85,26 +104,32 @@ function Login() {
                 </div>
                 <div className="field">
                   <label className="label">Email</label>
-                  <div className="control">
+                  <div className="control has-icons-left">
                     <input
                       type="text"
                       className="input"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Masukkan email Anda"
+                      onChange={(e) => handleInputChange(e, setEmail)}
+                      placeholder="Email"
                     />
+                    <span class="icon is-small is-left">
+                      <FaEnvelope />
+                    </span>
                   </div>
                 </div>
                 <div className="field">
                   <label className="label">Password</label>
-                  <div className="control">
+                  <div className="control has-icons-left">
                     <input
                       type="password"
                       className="input"
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Masukkan password Anda"
+                      onChange={(e) => handleInputChange(e, setPassword)}
+                      placeholder="Password"
                     />
+                    <span className="icon is-small is-left">
+                      <FaUnlock />
+                    </span>
                   </div>
                 </div>
                 <div className="field mt-5">
@@ -116,7 +141,7 @@ function Login() {
                   </button>
                 </div>
                 <div className="field mt-5 has-text-centered">
-                  Tidak Punya Akun? <Link to={"/register"}>Registrasi</Link>
+                  Tidak Punya Akun? <Link to={"/register"} className="is-underlined">Registrasi</Link>
                 </div>
               </form>
             </div>

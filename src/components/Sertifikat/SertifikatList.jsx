@@ -187,21 +187,25 @@ const SertifikatList = () => {
         <table className="table is-narrow is-striped is-fullwidth is-hoverable">
           <thead>
             <tr>
-              <th>No</th>
-              <th>No Sertifikat</th>
-              <th>Nomor Induk</th>
-              <th>Nama Siswa</th>
-              <th>Jenis Kelamin</th>
-              <th>Kompetensi Keahlian</th>
-              <th>Arsip Sertifikat</th>
+              <th className="is-size-6">No</th>
+              <th className="is-size-6">No Sertifikat</th>
+              <th className="is-size-6">Nomor Induk</th>
+              <th className="is-size-6">Nama Siswa</th>
+              <th className="is-size-6">Jenis Kelamin</th>
+              <th className="is-size-6">Kompetensi Keahlian</th>
+              <th className="is-size-6">Arsip Sertifikat</th>
               {user && user.roles === "admin" && (
                 <>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th className="is-size-6">Status</th>
+                  <th className="is-size-6">Actions</th>
                 </>
               )}
-              {user && user.roles === "kepala sekolah" && <th>Actions</th>}
-              {user && user.roles === "mitra" && <th>Actions</th>}
+              {user && user.roles === "kepala sekolah" && (
+                <th className="is-size-6">Actions</th>
+              )}
+              {user && user.roles === "mitra" && (
+                <th className="is-size-6">Actions</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -214,15 +218,15 @@ const SertifikatList = () => {
                   (user.roles === "mitra" &&
                     getStatus(sertifikat) === "Pending")) && (
                   <tr key={sertifikat.uuid}>
-                    <td>{index + 1}</td>
-                    <td>{sertifikat.no_sertifikat}</td>
-                    <td>{sertifikat.nis}</td>
-                    <td>{sertifikat.nama}</td>
-                    <td>{sertifikat.jk}</td>
-                    <td>{sertifikat.keahlian}</td>
-                    <td>
-                      <a
-                        href={
+                    <td className="is-size-6">{index + 1}</td>
+                    <td className="is-size-6">{sertifikat.no_sertifikat}</td>
+                    <td className="is-size-6">{sertifikat.nis}</td>
+                    <td className="is-size-6">{sertifikat.nama}</td>
+                    <td className="is-size-6">{sertifikat.jk}</td>
+                    <td className="is-size-6">{sertifikat.keahlian}</td>
+                    <td className="is-size-6">
+                      <Link
+                        to={
                           "https://" +
                           sertifikat.arsip_sertifikat +
                           ".ipfs.w3s.link"
@@ -232,7 +236,7 @@ const SertifikatList = () => {
                         rel="noopener noreferrer"
                       >
                         Arsip Sertifikat
-                      </a>
+                      </Link>
                     </td>
                     {user && user.roles === "admin" && (
                       <>

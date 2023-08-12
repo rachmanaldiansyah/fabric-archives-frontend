@@ -171,7 +171,7 @@ const UsersEdit = () => {
                       value={roles}
                       onChange={(e) => setRoles(e.target.value)}
                     >
-                      <option value="admin">Admin</option>
+                      <option value="admin">Staff Tata Usaha</option>
                       <option value="kesiswaan">Kesiswaan</option>
                       <option value="kepala sekolah">Kepala Sekolah</option>
                       <option value="mitra">Mitra</option>

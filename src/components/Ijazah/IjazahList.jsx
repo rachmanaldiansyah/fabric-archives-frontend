@@ -184,23 +184,23 @@ const IjazahList = () => {
         <table className="table is-narrow is-striped is-fullwidth is-hoverable">
           <thead>
             <tr>
-              <th>No</th>
-              <th>No Ijazah</th>
-              <th>NISN</th>
-              <th>NIS</th>
-              <th>Nama Siswa</th>
-              <th>Jenis Kelamin</th>
-              <th>Nama Orangtua</th>
-              <th>Program Studi</th>
-              <th>Arsip Ijazah</th>
+              <th className="is-size-6">No</th>
+              <th className="is-size-6">No Ijazah</th>
+              <th className="is-size-6">NISN</th>
+              <th className="is-size-6">NIS</th>
+              <th className="is-size-6">Nama Siswa</th>
+              <th className="is-size-6">Jenis Kelamin</th>
+              <th className="is-size-6">Nama Orangtua</th>
+              <th className="is-size-6">Program Studi</th>
+              <th className="is-size-6">Arsip Ijazah</th>
               {user && user.roles === "admin" && (
                 <>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th className="is-size-6">Status</th>
+                  <th className="is-size-6">Actions</th>
                 </>
               )}
-              {user && user.roles === "kesiswaan" && <th>Actions</th>}
-              {user && user.roles === "kepala sekolah" && <th>Actions</th>}
+              {user && user.roles === "kesiswaan" && <th className="is-size-6">Actions</th>}
+              {user && user.roles === "kepala sekolah" && <th className="is-size-6">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -214,14 +214,14 @@ const IjazahList = () => {
                   (user.roles === "kesiswaan" &&
                     getStatus(ijazah) === "Pending")) && (
                   <tr key={ijazah.uuid}>
-                    <td>{index + 1}</td>
-                    <td>{ijazah.no_ijazah}</td>
-                    <td>{ijazah.nisn}</td>
-                    <td>{ijazah.nis}</td>
-                    <td>{ijazah.nama}</td>
-                    <td>{ijazah.jk}</td>
-                    <td>{ijazah.nama_orangtua}</td>
-                    <td>{ijazah.prodi}</td>
+                    <td className="is-size-6">{index + 1}</td>
+                    <td className="is-size-6">{ijazah.no_ijazah}</td>
+                    <td className="is-size-6">{ijazah.nisn}</td>
+                    <td className="is-size-6">{ijazah.nis}</td>
+                    <td className="is-size-6">{ijazah.nama}</td>
+                    <td className="is-size-6">{ijazah.jk}</td>
+                    <td className="is-size-6">{ijazah.nama_orangtua}</td>
+                    <td className="is-size-6">{ijazah.prodi}</td>
                     <td>
                       <Link
                         to={`https://${ijazah.arsip_ijazah}.ipfs.w3s.link`}

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Logo from "../img/logo-mtc.png";
-import { IoRibbonOutline, IoSchoolOutline } from "react-icons/io5";
+import {
+  IoCloudDownloadOutline,
+  IoRibbonOutline,
+  IoSchoolOutline,
+} from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 const Verifikasi = () => {
@@ -183,27 +187,37 @@ const Verifikasi = () => {
                 {verificationResult.response &&
                   verificationResult.response.ArsipIjazah && (
                     <div className="field mt-2">
-                      <Link
-                        to={`https://${getArsipIjazahDownloadLink()}.ipfs.w3s.link`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="button is-link mt-2"
-                      >
-                        Download Arsip Ijazah
-                      </Link>
+                      <div className="control has-icons-left">
+                        <Link
+                          to={`https://${getArsipIjazahDownloadLink()}.ipfs.w3s.link`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="button is-info mt-2"
+                        >
+                          <p className="has-text-weight-semibold ml-5">Download Arsip Ijazah</p>
+                          <span className="icon is-left">
+                            <IoCloudDownloadOutline />
+                          </span>
+                        </Link>
+                      </div>
                     </div>
                   )}
                 {verificationResult.response &&
                   verificationResult.response.ArsipSertifikat && (
                     <div className="field mt-2">
-                      <Link
-                        to={`https://${getArsipSertifikatDownloadLink()}.ipfs.w3s.link`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="button is-link mt-2"
-                      >
-                        Download Arsip Sertifikat
-                      </Link>
+                      <div className="control has-icons-left">
+                        <Link
+                          to={`https://${getArsipSertifikatDownloadLink()}.ipfs.w3s.link`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="button is-info mt-2"
+                        >
+                          <p className="has-text-weight-semibold ml-5">Download Arsip Sertifikat</p>
+                          <span className="icon is-left">
+                            <IoCloudDownloadOutline />
+                          </span>
+                        </Link>
+                      </div>
                     </div>
                   )}
               </div>

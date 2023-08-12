@@ -4,6 +4,13 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import {
+  FaEnvelope,
+  FaUnlock,
+  FaUserAlt,
+  FaUserLock,
+  FaUsers,
+} from "react-icons/fa";
 
 const Register = () => {
   const [nama, setNama] = useState("");
@@ -15,6 +22,20 @@ const Register = () => {
   const navigate = useNavigate();
   const { isLoading } = useSelector((state) => state.auth);
 
+  const handleInputChange = (e, setterFunction) => {
+    const inputValue = e.target.value;
+
+    // Menghilangkan spasi dari input value
+    const sanitizedValue = inputValue.replace(/\s/g, "");
+
+    // Update state hanya jika nilai sudah dihilangkan spasi
+    if (sanitizedValue !== inputValue) {
+      setterFunction(sanitizedValue);
+    } else {
+      setterFunction(inputValue);
+    }
+  };
+
   const showSuccessNotification = () => {
     Toastify({
       text: "Registrasi data pengguna berhasil!",
@@ -23,7 +44,7 @@ const Register = () => {
       position: "right",
       style: {
         background: "linear-gradient(to right, #00b09b, #96c93d)",
-      }
+      },
     }).showToast();
   };
 
@@ -35,7 +56,7 @@ const Register = () => {
       position: "right",
       style: {
         background: "linear-gradient(to right, #ff0000, #940000)",
-      }
+      },
     }).showToast();
   };
 
@@ -60,6 +81,9 @@ const Register = () => {
       showErrorNotification(
         "Format email tidak valid, silahkan periksa kembali."
       );
+      return;
+    } else if (!/[0-9]{10}/.test(nip)) {
+      showErrorNotification("NIP harus terdiri dari 10 digit angka.");
       return;
     }
 
@@ -91,14 +115,17 @@ const Register = () => {
       return (
         <div className="field">
           <label className="label">NIP</label>
-          <div className="control">
+          <div className="control has-icons-left">
             <input
               type="text"
               className="input"
               value={nip}
-              onChange={(e) => setNip(e.target.value)}
-              placeholder="Masukkan NIP"
+              onChange={(e) => handleInputChange(e, setNip)}
+              placeholder="Nomor Induk Pegawai"
             />
+            <span className="icon is-small is-left">
+              <FaUsers />
+            </span>
           </div>
         </div>
       );
@@ -113,58 +140,72 @@ const Register = () => {
           <div className="columns is-centered">
             <div className="column is-4">
               <form onSubmit={SaveUsers} className="box">
-                <p className="title has-text-centered has-text-weight-semibold is-uppercase">Registrasi Pengguna</p>
+                <p className="title has-text-centered has-text-weight-semibold is-uppercase">
+                  Registrasi Pengguna
+                </p>
                 <div className="field">
                   <label className="label">Nama</label>
-                  <div className="control">
+                  <div className="control has-icons-left">
                     <input
                       type="text"
                       className="input"
                       value={nama}
-                      onChange={(e) => setNama(e.target.value)}
-                      placeholder="Masukkan nama lengkap anda"
+                      onChange={(e) => handleInputChange(e, setNama)}
+                      placeholder="Nama Lengkap"
                     />
+                    <span className="icon is-small is-left">
+                      <FaUserAlt />
+                    </span>
                   </div>
                 </div>
                 <div className="field">
                   <label className="label">Email</label>
-                  <div className="control">
+                  <div className="control has-icons-left">
                     <input
                       type="text"
                       className="input"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Masukkan email anda"
+                      onChange={(e) => handleInputChange(e, setEmail)}
+                      placeholder="Email"
                     />
+                    <span className="icon is-small is-left">
+                      <FaEnvelope />
+                    </span>
                   </div>
                 </div>
                 <div className="field">
                   <label className="label">Password</label>
-                  <div className="control">
+                  <div className="control has-icons-left">
                     <input
                       type="password"
                       className="input"
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Masukkan password Anda"
+                      onChange={(e) => handleInputChange(e, setPassword)}
+                      placeholder="Password"
                     />
+                    <span className="icon is-small is-left">
+                      <FaUnlock />
+                    </span>
                   </div>
                 </div>
                 <div className="field">
                   <label className="label">Konfirmasi Password</label>
-                  <div className="control">
+                  <div className="control has-icons-left">
                     <input
                       type="password"
                       className="input"
                       value={confPassword}
-                      onChange={(e) => setConfPassword(e.target.value)}
-                      placeholder="Konfirmasi kembali password"
+                      onChange={(e) => handleInputChange(e, setConfPassword)}
+                      placeholder="Konfirmasi Password"
                     />
+                    <span className="icon is-small is-left">
+                      <FaUnlock />
+                    </span>
                   </div>
                 </div>
                 <div className="field">
                   <label className="label">Hak Akses</label>
-                  <div className="control">
+                  <div className="control has-icons-left">
                     <div className="select is-fullwidth">
                       <select
                         value={roles}
@@ -179,6 +220,9 @@ const Register = () => {
                         <option value="mitra">Mitra</option>
                       </select>
                     </div>
+                    <span className="icon is-small is-left">
+                      <FaUserLock />
+                    </span>
                   </div>
                 </div>
                 {renderNipInputField()}{" "}
@@ -192,7 +236,7 @@ const Register = () => {
                   </button>
                 </div>
                 <div className="field mt-5 has-text-centered">
-                  Sudah punya akun? <Link to={"/"}>Masuk</Link>
+                  Sudah punya akun? <Link to={"/"} className="is-underlined">Masuk</Link>
                 </div>
               </form>
             </div>

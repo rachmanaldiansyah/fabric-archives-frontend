@@ -79,7 +79,7 @@ const UsersList = () => {
                 <td>{index + 1}</td>
                 <td>{users.nama}</td>
                 <td>{users.email}</td>
-                <td>{users.roles}</td>
+                <td className="is-capitalized">{users.roles}</td>
                 <td>
                   <Link
                     to={`/users/edit/${users.uuid}`}
