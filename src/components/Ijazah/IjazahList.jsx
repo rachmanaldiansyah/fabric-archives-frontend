@@ -147,6 +147,7 @@ const IjazahList = () => {
 
   const handleProdiFilterChange = (event) => {
     setSelectedProdi(event.target.value);
+    setCurrentPage(1);
   };
 
   return (
@@ -303,21 +304,21 @@ const IjazahList = () => {
         aria-label="pagination"
       >
         <ul className="pagination-list">
-          {Array.from({ length: Math.ceil(ijazah.length / itemsPerPage) }).map(
-            (_, i) => (
-              <li key={i}>
-                <button
-                  className={`pagination-link${
-                    currentPage === i + 1 ? " is-current" : ""
-                  }`}
-                  aria-label={`Goto page ${i + 1}`}
-                  onClick={() => handlePageChange(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              </li>
-            )
-          )}
+          {Array.from({
+            length: Math.ceil(ijazah.length / itemsPerPage),
+          }).map((_, i) => (
+            <li key={i}>
+              <button
+                className={`pagination-link${
+                  currentPage === i + 1 ? " is-current" : ""
+                }`}
+                aria-label={`Goto page ${i + 1}`}
+                onClick={() => handlePageChange(i + 1)}
+              >
+                {i + 1}
+              </button>
+            </li>
+          ))}
         </ul>
       </nav>
     </div>

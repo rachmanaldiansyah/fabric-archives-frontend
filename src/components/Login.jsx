@@ -71,7 +71,7 @@ function Login() {
           <div className="columns is-centered">
             <div className="column is-4">
               <form onSubmit={Auth} className="box">
-                <p className="title has-text-centered">LOGIN PENGGUNA</p>
+                <p className="title has-text-centered has-text-weight-semibold is-uppercase mt-2">Login Pengguna</p>
                 <div className="columns is-centered">
                   <div className="column is-half">
                     <img

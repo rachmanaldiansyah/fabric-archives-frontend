@@ -202,7 +202,7 @@ const IjazahConfirm = () => {
                       <Link
                         to={`https://${ijazah.arsip_ijazah}.ipfs.w3s.link`}
                         target="_blank"
-                        className="button is-small is-primary is-fullwidth"
+                        className="button is-small is-primary is-fullwidth mt-1"
                       >
                         Arsip Ijazah
                       </Link>
@@ -211,12 +211,12 @@ const IjazahConfirm = () => {
                       <>
                         <td>
                           {getStatus(ijazah) === "Dikonfirmasi" && (
-                            <td className="tag is-success is-fullwidth">
+                            <td className="tag is-success is-fullwidth mt-1">
                               {getStatus(ijazah)}
                             </td>
                           )}
                           {getStatus(ijazah) === "Pending" && (
-                            <td className="tag is-warning is-fullwidth">
+                            <td className="tag is-warning is-fullwidth mt-1">
                               {getStatus(ijazah)}
                             </td>
                           )}
@@ -227,12 +227,12 @@ const IjazahConfirm = () => {
                       <>
                         <td>
                           {getStatus(ijazah) === "Dikonfirmasi" && (
-                            <td className="tag is-success is-fullwidth">
+                            <td className="tag is-success is-fullwidth mt-1">
                               {getStatus(ijazah)}
                             </td>
                           )}
                           {getStatus(ijazah) === "Pending" && (
-                            <td className="tag is-warning is-fullwidth">
+                            <td className="tag is-warning is-fullwidth mt-1">
                               {getStatus(ijazah)}
                             </td>
                           )}
@@ -240,7 +240,7 @@ const IjazahConfirm = () => {
                         <td>
                           <button
                             onClick={() => handleUpload(ijazah.uuid)}
-                            className="button is-small is-warning is-fullwidth"
+                            className="button is-small is-info is-fullwidth mt-1"
                           >
                             <IoCloudUploadOutline />
                           </button>

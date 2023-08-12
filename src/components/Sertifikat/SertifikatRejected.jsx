@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import { IoTrashOutline } from "react-icons/io5";
 
 const SertifikatRejected = () => {
-  const [sertifikatDitolak, setSertifikatDitolak] = useState([]);
   const { user } = useSelector((state) => state.auth);
+  const [sertifikatDitolak, setSertifikatDitolak] = useState([]);
 
   useEffect(() => {
     getSertifikatDitolak();

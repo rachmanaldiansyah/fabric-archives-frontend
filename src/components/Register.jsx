@@ -113,7 +113,7 @@ const Register = () => {
           <div className="columns is-centered">
             <div className="column is-4">
               <form onSubmit={SaveUsers} className="box">
-                <p className="title has-text-centered">REGISTRASI PENGGUNA</p>
+                <p className="title has-text-centered has-text-weight-semibold is-uppercase">Registrasi Pengguna</p>
                 <div className="field">
                   <label className="label">Nama</label>
                   <div className="control">
