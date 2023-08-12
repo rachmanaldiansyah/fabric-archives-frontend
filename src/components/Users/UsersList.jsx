@@ -35,7 +35,7 @@ const UsersList = () => {
   const deleteUsers = async (userId) => {
     Swal.fire({
       title: "Apakah Anda Yakin Akan Menghapus Data Ini?",
-      text: "Data arsip ijazah yang terhapus tidak akan bisa kembali!",
+      text: "Data pengguna yang terhapus tidak akan bisa kembali!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

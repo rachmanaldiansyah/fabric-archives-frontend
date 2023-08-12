@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import {
+  IoEyeOutline,
   IoTrashOutline,
   IoCreateOutline,
   IoHandRightOutline,
@@ -15,6 +16,20 @@ const SertifikatList = () => {
   const [sertifikat, setSertifikat] = useState([]);
   const [selectedProdi, setSelectedProdi] = useState("");
   const [confirmedSertifikat, setConfirmedSertifikat] = useState([]);
+
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedSertifikatDetail, setSelectedSertifikatDetail] =
+    useState(null);
+
+  const openDetailModal = (sertifikat) => {
+    setSelectedSertifikatDetail(sertifikat);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setSelectedSertifikatDetail(null);
+    setIsDetailModalOpen(false);
+  };
 
   useEffect(() => {
     getSertifikat();
@@ -216,7 +231,7 @@ const SertifikatList = () => {
                   (user.roles === "kepala sekolah" &&
                     !isSertifikatConfirmed(sertifikat.uuid)) ||
                   (user.roles === "mitra" &&
-                    getStatus(sertifikat) === "Pending")) && (
+                    getStatus(sertifikat) === "Dikonfirmasi")) && (
                   <tr key={sertifikat.uuid}>
                     <td className="is-size-6">{index + 1}</td>
                     <td className="is-size-6">{sertifikat.no_sertifikat}</td>
@@ -289,16 +304,10 @@ const SertifikatList = () => {
                         ) : (
                           <>
                             <button
-                              onClick={() => konfirmasiMitra(sertifikat.uuid)}
-                              className="button is-fullwidth is-small is-info mt-1"
+                              onClick={() => openDetailModal(sertifikat)}
+                              className="button is-small is-info is-fullwidth mt-1"
                             >
-                              <IoCheckmarkDoneCircleOutline />
-                            </button>
-                            <button
-                              onClick={() => tolakSertifikat(sertifikat.uuid)}
-                              className="button is-fullwidth is-small is-danger mt-1"
-                            >
-                              <IoHandRightOutline />
+                              <IoEyeOutline />
                             </button>
                           </>
                         )}
@@ -310,6 +319,7 @@ const SertifikatList = () => {
           </tbody>
         </table>
       </div>
+
       {/* Tampilan Pagination */}
       <nav
         className="pagination is-centered is-rounded"
@@ -334,6 +344,58 @@ const SertifikatList = () => {
           ))}
         </ul>
       </nav>
+
+      {/* Tampilan Modal */}
+      {selectedSertifikatDetail && (
+        <div className={`modal${isDetailModalOpen ? " is-active" : ""}`}>
+          <div className="modal-background" onClick={closeDetailModal}></div>
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <p className="modal-card-title has-text-centered has-text-weight-semibold">
+                Detail Arsip Sertifikat
+              </p>
+              <button
+                className="delete"
+                aria-label="close"
+                onClick={closeDetailModal}
+              ></button>
+            </header>
+            <section className="modal-card-body">
+              <p>No Sertifikat: {selectedSertifikatDetail.no_sertifikat}</p>
+              <p>Nomor Induk: {selectedSertifikatDetail.nis}</p>
+              <p>Nama Siswa: {selectedSertifikatDetail.nama}</p>
+              <p>Jenis Kelamin: {selectedSertifikatDetail.jk}</p>
+              <p>Kompetensi Keahlian: {selectedSertifikatDetail.keahlian}</p>
+              <p>
+                Arsip Sertifikat:{" "}
+                <Link
+                  to={`https://${selectedSertifikatDetail.arsip_sertifikat}.ipfs.w3s.link`}
+                  target="_blank"
+                >
+                  {selectedSertifikatDetail.arsip_sertifikat}
+                </Link>
+              </p>
+            </section>
+            <footer className="modal-card-foot">
+              <button className="button is-primary" onClick={closeDetailModal}>
+                Tutup
+              </button>
+              <button
+                onClick={() => konfirmasiMitra(selectedSertifikatDetail.uuid)}
+                className="button is-info"
+              >
+                <IoCheckmarkDoneCircleOutline className="mr-2" /> Konfirmasi Arsip
+              </button>
+              <button
+                onClick={() => tolakSertifikat(selectedSertifikatDetail.uuid)}
+                className="button is-danger"
+              >
+                <IoHandRightOutline className="mr-2" /> Tolak Arsip
+              </button>
+            </footer>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

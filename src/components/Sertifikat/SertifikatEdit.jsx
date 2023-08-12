@@ -18,6 +18,20 @@ const SertifikatEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const handleInputChange = (e, setterFunction) => {
+    const inputValue = e.target.value;
+
+    // Menghilangkan spasi dari input value
+    const sanitizedValue = inputValue.replace(/\s/g, "");
+
+    // Update state hanya jika nilai sudah dihilangkan spasi
+    if (sanitizedValue !== inputValue) {
+      setterFunction(sanitizedValue);
+    } else {
+      setterFunction(inputValue);
+    }
+  };
+
   useEffect(() => {
     const getSertifikatById = async () => {
       try {
@@ -146,7 +160,7 @@ const SertifikatEdit = () => {
                     type="text"
                     className="input"
                     value={no_sertifikat}
-                    onChange={(e) => setNoSertifikat(e.target.value)}
+                    onChange={(e) => handleInputChange(e, setNoSertifikat)}
                     placeholder="Isi nomor sertifikat siswa"
                   />
                 </div>
@@ -158,7 +172,7 @@ const SertifikatEdit = () => {
                     type="text"
                     className="input"
                     value={nis}
-                    onChange={(e) => setNis(e.target.value)}
+                    onChange={(e) => handleInputChange(e, setNis)}
                     placeholder="Isi nomor induk siswa"
                   />
                 </div>

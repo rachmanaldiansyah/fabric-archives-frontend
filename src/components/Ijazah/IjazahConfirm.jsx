@@ -189,7 +189,11 @@ const IjazahConfirm = () => {
           <tbody>
             {currentItems.map(
               (ijazah, index) =>
-                (!selectedProdi || selectedProdi === ijazah.prodi) && (
+                (!selectedProdi || selectedProdi === ijazah.prodi) &&
+                ((user.roles === "kepala sekolah" &&
+                  getStatus(ijazah) === "Dikonfirmasi") ||
+                  (user.roles === "kesiswaan" &&
+                    getStatus(ijazah) === "Dikonfirmasi")) && (
                   <tr key={ijazah.uuid}>
                     <td>{index + 1}</td>
                     <td>{ijazah.no_ijazah}</td>
@@ -203,6 +207,7 @@ const IjazahConfirm = () => {
                         to={`https://${ijazah.arsip_ijazah}.ipfs.w3s.link`}
                         target="_blank"
                         className="button is-small is-primary is-fullwidth mt-1"
+                        rel="noopener noreferrer"
                       >
                         Arsip Ijazah
                       </Link>

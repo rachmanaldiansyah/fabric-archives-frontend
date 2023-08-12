@@ -19,6 +19,20 @@ const IjazahCreate = () => {
   const [msg] = useState("");
   const navigate = useNavigate();
 
+  const handleInputChange = (e, setterFunction) => {
+    const inputValue = e.target.value;
+
+    // Menghilangkan spasi dari input value
+    const sanitizedValue = inputValue.replace(/\s/g, "");
+
+    // Update state hanya jika nilai sudah dihilangkan spasi
+    if (sanitizedValue !== inputValue) {
+      setterFunction(sanitizedValue);
+    } else {
+      setterFunction(inputValue);
+    }
+  };
+
   const uploadToIPFS = async (file) => {
     const apiKey =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGUwOUJDQjZBYjAxRDQzMzlEMjY3MjVDRDcyQWFjMUEyYzUyRWJiOTciLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODQyNzc5OTU2NjgsIm5hbWUiOiJ0ZXN0aW5nIn0.gCHtwTQvqHYInM4qXKyhOtextW-fxkJlqYSR8NUfqyE";
@@ -122,7 +136,7 @@ const IjazahCreate = () => {
                     type="text"
                     className="input"
                     value={no_ijazah}
-                    onChange={(e) => setNoIjazah(e.target.value)}
+                    onChange={(e) => handleInputChange(e, setNoIjazah)}
                     placeholder="Isi nomor ijazah siswa"
                   />
                 </div>
@@ -134,7 +148,7 @@ const IjazahCreate = () => {
                     type="text"
                     className="input"
                     value={nisn}
-                    onChange={(e) => setNisn(e.target.value)}
+                    onChange={(e) => handleInputChange(e, setNisn)}
                     placeholder="Isi nomor siswa induk nasional"
                   />
                 </div>
@@ -146,7 +160,7 @@ const IjazahCreate = () => {
                     type="text"
                     className="input"
                     value={nis}
-                    onChange={(e) => setNis(e.target.value)}
+                    onChange={(e) => handleInputChange(e, setNis)}
                     placeholder="Isi nomor induk siswa"
                   />
                 </div>
@@ -225,7 +239,7 @@ const IjazahCreate = () => {
               <div className="field">
                 <div className="control">
                   <button type="submit" className="button is-success">
-                    Arsipkan
+                    Arsipkan Ijazah
                   </button>
                 </div>
               </div>

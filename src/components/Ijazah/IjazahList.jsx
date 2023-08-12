@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
+  IoEyeOutline,
   IoTrashOutline,
   IoCreateOutline,
   IoHandRightOutline,
@@ -15,6 +16,19 @@ const IjazahList = () => {
   const [ijazah, setIjazah] = useState([]);
   const [selectedProdi, setSelectedProdi] = useState("");
   const [confirmedIjazah, setConfirmedIjazah] = useState([]);
+
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedIjazahDetail, setSelectedIjazahDetail] = useState(null);
+
+  const openDetailModal = (ijazah) => {
+    setSelectedIjazahDetail(ijazah);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setSelectedIjazahDetail(null);
+    setIsDetailModalOpen(false);
+  };
 
   useEffect(() => {
     getIjazah();
@@ -199,8 +213,12 @@ const IjazahList = () => {
                   <th className="is-size-6">Actions</th>
                 </>
               )}
-              {user && user.roles === "kesiswaan" && <th className="is-size-6">Actions</th>}
-              {user && user.roles === "kepala sekolah" && <th className="is-size-6">Actions</th>}
+              {user && user.roles === "kesiswaan" && (
+                <th className="is-size-6">Actions</th>
+              )}
+              {user && user.roles === "kepala sekolah" && (
+                <th className="is-size-6">Actions</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -227,6 +245,7 @@ const IjazahList = () => {
                         to={`https://${ijazah.arsip_ijazah}.ipfs.w3s.link`}
                         target="_blank"
                         className="button is-small is-primary is-fullwidth mt-1"
+                        rel="noopener noreferrer"
                       >
                         Arsip Ijazah
                       </Link>
@@ -276,16 +295,10 @@ const IjazahList = () => {
                         {!isIjazahConfirmed(ijazah.uuid) && (
                           <>
                             <button
-                              onClick={() => konfirmasiKesiswaan(ijazah.uuid)}
-                              className="button is-fullwidth is-small is-info mt-1"
+                              onClick={() => openDetailModal(ijazah)}
+                              className="button is-small is-info is-fullwidth mt-1"
                             >
-                              <IoCheckmarkDoneCircleOutline />
-                            </button>
-                            <button
-                              onClick={() => tolakIjazah(ijazah.uuid)}
-                              className="button is-fullwidth is-small is-danger mt-1"
-                            >
-                              <IoHandRightOutline />
+                              <IoEyeOutline />
                             </button>
                           </>
                         )}
@@ -297,6 +310,7 @@ const IjazahList = () => {
           </tbody>
         </table>
       </div>
+
       {/* Tampilan Pagination */}
       <nav
         className="pagination is-centered is-rounded"
@@ -321,6 +335,60 @@ const IjazahList = () => {
           ))}
         </ul>
       </nav>
+
+      {/* Tampilan Modal */}
+      {selectedIjazahDetail && (
+        <div className={`modal${isDetailModalOpen ? " is-active" : ""}`}>
+          <div className="modal-background" onClick={closeDetailModal}></div>
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <p className="modal-card-title has-text-centered has-text-weight-semibold">
+                Detail Arsip Ijazah
+              </p>
+              <button
+                className="delete"
+                aria-label="close"
+                onClick={closeDetailModal}
+              ></button>
+            </header>
+            <section className="modal-card-body">
+              <p>No Ijazah: {selectedIjazahDetail.no_ijazah}</p>
+              <p>NISN: {selectedIjazahDetail.nisn}</p>
+              <p>NIS: {selectedIjazahDetail.nis}</p>
+              <p>Nama Siswa: {selectedIjazahDetail.nama}</p>
+              <p>Jenis Kelamin: {selectedIjazahDetail.jk}</p>
+              <p>Nama Orangtua: {selectedIjazahDetail.nama_orangtua}</p>
+              <p>Program Studi: {selectedIjazahDetail.prodi}</p>
+              <p>
+                Arsip Ijazah:{" "}
+                <Link
+                  to={`https://${selectedIjazahDetail.arsip_ijazah}.ipfs.w3s.link`}
+                  target="_blank"
+                >
+                  {selectedIjazahDetail.arsip_ijazah}
+                </Link>
+              </p>
+            </section>
+            <footer className="modal-card-foot">
+              <button className="button is-primary" onClick={closeDetailModal}>
+                Tutup
+              </button>
+              <button
+                onClick={() => konfirmasiKesiswaan(selectedIjazahDetail.uuid)}
+                className="button is-info"
+              >
+                <IoCheckmarkDoneCircleOutline className="mr-2" /> Konfirmasi Arsip
+              </button>
+              <button
+                onClick={() => tolakIjazah(selectedIjazahDetail.uuid)}
+                className="button is-danger"
+              >
+                <IoHandRightOutline className="mr-2" /> Tolak Arsip
+              </button>
+            </footer>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

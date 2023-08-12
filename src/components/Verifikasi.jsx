@@ -194,7 +194,9 @@ const Verifikasi = () => {
                           rel="noopener noreferrer"
                           className="button is-info mt-2"
                         >
-                          <p className="has-text-weight-semibold ml-5">Download Arsip Ijazah</p>
+                          <p className="has-text-weight-semibold ml-5">
+                            Download Arsip Ijazah
+                          </p>
                           <span className="icon is-left">
                             <IoCloudDownloadOutline />
                           </span>
@@ -212,7 +214,9 @@ const Verifikasi = () => {
                           rel="noopener noreferrer"
                           className="button is-info mt-2"
                         >
-                          <p className="has-text-weight-semibold ml-5">Download Arsip Sertifikat</p>
+                          <p className="has-text-weight-semibold ml-5">
+                            Download Arsip Sertifikat
+                          </p>
                           <span className="icon is-left">
                             <IoCloudDownloadOutline />
                           </span>

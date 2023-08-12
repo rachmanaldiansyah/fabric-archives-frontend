@@ -263,6 +263,7 @@ const SertifikatConfirm = () => {
           </tbody>
         </table>
       </div>
+      
       {/* Tampilan Pagination */}
       <nav
         className="pagination is-rounded is-centered"
