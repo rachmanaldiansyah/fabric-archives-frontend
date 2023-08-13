@@ -244,7 +244,7 @@ const IjazahList = () => {
                       <Link
                         to={`https://${ijazah.arsip_ijazah}.ipfs.w3s.link`}
                         target="_blank"
-                        className="button is-small is-primary is-fullwidth mt-1"
+                        className="button is-small is-primary is-fullwidth"
                         rel="noopener noreferrer"
                       >
                         Arsip Ijazah
@@ -282,10 +282,10 @@ const IjazahList = () => {
                       <td>
                         {!isIjazahConfirmed(ijazah.uuid) && (
                           <button
-                            onClick={() => konfirmasiKepalaSekolah(ijazah.uuid)}
-                            className="button is-fullwidth is-small is-info mt-1"
+                            onClick={() => openDetailModal(ijazah)}
+                            className="button is-small is-info is-fullwidth"
                           >
-                            <IoCheckmarkDoneCircleOutline />
+                            <IoEyeOutline />
                           </button>
                         )}
                       </td>
@@ -293,14 +293,12 @@ const IjazahList = () => {
                     {user && user.roles === "kesiswaan" && (
                       <td>
                         {!isIjazahConfirmed(ijazah.uuid) && (
-                          <>
-                            <button
-                              onClick={() => openDetailModal(ijazah)}
-                              className="button is-small is-info is-fullwidth mt-1"
-                            >
-                              <IoEyeOutline />
-                            </button>
-                          </>
+                          <button
+                            onClick={() => openDetailModal(ijazah)}
+                            className="button is-small is-info is-fullwidth"
+                          >
+                            <IoEyeOutline />
+                          </button>
                         )}
                       </td>
                     )}
@@ -351,40 +349,128 @@ const IjazahList = () => {
                 onClick={closeDetailModal}
               ></button>
             </header>
-            <section className="modal-card-body">
-              <p>No Ijazah: {selectedIjazahDetail.no_ijazah}</p>
-              <p>NISN: {selectedIjazahDetail.nisn}</p>
-              <p>NIS: {selectedIjazahDetail.nis}</p>
-              <p>Nama Siswa: {selectedIjazahDetail.nama}</p>
-              <p>Jenis Kelamin: {selectedIjazahDetail.jk}</p>
-              <p>Nama Orangtua: {selectedIjazahDetail.nama_orangtua}</p>
-              <p>Program Studi: {selectedIjazahDetail.prodi}</p>
-              <p>
-                Arsip Ijazah:{" "}
-                <Link
-                  to={`https://${selectedIjazahDetail.arsip_ijazah}.ipfs.w3s.link`}
-                  target="_blank"
-                >
-                  {selectedIjazahDetail.arsip_ijazah}
-                </Link>
-              </p>
-            </section>
+            {user && user.roles === "kepala sekolah" && (
+              <section className="modal-card-body">
+                <p>
+                  <strong>Nomor Ijazah:</strong>{" "}
+                  {selectedIjazahDetail.no_ijazah}
+                </p>
+                <p>
+                  <strong>Nomor Induk Siswa Nasional:</strong>{" "}
+                  {selectedIjazahDetail.nisn}
+                </p>
+                <p>
+                  <strong>Nomor Induk Siswa:</strong> {selectedIjazahDetail.nis}
+                </p>
+                <p>
+                  <strong>Nama Lengkap:</strong> {selectedIjazahDetail.nama}
+                </p>
+                <p>
+                  <strong>Jenis Kelamin:</strong> {selectedIjazahDetail.jk}
+                </p>
+                <p>
+                  <strong>Nama Orangtua:</strong>{" "}
+                  {selectedIjazahDetail.nama_orangtua}
+                </p>
+                <p>
+                  <strong>Program Studi:</strong> {selectedIjazahDetail.prodi}
+                </p>
+                <p>
+                  <strong>Arsip Ijazah:</strong>{" "}
+                  <Link
+                    to={`https://${selectedIjazahDetail.arsip_ijazah}.ipfs.w3s.link`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {selectedIjazahDetail.arsip_ijazah}
+                  </Link>
+                </p>
+                <p>
+                  <strong>Tanggal Arsip:</strong>{" "}
+                  {selectedIjazahDetail.createdAt}
+                </p>
+                <p>
+                  <strong>Konfirmasi Kesiswaan:</strong>{" "}
+                  {selectedIjazahDetail.konfirmasi_kesiswaan}
+                </p>
+              </section>
+            )}
+            {user && user.roles === "kesiswaan" && (
+              <section className="modal-card-body">
+                <p>
+                  <strong>Nomor Ijazah:</strong>{" "}
+                  {selectedIjazahDetail.no_ijazah}
+                </p>
+                <p>
+                  <strong>Nomor Induk Siswa Nasional:</strong>{" "}
+                  {selectedIjazahDetail.nisn}
+                </p>
+                <p>
+                  <strong>Nomor Induk Siswa:</strong> {selectedIjazahDetail.nis}
+                </p>
+                <p>
+                  <strong>Nama Lengkap:</strong> {selectedIjazahDetail.nama}
+                </p>
+                <p>
+                  <strong>Jenis Kelamin:</strong> {selectedIjazahDetail.jk}
+                </p>
+                <p>
+                  <strong>Nama Orangtua:</strong>{" "}
+                  {selectedIjazahDetail.nama_orangtua}
+                </p>
+                <p>
+                  <strong>Program Studi:</strong> {selectedIjazahDetail.prodi}
+                </p>
+                <p>
+                  <strong>Arsip Ijazah:</strong>{" "}
+                  <Link
+                    to={`https://${selectedIjazahDetail.arsip_ijazah}.ipfs.w3s.link`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {selectedIjazahDetail.arsip_ijazah}
+                  </Link>
+                </p>
+                <p>
+                  <strong>Tanggal Arsip:</strong>{" "}
+                  {selectedIjazahDetail.createdAt}
+                </p>
+              </section>
+            )}
             <footer className="modal-card-foot">
               <button className="button is-primary" onClick={closeDetailModal}>
                 Tutup
               </button>
-              <button
-                onClick={() => konfirmasiKesiswaan(selectedIjazahDetail.uuid)}
-                className="button is-info"
-              >
-                <IoCheckmarkDoneCircleOutline className="mr-2" /> Konfirmasi Arsip
-              </button>
-              <button
-                onClick={() => tolakIjazah(selectedIjazahDetail.uuid)}
-                className="button is-danger"
-              >
-                <IoHandRightOutline className="mr-2" /> Tolak Arsip
-              </button>
+              {user && user.roles === "kepala sekolah" && (
+                <button
+                  onClick={() =>
+                    konfirmasiKepalaSekolah(selectedIjazahDetail.uuid)
+                  }
+                  className="button is-info"
+                >
+                  <IoCheckmarkDoneCircleOutline className="mr-2" /> Konfirmasi
+                  Arsip
+                </button>
+              )}
+              {user && user.roles === "kesiswaan" && (
+                <>
+                  <button
+                    onClick={() =>
+                      konfirmasiKesiswaan(selectedIjazahDetail.uuid)
+                    }
+                    className="button is-info"
+                  >
+                    <IoCheckmarkDoneCircleOutline className="mr-2" /> Konfirmasi
+                    Arsip
+                  </button>
+                  <button
+                    onClick={() => tolakIjazah(selectedIjazahDetail.uuid)}
+                    className="button is-danger"
+                  >
+                    <IoHandRightOutline className="mr-2" /> Tolak Arsip
+                  </button>
+                </>
+              )}
             </footer>
           </div>
         </div>

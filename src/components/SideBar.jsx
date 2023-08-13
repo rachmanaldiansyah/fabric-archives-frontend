@@ -16,20 +16,28 @@ import Logo from "../img/logo-mtc.png";
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
-  const [ijazahDitolak, setIjazahDitolak] = useState([]);
-  const [sertifikatDitolak, setSertifikatDitolak] = useState([]);
+
   const [ijazahKonfirmasi, setIjazahKonfirmasi] = useState([]);
   const [sertifikatKonfirmasi, setSertifikatKonfirmasi] = useState([]);
+
   const [ijazahPending, setIjazahPending] = useState([]);
   const [sertifikatPending, setSertifikatPending] = useState([]);
 
+  const [ijazahDitolak, setIjazahDitolak] = useState([]);
+  const [sertifikatDitolak, setSertifikatDitolak] = useState([]);
+
+  const [ijazahSelesai, setIjazahSelesai] = useState([]);
+  const [sertifikatSelesai, setSertifikatSelesai] = useState([]);
+
   useEffect(() => {
-    getIjazahDitolak();
-    getSertifikatDitolak();
     getIjazahKonfirmasi();
     getSertifikatKonfirmasi();
     getIjazahPending();
     getSertifikatPending();
+    getIjazahDitolak();
+    getSertifikatDitolak();
+    getIjazahSelesai();
+    getSertifikatSelesai();
   }, []);
 
   const getIjazahKonfirmasi = async () => {
@@ -104,12 +112,32 @@ const Sidebar = () => {
     }
   };
 
-  const countRejectedIjazah = () => {
-    return ijazahDitolak.length;
+  const getIjazahSelesai = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/ijazah");
+      const ijazahSelesai = response.data.filter(
+        (item) =>
+          item.konfirmasi_kepsek === "Dikonfirmasi" &&
+          item.konfirmasi_kesiswaan === "Dikonfirmasi"
+      );
+      setIjazahSelesai(ijazahSelesai);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
-  const countRejectedSertifikat = () => {
-    return sertifikatDitolak.length;
+  const getSertifikatSelesai = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/sertifikat");
+      const sertifikatSelesai = response.data.filter(
+        (item) =>
+          item.konfirmasi_kepsek === "Dikonfirmasi" &&
+          item.konfirmasi_mitra === "Dikonfirmasi"
+      );
+      setSertifikatSelesai(sertifikatSelesai);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   const countIjazahKonfirmasi = () => {
@@ -128,6 +156,22 @@ const Sidebar = () => {
     return sertifikatPending.length;
   };
 
+  const countRejectedIjazah = () => {
+    return ijazahDitolak.length;
+  };
+
+  const countRejectedSertifikat = () => {
+    return sertifikatDitolak.length;
+  };
+
+  const countIjazahDone = () => {
+    return ijazahSelesai.length;
+  };
+
+  const countSertifikatDone = () => {
+    return sertifikatSelesai.length;
+  };
+
   return (
     <aside className="menu has-background-white">
       {user && (
@@ -135,7 +179,13 @@ const Sidebar = () => {
           <div className="menu-list pt-4 pb-4">
             <p className="has-text-dark has-text-centered has-text-weight-bold is-uppercase is-underlined is-family-sans-serif">
               Info Pengguna
-              <img src={Logo} className="mt-2" width="150" height="150" alt="logo-mtc" />
+              <img
+                src={Logo}
+                className="mt-2"
+                width="150"
+                height="150"
+                alt="logo-mtc"
+              />
             </p>
             <p className="has-text-dark has-text-centered has-text-weight-medium is-capitalized is-family-sans-serif mt-2">
               {user.nama}
@@ -185,6 +235,11 @@ const Sidebar = () => {
                 <IoLibraryOutline />
               </span>
               <span className="ml-1">Daftar Ijazah</span>
+              {countIjazahDone() > 0 && (
+                <span className="tag is-danger is-rounded ml-2">
+                  {countIjazahDone()}
+                </span>
+              )}
             </NavLink>
           </li>
         )}
@@ -215,6 +270,11 @@ const Sidebar = () => {
                 <IoLibraryOutline />
               </span>
               <span className="ml-1">Daftar Sertifikat</span>
+              {countSertifikatDone() > 0 && (
+                <span className="tag is-danger is-rounded ml-2">
+                  {countSertifikatDone()}
+                </span>
+              )}
             </NavLink>
           </li>
         )}

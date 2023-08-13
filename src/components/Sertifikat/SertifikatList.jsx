@@ -231,7 +231,7 @@ const SertifikatList = () => {
                   (user.roles === "kepala sekolah" &&
                     !isSertifikatConfirmed(sertifikat.uuid)) ||
                   (user.roles === "mitra" &&
-                    getStatus(sertifikat) === "Dikonfirmasi")) && (
+                    getStatus(sertifikat) === "Pending")) && (
                   <tr key={sertifikat.uuid}>
                     <td className="is-size-6">{index + 1}</td>
                     <td className="is-size-6">{sertifikat.no_sertifikat}</td>
@@ -287,12 +287,10 @@ const SertifikatList = () => {
                           <span className="tag is-success">Terkonfirmasi</span>
                         ) : (
                           <button
-                            onClick={() =>
-                              konfirmasiKepalaSekolah(sertifikat.uuid)
-                            }
-                            className="button is-fullwidth is-small is-info mt-1"
+                            onClick={() => openDetailModal(sertifikat)}
+                            className="button is-small is-info is-fullwidth mt-1"
                           >
-                            <IoCheckmarkDoneCircleOutline />
+                            <IoEyeOutline />
                           </button>
                         )}
                       </td>
@@ -302,14 +300,12 @@ const SertifikatList = () => {
                         {isSertifikatConfirmed(sertifikat.uuid) ? (
                           <span className="tag is-success">Terkonfirmasi</span>
                         ) : (
-                          <>
-                            <button
-                              onClick={() => openDetailModal(sertifikat)}
-                              className="button is-small is-info is-fullwidth mt-1"
-                            >
-                              <IoEyeOutline />
-                            </button>
-                          </>
+                          <button
+                            onClick={() => openDetailModal(sertifikat)}
+                            className="button is-small is-info is-fullwidth mt-1"
+                          >
+                            <IoEyeOutline />
+                          </button>
                         )}
                       </td>
                     )}
@@ -360,38 +356,83 @@ const SertifikatList = () => {
                 onClick={closeDetailModal}
               ></button>
             </header>
-            <section className="modal-card-body">
-              <p>No Sertifikat: {selectedSertifikatDetail.no_sertifikat}</p>
-              <p>Nomor Induk: {selectedSertifikatDetail.nis}</p>
-              <p>Nama Siswa: {selectedSertifikatDetail.nama}</p>
-              <p>Jenis Kelamin: {selectedSertifikatDetail.jk}</p>
-              <p>Kompetensi Keahlian: {selectedSertifikatDetail.keahlian}</p>
-              <p>
-                Arsip Sertifikat:{" "}
-                <Link
-                  to={`https://${selectedSertifikatDetail.arsip_sertifikat}.ipfs.w3s.link`}
-                  target="_blank"
-                >
-                  {selectedSertifikatDetail.arsip_sertifikat}
-                </Link>
-              </p>
-            </section>
+            {user && user.roles === "kepala sekolah" && (
+              <section className="modal-card-body">
+                <p>No Sertifikat: {selectedSertifikatDetail.no_sertifikat}</p>
+                <p>Nomor Induk: {selectedSertifikatDetail.nis}</p>
+                <p>Nama Siswa: {selectedSertifikatDetail.nama}</p>
+                <p>Jenis Kelamin: {selectedSertifikatDetail.jk}</p>
+                <p>Kompetensi Keahlian: {selectedSertifikatDetail.keahlian}</p>
+                <p>
+                  Arsip Sertifikat:{" "}
+                  <Link
+                    to={`https://${selectedSertifikatDetail.arsip_sertifikat}.ipfs.w3s.link`}
+                    target="_blank"
+                  >
+                    {selectedSertifikatDetail.arsip_sertifikat}
+                  </Link>
+                </p>
+                <p>Tanggal Arsip: {selectedSertifikatDetail.createdAt}</p>
+                <p>
+                  Konfirmasi Mitra: {selectedSertifikatDetail.konfirmasi_mitra}
+                </p>
+              </section>
+            )}
+            {user && user.roles === "mitra" && (
+              <section className="modal-card-body">
+                <p>No Sertifikat: {selectedSertifikatDetail.no_sertifikat}</p>
+                <p>Nomor Induk: {selectedSertifikatDetail.nis}</p>
+                <p>Nama Siswa: {selectedSertifikatDetail.nama}</p>
+                <p>Jenis Kelamin: {selectedSertifikatDetail.jk}</p>
+                <p>Kompetensi Keahlian: {selectedSertifikatDetail.keahlian}</p>
+                <p>
+                  Arsip Sertifikat:{" "}
+                  <Link
+                    to={`https://${selectedSertifikatDetail.arsip_sertifikat}.ipfs.w3s.link`}
+                    target="_blank"
+                  >
+                    {selectedSertifikatDetail.arsip_sertifikat}
+                  </Link>
+                </p>
+                <p>Tanggal Arsip: {selectedSertifikatDetail.createdAt}</p>
+              </section>
+            )}
             <footer className="modal-card-foot">
               <button className="button is-primary" onClick={closeDetailModal}>
                 Tutup
               </button>
-              <button
-                onClick={() => konfirmasiMitra(selectedSertifikatDetail.uuid)}
-                className="button is-info"
-              >
-                <IoCheckmarkDoneCircleOutline className="mr-2" /> Konfirmasi Arsip
-              </button>
-              <button
-                onClick={() => tolakSertifikat(selectedSertifikatDetail.uuid)}
-                className="button is-danger"
-              >
-                <IoHandRightOutline className="mr-2" /> Tolak Arsip
-              </button>
+              {user && user.roles === "kepala sekolah" && (
+                <button
+                  onClick={() =>
+                    konfirmasiKepalaSekolah(selectedSertifikatDetail.uuid)
+                  }
+                  className="button is-info"
+                >
+                  <IoCheckmarkDoneCircleOutline className="mr-2" /> Konfirmasi
+                  Arsip
+                </button>
+              )}
+              {user && user.roles === "mitra" && (
+                <>
+                  <button
+                    onClick={() =>
+                      konfirmasiMitra(selectedSertifikatDetail.uuid)
+                    }
+                    className="button is-info"
+                  >
+                    <IoCheckmarkDoneCircleOutline className="mr-2" /> Konfirmasi
+                    Arsip
+                  </button>
+                  <button
+                    onClick={() =>
+                      tolakSertifikat(selectedSertifikatDetail.uuid)
+                    }
+                    className="button is-danger"
+                  >
+                    <IoHandRightOutline className="mr-2" /> Tolak Arsip
+                  </button>
+                </>
+              )}
             </footer>
           </div>
         </div>

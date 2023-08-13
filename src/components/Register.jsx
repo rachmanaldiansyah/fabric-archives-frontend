@@ -150,7 +150,7 @@ const Register = () => {
                       type="text"
                       className="input"
                       value={nama}
-                      onChange={(e) => handleInputChange(e, setNama)}
+                      onChange={(e) => setNama(e.target.value)}
                       placeholder="Nama Lengkap"
                     />
                     <span className="icon is-small is-left">
