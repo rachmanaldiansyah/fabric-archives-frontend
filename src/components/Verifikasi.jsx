@@ -7,6 +7,7 @@ import {
   IoSchoolOutline,
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import "../styles/global.css";
 
 const Verifikasi = () => {
   const [hashValue, setHashValue] = useState("");
@@ -46,7 +47,7 @@ const Verifikasi = () => {
       setVerificationResult(verifyAssetResponse.data);
       setVerificationError(null);
 
-      sortInputValuesAscending(); // melakukan sorting secara ascending
+      sortInputValuesAscending();
     } catch (error) {
       console.error("Failed to verify asset:", error);
       setVerificationResult(null);
@@ -70,7 +71,7 @@ const Verifikasi = () => {
       setVerificationResult(verifyAssetResponse.data);
       setVerificationError(null);
 
-      sortInputValuesAscending(); // melakukan sorting secara ascending
+      sortInputValuesAscending();
     } catch (error) {
       console.error("Failed to verify asset:", error);
       setVerificationResult(null);
@@ -158,9 +159,91 @@ const Verifikasi = () => {
             {verificationResult && verificationResult.response && (
               <div className="box">
                 <h3 className="subtitle has-text-weight-semibold is-uppercase">
-                  Hasil Verifikasi:
+                  Hasil Verifikasi
                 </h3>
-                <form>
+
+                <div className="container">
+                  <div className="row text-center justify-content-center mb-5">
+                    <div className="col-xl-6 col-lg-8">
+                      <h2 className="font-weight-bold">Traceability Arsip Ijazah</h2>
+                      <p className="text-muted">
+                        Ketertelusuran pengarsipan ijazah siswa
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col">
+                      <div
+                        className="timeline-steps aos-init aos-animate"
+                        data-aos="fade-up"
+                      >
+                        <div className="timeline-step">
+                          <div
+                            className="timeline-content"
+                            data-toggle="popover"
+                            data-trigger="hover"
+                            data-placement="top"
+                            title=""
+                          >
+                            <div className="inner-circle"></div>
+                            <p className="h6 mt-3 mb-1">2003</p>
+                            <p className="h6 text-muted mb-0 mb-lg-0">
+                              Favland Founded
+                            </p>
+                          </div>
+                        </div>
+                        <div className="timeline-step">
+                          <div
+                            className="timeline-content"
+                            data-toggle="popover"
+                            data-trigger="hover"
+                            data-placement="top"
+                            title=""
+                          >
+                            <div className="inner-circle"></div>
+                            <p className="h6 mt-3 mb-1">2004</p>
+                            <p className="h6 text-muted mb-0 mb-lg-0">
+                              Launched Trello
+                            </p>
+                          </div>
+                        </div>
+                        <div className="timeline-step">
+                          <div
+                            className="timeline-content"
+                            data-toggle="popover"
+                            data-trigger="hover"
+                            data-placement="top"
+                            title=""
+                          >
+                            <div className="inner-circle"></div>
+                            <p className="h6 mt-3 mb-1">2005</p>
+                            <p className="h6 text-muted mb-0 mb-lg-0">
+                              Launched Messanger
+                            </p>
+                          </div>
+                        </div>
+                        <div className="timeline-step mb-0">
+                          <div
+                            className="timeline-content"
+                            data-toggle="popover"
+                            data-trigger="hover"
+                            data-placement="top"
+                            title=""
+                          >
+                            <div className="inner-circle"></div>
+                            <p className="h6 mt-3 mb-1">2010</p>
+                            <p className="h6 text-muted mb-0 mb-lg-0">
+                              Open New Branch
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <form className="container mt-4">
                   {Object.keys(verificationResult.response).map(
                     (key, index) => (
                       <div className="field" key={index}>

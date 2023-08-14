@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { IoCloudUploadOutline } from "react-icons/io5";
+import { IoCloudUploadOutline, IoEyeOutline } from "react-icons/io5";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -11,45 +11,29 @@ const IjazahConfirm = () => {
   const [selectedProdi, setSelectedProdi] = useState("");
   const [token, setToken] = useState(null);
 
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedIjazahDetail, setSelectedIjazahDetail] = useState(null);
+
+  const openDetailModal = (ijazah) => {
+    setSelectedIjazahDetail(ijazah);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setSelectedIjazahDetail(null);
+    setIsDetailModalOpen(false);
+  };
+
   useEffect(() => {
     fetchToken();
     getIjazah();
   }, [token]);
 
-  // Fungsi untuk melakukan filter hanya menampilkan data arsip yang statusnya telah dikonfirmasi
-  const filterConfirmedIjazah = () => {
-    return ijazah.filter((item) => {
-      const isKepsekConfirmed = item.konfirmasi_kepsek === "Dikonfirmasi";
-      const isKesiswaanConfirmed = item.konfirmasi_kesiswaan === "Dikonfirmasi";
-      return isKepsekConfirmed && isKesiswaanConfirmed;
-    });
-  };
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-
-  // menghitung halaman yang akan ditampilkan
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-  // Mendapatkan data arsip yang statusnya telah dikonfirmasi
-  const confirmedIjazah = filterConfirmedIjazah();
-
-  // Menggunakan data arsip yang statusnya telah dikonfirmasi sebagai data yang akan ditampilkan
-  const currentItems = confirmedIjazah.slice(indexOfFirstItem, indexOfLastItem);
-
-  // fungsi untuk meng-handle halaman
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // fungsi untuk mendapatkan data arsip ijazah dari database
   const getIjazah = async () => {
     const response = await axios.get("http://localhost:5000/ijazah");
     setIjazah(response.data);
   };
 
-  // fungsi untuk mendapatkan status konfirmasi
   const getStatus = (ijazah) => {
     const isKepsekConfirmed = ijazah.konfirmasi_kepsek === "Dikonfirmasi";
     const isKesiswaanConfirmed = ijazah.konfirmasi_kesiswaan === "Dikonfirmasi";
@@ -61,12 +45,69 @@ const IjazahConfirm = () => {
     }
   };
 
-  // fungsi untuk melakukan filter prodi
-  const handleProdiFilterChange = (event) => {
-    setSelectedProdi(event.target.value);
+  // Define a function to format the date and time in Indonesian format
+  const formatDateTime = (isoDateTime) => {
+    const dateTime = new Date(isoDateTime);
+
+    const optionsDate = {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
+
+    const optionsTime = {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+
+    const formattedDate = dateTime.toLocaleDateString("id-ID", optionsDate);
+    const formattedTime = dateTime.toLocaleTimeString("id-ID", optionsTime);
+
+    // Get the timezone offset in minutes
+    const timezoneOffset = dateTime.getTimezoneOffset();
+
+    // Calculate the timezone abbreviation based on offset
+    let timezoneAbbr = "WITA";
+    if (timezoneOffset === -420) {
+      timezoneAbbr = "WIB";
+    } else if (timezoneOffset === -480) {
+      timezoneAbbr = "WIT";
+    }
+
+    return `${formattedDate}, ${formattedTime} ${timezoneAbbr}`;
   };
 
-  // fungsi untuk mendapatkan token dengan melakukan enroll user
+  const isIjazahConfirmed = (ijazahId) => {
+    return confirmedIjazah.includes(ijazahId);
+  };
+
+  const filterConfirmedIjazah = () => {
+    return ijazah.filter((item) => {
+      const isKepsekConfirmed = item.konfirmasi_kepsek === "Dikonfirmasi";
+      const isKesiswaanConfirmed = item.konfirmasi_kesiswaan === "Dikonfirmasi";
+      return isKepsekConfirmed && isKesiswaanConfirmed;
+    });
+  };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const confirmedIjazah = filterConfirmedIjazah();
+  const currentItems = confirmedIjazah.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleProdiFilterChange = (event) => {
+    setSelectedProdi(event.target.value);
+    setCurrentPage(1);
+  };
+
   const fetchToken = async () => {
     try {
       const enrollResponse = await axios.post(
@@ -84,7 +125,6 @@ const IjazahConfirm = () => {
     }
   };
 
-  // fungsi untuk mengarsipkan data ijazah siswa ke jaringan blockchain
   const uploadToBlockchain = async (uuid) => {
     try {
       const selectedIjazah = ijazah.find((item) => item.uuid === uuid);
@@ -128,7 +168,6 @@ const IjazahConfirm = () => {
     }
   };
 
-  // fungsi untuk handle upload ke blockchain
   const handleUpload = (uuid) => {
     uploadToBlockchain(uuid);
   };
@@ -150,9 +189,7 @@ const IjazahConfirm = () => {
             value={selectedProdi}
             onChange={handleProdiFilterChange}
           >
-            <option value="" disabled>
-              Pilih Program Studi
-            </option>
+            <option value="">Pilih Program Studi</option>
             <option value="Teknik Komputer & Jaringan">
               Teknik Komputer & Jaringan
             </option>
@@ -176,6 +213,7 @@ const IjazahConfirm = () => {
               {user && user.roles === "kepala sekolah" && (
                 <>
                   <th>Status</th>
+                  <th>Actions</th>
                 </>
               )}
               {user && user.roles === "kesiswaan" && (
@@ -215,15 +253,24 @@ const IjazahConfirm = () => {
                     {user && user.roles === "kepala sekolah" && (
                       <>
                         <td>
-                          {getStatus(ijazah) === "Dikonfirmasi" && (
-                            <td className="tag is-success is-fullwidth mt-1">
+                          {getStatus(ijazah) === "Dikonfirmasi" ? (
+                            <span className="tag is-success is-fullwidth mt-1">
                               {getStatus(ijazah)}
-                            </td>
+                            </span>
+                          ) : (
+                            <span className="tag is-warning is-fullwidth mt-1">
+                              {getStatus(ijazah)}
+                            </span>
                           )}
-                          {getStatus(ijazah) === "Pending" && (
-                            <td className="tag is-warning is-fullwidth mt-1">
-                              {getStatus(ijazah)}
-                            </td>
+                        </td>
+                        <td>
+                          {!isIjazahConfirmed(ijazah.uuid) && (
+                            <button
+                              onClick={() => openDetailModal(ijazah)}
+                              className="button is-small is-info is-fullwidth"
+                            >
+                              <IoEyeOutline />
+                            </button>
                           )}
                         </td>
                       </>
@@ -231,15 +278,14 @@ const IjazahConfirm = () => {
                     {user && user.roles === "kesiswaan" && (
                       <>
                         <td>
-                          {getStatus(ijazah) === "Dikonfirmasi" && (
-                            <td className="tag is-success is-fullwidth mt-1">
+                          {getStatus(ijazah) === "Dikonfirmasi" ? (
+                            <span className="tag is-success is-fullwidth mt-1">
                               {getStatus(ijazah)}
-                            </td>
-                          )}
-                          {getStatus(ijazah) === "Pending" && (
-                            <td className="tag is-warning is-fullwidth mt-1">
+                            </span>
+                          ) : (
+                            <span className="tag is-warning is-fullwidth mt-1">
                               {getStatus(ijazah)}
-                            </td>
+                            </span>
                           )}
                         </td>
                         <td>
@@ -283,6 +329,205 @@ const IjazahConfirm = () => {
           )}
         </ul>
       </nav>
+
+      {/* Tampilan Modal */}
+      {selectedIjazahDetail && (
+        <div className={`modal${isDetailModalOpen ? " is-active" : ""}`}>
+          <div className="modal-background" onClick={closeDetailModal}></div>
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <p className="modal-card-title has-text-centered has-text-weight-semibold">
+                Detail Arsip Ijazah
+              </p>
+              <button
+                className="delete"
+                aria-label="close"
+                onClick={closeDetailModal}
+              ></button>
+            </header>
+            <section className="modal-card-body">
+              <div className="content">
+                <div className="container">
+                  <div className="row text-center justify-content-center mb-5">
+                    <div className="col-xl-6 col-lg-8">
+                      <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
+                        Traceability Arsip Ijazah
+                      </h2>
+                      <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
+                        Ketertelusuran pengarsipan ijazah siswa
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col">
+                      <div
+                        className="timeline-steps aos-init aos-animate"
+                        data-aos="fade-up"
+                      >
+                        <div className="timeline-step">
+                          <div
+                            className="timeline-content"
+                            data-toggle="popover"
+                            data-trigger="hover"
+                            data-placement="top"
+                            title=""
+                          >
+                            <div className="inner-circle"></div>
+                            <p className="h6 mt-3 mb-1 is-size-7">
+                              {formatDateTime(
+                                selectedIjazahDetail.createdAt
+                              )}
+                            </p>
+                            <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
+                              <strong>Staff Tata Usaha</strong> mengarsipkan
+                              sertifikat{" "}
+                              <strong>{selectedIjazahDetail.nama}</strong>
+                            </p>
+                          </div>
+                        </div>
+                        <div className="timeline-step">
+                          <div
+                            className="timeline-content"
+                            data-toggle="popover"
+                            data-trigger="hover"
+                            data-placement="top"
+                            title=""
+                          >
+                            <div className="inner-circle"></div>
+                            <p className="h6 mt-3 mb-1 is-size-7">
+                              {formatDateTime(
+                                selectedIjazahDetail.updatedAt
+                              )}
+                            </p>
+                            <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
+                              <strong>Kesiswaan</strong> mengkonfirmasi ijazah{" "}
+                              <strong>{selectedIjazahDetail.nama}</strong>
+                            </p>
+                          </div>
+                        </div>
+                        <div className="timeline-step">
+                          <div
+                            className="timeline-content"
+                            data-toggle="popover"
+                            data-trigger="hover"
+                            data-placement="top"
+                            title=""
+                          >
+                            <div className="inner-circle"></div>
+                            <p className="h6 mt-3 mb-1 is-size-7">
+                              {formatDateTime(
+                                selectedIjazahDetail.updatedAt
+                              )}
+                            </p>
+                            <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
+                              <strong>Kepala Sekolah</strong> mengkonfirmasi
+                              ijazah{" "}
+                              <strong>{selectedIjazahDetail.nama}</strong>
+                            </p>
+                          </div>
+                        </div>
+                        <div className="timeline-step mb-0">
+                          <div
+                            className="timeline-content"
+                            data-toggle="popover"
+                            data-trigger="hover"
+                            data-placement="top"
+                            title=""
+                          >
+                            <div className="inner-circle"></div>
+                            <p className="h6 mt-3 mb-1 is-size-7">
+                              {formatDateTime(
+                                selectedIjazahDetail.updatedAt
+                              )}
+                            </p>
+                            <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
+                              <strong>Kesiswaan</strong> mengunggah ijazah{" "}
+                              <strong>{selectedIjazahDetail.nama}</strong>{" "}
+                              ke blockchain.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="container mt-4">
+                  <div className="columns is-centered">
+                    <div className="column is-fullwidth">
+                      <div className="box p-4 has-background-grey-lighter">
+                        <h2 className="is-size-5 has-text-weight-semibold is-underlined has-text-centered">
+                          Keterangan Arsip Ijazah
+                        </h2>
+                        <h3 className="is-size-6 has-text-weight-light is-capitalized has-text-centered mt-1">
+                          Keterangan arsip ijazah siswa{" "}
+                          <br /> {selectedIjazahDetail.nama}
+                        </h3>
+                        <p className="is-size-7">
+                          <strong>Nomor Ijazah:</strong>{" "}
+                          {selectedIjazahDetail.no_ijazah}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Nomor Induk Siswa Nasional:</strong>{" "}
+                          {selectedIjazahDetail.nisn}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Nomor Induk Siswa:</strong>{" "}
+                          {selectedIjazahDetail.nis}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Nama Lengkap:</strong>{" "}
+                          {selectedIjazahDetail.nama}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Jenis Kelamin:</strong>{" "}
+                          {selectedIjazahDetail.jk}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Nama Orangtua/Wali:</strong>{" "}
+                          {selectedIjazahDetail.nama_orangtua}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Program Studi:</strong>{" "}
+                          {selectedIjazahDetail.prodi}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Kepala Sekolah:</strong>{" "}
+                          {selectedIjazahDetail.konfirmasi_kepsek}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Kesiswaan</strong>{" "}
+                          {selectedIjazahDetail.konfirmasi_kesiswaan}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Arsip Ijazah:</strong>{" "}
+                          <a
+                            href={`https://${selectedIjazahDetail.arsip_ijazah}.ipfs.w3s.link`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {selectedIjazahDetail.arsip_ijazah}
+                          </a>
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Tanggal Arsip:</strong>{" "}
+                          {formatDateTime(selectedIjazahDetail.createdAt)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <footer className="modal-card-foot">
+              <button className="button is-primary" onClick={closeDetailModal}>
+                Tutup
+              </button>
+            </footer>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

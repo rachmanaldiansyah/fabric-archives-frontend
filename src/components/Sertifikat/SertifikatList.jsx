@@ -229,7 +229,8 @@ const SertifikatList = () => {
                 (!selectedProdi || selectedProdi === sertifikat.keahlian) &&
                 (user.roles === "admin" ||
                   (user.roles === "kepala sekolah" &&
-                    !isSertifikatConfirmed(sertifikat.uuid)) ||
+                    !isSertifikatConfirmed(sertifikat.uuid) &&
+                    sertifikat.konfirmasi_mitra === "Dikonfirmasi") ||
                   (user.roles === "mitra" &&
                     getStatus(sertifikat) === "Pending")) && (
                   <tr key={sertifikat.uuid}>
