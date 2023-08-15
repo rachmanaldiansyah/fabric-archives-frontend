@@ -522,14 +522,6 @@ const SertifikatConfirm = () => {
                           {selectedSertifikatDetail.keahlian}
                         </p>
                         <p className="is-size-7">
-                          <strong>Kepala Sekolah:</strong>{" "}
-                          {selectedSertifikatDetail.konfirmasi_kepsek}
-                        </p>
-                        <p className="is-size-7">
-                          <strong>Mitra:</strong>{" "}
-                          {selectedSertifikatDetail.konfirmasi_mitra}
-                        </p>
-                        <p className="is-size-7">
                           <strong>Arsip Sertifikat:</strong>{" "}
                           <a
                             href={`https://${selectedSertifikatDetail.arsip_sertifikat}.ipfs.w3s.link`}

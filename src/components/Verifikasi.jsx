@@ -165,8 +165,10 @@ const Verifikasi = () => {
                 <div className="container">
                   <div className="row text-center justify-content-center mb-5">
                     <div className="col-xl-6 col-lg-8">
-                      <h2 className="font-weight-bold">Traceability Arsip Ijazah</h2>
-                      <p className="text-muted">
+                      <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
+                        Traceability Arsip Ijazah
+                      </h2>
+                      <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
                         Ketertelusuran pengarsipan ijazah siswa
                       </p>
                     </div>
@@ -189,7 +191,7 @@ const Verifikasi = () => {
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1">2003</p>
                             <p className="h6 text-muted mb-0 mb-lg-0">
-                              Favland Founded
+                              Staff TU mengarsipkan ijazah siswa
                             </p>
                           </div>
                         </div>
@@ -204,7 +206,7 @@ const Verifikasi = () => {
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1">2004</p>
                             <p className="h6 text-muted mb-0 mb-lg-0">
-                              Launched Trello
+                              Kesiswaan mengkonfirmasi data arsip ijazah siswa
                             </p>
                           </div>
                         </div>
@@ -219,7 +221,7 @@ const Verifikasi = () => {
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1">2005</p>
                             <p className="h6 text-muted mb-0 mb-lg-0">
-                              Launched Messanger
+                              Kepala sekolah mengkonfirmasi data arsip ijazah siswa
                             </p>
                           </div>
                         </div>
@@ -234,7 +236,7 @@ const Verifikasi = () => {
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1">2010</p>
                             <p className="h6 text-muted mb-0 mb-lg-0">
-                              Open New Branch
+                              Kesiswaan mengarsipkan ijazah
                             </p>
                           </div>
                         </div>

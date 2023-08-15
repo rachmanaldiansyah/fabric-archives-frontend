@@ -375,9 +375,7 @@ const IjazahConfirm = () => {
                           >
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
-                              {formatDateTime(
-                                selectedIjazahDetail.createdAt
-                              )}
+                              {formatDateTime(selectedIjazahDetail.createdAt)}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                               <strong>Staff Tata Usaha</strong> mengarsipkan
@@ -396,9 +394,7 @@ const IjazahConfirm = () => {
                           >
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
-                              {formatDateTime(
-                                selectedIjazahDetail.updatedAt
-                              )}
+                              {formatDateTime(selectedIjazahDetail.updatedAt)}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                               <strong>Kesiswaan</strong> mengkonfirmasi ijazah{" "}
@@ -416,9 +412,7 @@ const IjazahConfirm = () => {
                           >
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
-                              {formatDateTime(
-                                selectedIjazahDetail.updatedAt
-                              )}
+                              {formatDateTime(selectedIjazahDetail.updatedAt)}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                               <strong>Kepala Sekolah</strong> mengkonfirmasi
@@ -437,14 +431,12 @@ const IjazahConfirm = () => {
                           >
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
-                              {formatDateTime(
-                                selectedIjazahDetail.updatedAt
-                              )}
+                              {formatDateTime(selectedIjazahDetail.updatedAt)}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                               <strong>Kesiswaan</strong> mengunggah ijazah{" "}
-                              <strong>{selectedIjazahDetail.nama}</strong>{" "}
-                              ke blockchain.
+                              <strong>{selectedIjazahDetail.nama}</strong> ke
+                              blockchain.
                             </p>
                           </div>
                         </div>
@@ -461,8 +453,8 @@ const IjazahConfirm = () => {
                           Keterangan Arsip Ijazah
                         </h2>
                         <h3 className="is-size-6 has-text-weight-light is-capitalized has-text-centered mt-1">
-                          Keterangan arsip ijazah siswa{" "}
-                          <br /> {selectedIjazahDetail.nama}
+                          Keterangan arsip ijazah siswa <br />{" "}
+                          {selectedIjazahDetail.nama}
                         </h3>
                         <p className="is-size-7">
                           <strong>Nomor Ijazah:</strong>{" "}
@@ -491,14 +483,6 @@ const IjazahConfirm = () => {
                         <p className="is-size-7">
                           <strong>Program Studi:</strong>{" "}
                           {selectedIjazahDetail.prodi}
-                        </p>
-                        <p className="is-size-7">
-                          <strong>Kepala Sekolah:</strong>{" "}
-                          {selectedIjazahDetail.konfirmasi_kepsek}
-                        </p>
-                        <p className="is-size-7">
-                          <strong>Kesiswaan</strong>{" "}
-                          {selectedIjazahDetail.konfirmasi_kesiswaan}
                         </p>
                         <p className="is-size-7">
                           <strong>Arsip Ijazah:</strong>{" "}
