@@ -83,6 +83,7 @@ const IjazahList = () => {
         method: "PATCH",
         data: {
           konfirmasi_kepsek: "Dikonfirmasi",
+          konfirmasi_kepsekUpdatedAt: new Date(),
         },
       });
       // Setelah berhasil dikonfirmasi oleh kepala sekolah, update status di state
@@ -108,6 +109,7 @@ const IjazahList = () => {
         method: "PATCH",
         data: {
           konfirmasi_kesiswaan: "Dikonfirmasi",
+          konfirmasi_kesiswaanUpdatedAt: new Date(),
         },
       });
       // Setelah berhasil dikonfirmasi oleh kesiswaan, update status di state
@@ -445,7 +447,7 @@ const IjazahList = () => {
                             >
                               <div className="inner-circle"></div>
                               <p className="h6 mt-3 mb-1 is-size-7">
-                                {formatDateTime(selectedIjazahDetail.updatedAt)}
+                                {formatDateTime(selectedIjazahDetail.konfirmasi_kesiswaanUpdatedAt)}
                               </p>
                               <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                                 <strong>Kesiswaan</strong> mengkonfirmasi ijazah{" "}

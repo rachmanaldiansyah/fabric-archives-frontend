@@ -394,7 +394,7 @@ const IjazahConfirm = () => {
                           >
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
-                              {formatDateTime(selectedIjazahDetail.updatedAt)}
+                              {formatDateTime(selectedIjazahDetail.konfirmasi_kesiswaanUpdatedAt)}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                               <strong>Kesiswaan</strong> mengkonfirmasi ijazah{" "}
@@ -412,7 +412,7 @@ const IjazahConfirm = () => {
                           >
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
-                              {formatDateTime(selectedIjazahDetail.updatedAt)}
+                              {formatDateTime(selectedIjazahDetail.konfirmasi_kepsekUpdatedAt)}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                               <strong>Kepala Sekolah</strong> mengkonfirmasi
@@ -431,7 +431,7 @@ const IjazahConfirm = () => {
                           >
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
-                              {formatDateTime(selectedIjazahDetail.updatedAt)}
+                              {formatDateTime(selectedIjazahDetail.konfirmasi_kesiswaanUpdatedAt)}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                               <strong>Kesiswaan</strong> mengunggah ijazah{" "}

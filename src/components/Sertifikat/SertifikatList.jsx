@@ -87,6 +87,7 @@ const SertifikatList = () => {
         method: "PATCH",
         data: {
           konfirmasi_kepsek: "Dikonfirmasi",
+          konfirmasi_kepsekUpdatedAt: new Date(),
         },
       });
       // Setelah berhasil dikonfirmasi oleh kepala sekolah, update status di state
@@ -112,6 +113,7 @@ const SertifikatList = () => {
         method: "PATCH",
         data: {
           konfirmasi_mitra: "Dikonfirmasi",
+          konfirmasi_mitraUpdatedAt: new Date(),
         },
       });
       // Setelah berhasil dikonfirmasi oleh kesiswaan, update status di state
@@ -456,7 +458,7 @@ const SertifikatList = () => {
                               <div className="inner-circle"></div>
                               <p className="h6 mt-3 mb-1 is-size-7">
                                 {formatDateTime(
-                                  selectedSertifikatDetail.updatedAt
+                                  selectedSertifikatDetail.konfirmasi_mitraUpdatedAt
                                 )}
                               </p>
                               <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">

@@ -434,7 +434,7 @@ const SertifikatConfirm = () => {
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
                               {formatDateTime(
-                                selectedSertifikatDetail.updatedAt
+                                selectedSertifikatDetail.konfirmasi_mitraUpdatedAt
                               )}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
@@ -454,7 +454,7 @@ const SertifikatConfirm = () => {
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
                               {formatDateTime(
-                                selectedSertifikatDetail.updatedAt
+                                selectedSertifikatDetail.konfirmasi_kepsekUpdatedAt
                               )}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
@@ -475,7 +475,7 @@ const SertifikatConfirm = () => {
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
                               {formatDateTime(
-                                selectedSertifikatDetail.updatedAt
+                                selectedSertifikatDetail.konfirmasi_mitraUpdatedAt
                               )}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
