@@ -89,6 +89,8 @@ const IjazahEdit = () => {
         nama_orangtua: nama_orangtua,
         prodi: prodi,
         arsip_ijazah: cid,
+        konfirmasi_kesiswaan: "False",
+        alasan_penolakan: "False",
       });
       showSuccessNotification();
       navigate("/ijazah");

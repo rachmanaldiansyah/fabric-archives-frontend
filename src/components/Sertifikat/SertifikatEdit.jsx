@@ -76,7 +76,7 @@ const SertifikatEdit = () => {
       position: "right",
       style: {
         background: "linear-gradient(to right, #00b09b, #96c93d)",
-      }
+      },
     }).showToast();
 
     Swal.fire({
@@ -96,7 +96,7 @@ const SertifikatEdit = () => {
       position: "right",
       style: {
         background: "linear-gradient(to right, #ff0000, #940000)",
-      }
+      },
     }).showToast();
 
     Swal.fire({
@@ -127,6 +127,8 @@ const SertifikatEdit = () => {
         jk: jk,
         keahlian: keahlian,
         arsip_sertifikat: cid,
+        konfirmasi_mitra: "False",
+        alasan_penolakan: "False",
       });
       showSuccessNotification();
       navigate("/sertifikat");

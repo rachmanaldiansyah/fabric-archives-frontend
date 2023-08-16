@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
-import { IoTrashOutline } from "react-icons/io5";
+import { IoEyeOutline } from "react-icons/io5";
 
 const SertifikatRejected = () => {
   const { user } = useSelector((state) => state.auth);
+
   const [sertifikatDitolak, setSertifikatDitolak] = useState([]);
+
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedSertifikatDetail, setSelectedSertifikatDetail] =
+    useState(null);
+
+  const openDetailModal = (sertifikat) => {
+    setSelectedSertifikatDetail(sertifikat);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setSelectedSertifikatDetail(null);
+    setIsDetailModalOpen(false);
+  };
 
   useEffect(() => {
     getSertifikatDitolak();
@@ -24,27 +38,37 @@ const SertifikatRejected = () => {
     }
   };
 
-  const deleteSertifikat = async (sertifikatId) => {
-    Swal.fire({
-      title: "Apakah Anda Yakin Akan Menghapus Data Ini?",
-      text: "Data arsip sertifikat yang terhapus tidak akan bisa kembali!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, Hapus",
-      cancelButtonText: "Batal",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await axios.delete(`http://localhost:5000/sertifikat/${sertifikatId}`);
-        getSertifikatDitolak();
-        Swal.fire(
-          "Terhapus!",
-          "Data Arsip Sertifikat Telah Dihapus.",
-          "success"
-        );
-      }
-    });
+  // Define a function to format the date and time in Indonesian format
+  const formatDateTime = (isoDateTime) => {
+    const dateTime = new Date(isoDateTime);
+
+    const optionsDate = {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
+
+    const optionsTime = {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+
+    const formattedDate = dateTime.toLocaleDateString("id-ID", optionsDate);
+    const formattedTime = dateTime.toLocaleTimeString("id-ID", optionsTime);
+
+    // Get the timezone offset in minutes
+    const timezoneOffset = dateTime.getTimezoneOffset();
+
+    // Calculate the timezone abbreviation based on offset
+    let timezoneAbbr = "WITA";
+    if (timezoneOffset === -420) {
+      timezoneAbbr = "WIB";
+    } else if (timezoneOffset === -480) {
+      timezoneAbbr = "WIT";
+    }
+
+    return `${formattedDate}, ${formattedTime} ${timezoneAbbr}`;
   };
 
   return (
@@ -57,6 +81,7 @@ const SertifikatRejected = () => {
           Arsipkan ulang data sertifikat siswa yang ditolak
         </h2>
       </div>
+
       <div className="table-container">
         {sertifikatDitolak.length === 0 ? (
           <div className="box">
@@ -104,10 +129,10 @@ const SertifikatRejected = () => {
                   {user && user.roles === "admin" && (
                     <td>
                       <button
-                        onClick={() => deleteSertifikat(sertifikat.uuid)}
-                        className="button is-small is-danger is-fullwidth mt-1"
+                        onClick={() => openDetailModal(sertifikat)}
+                        className="button is-small is-info is-fullwidth mt-1"
                       >
-                        <IoTrashOutline />
+                        <IoEyeOutline />
                       </button>
                     </td>
                   )}
@@ -117,6 +142,88 @@ const SertifikatRejected = () => {
           </table>
         )}
       </div>
+
+      {selectedSertifikatDetail && (
+        <div className={`modal${isDetailModalOpen ? " is-active" : ""}`}>
+          <div className="modal-background" onClick={closeDetailModal}></div>
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <p className="modal-card-title has-text-centered has-text-weight-semibold">
+                Detail Arsip Sertifikat
+              </p>
+              <button
+                className="delete"
+                aria-label="close"
+                onClick={closeDetailModal}
+              ></button>
+            </header>
+            <section className="modal-card-body">
+              <div className="content">
+                <div className="container">
+                  <div className="columns is-centered">
+                    <div className="column is-fullwidth">
+                      <div className="box p-4 has-background-warning mt-0 mb-2">
+                        <p className="is-size-7 has-text-centered">
+                          <strong>Alasan Penolakan:</strong>{" "}
+                          {selectedSertifikatDetail.alasan_penolakan}
+                        </p>
+                      </div>
+                      <div className="box p-4 has-background-grey-lighter">
+                        <h2 className="is-size-5 has-text-weight-semibold is-underlined has-text-centered">
+                          Keterangan Arsip Sertifikat Uji Kompetensi
+                        </h2>
+                        <h3 className="is-size-6 has-text-weight-light is-capitalized has-text-centered mt-1">
+                          Keterangan arsip sertifikat uji kompetensi siswa <br />{" "}
+                          {selectedSertifikatDetail.nama}
+                        </h3>
+                        <p className="is-size-7">
+                          <strong>Nomor Sertifikat:</strong>{" "}
+                          {selectedSertifikatDetail.no_ijazah}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Nomor Induk Siswa:</strong>{" "}
+                          {selectedSertifikatDetail.nis}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Nama Lengkap:</strong>{" "}
+                          {selectedSertifikatDetail.nama}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Jenis Kelamin:</strong>{" "}
+                          {selectedSertifikatDetail.jk}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Program Kompetensi:</strong>{" "}
+                          {selectedSertifikatDetail.keahlian}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Arsip Sertifikat:</strong>{" "}
+                          <a
+                            href={`https://${selectedSertifikatDetail.arsip_sertifikat}.ipfs.w3s.link`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {selectedSertifikatDetail.arsip_sertifikat}
+                          </a>
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Tanggal Arsip:</strong>{" "}
+                          {formatDateTime(selectedSertifikatDetail.createdAt)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <footer className="modal-card-foot">
+              <button className="button is-primary" onClick={closeDetailModal}>
+                Tutup
+              </button>
+            </footer>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

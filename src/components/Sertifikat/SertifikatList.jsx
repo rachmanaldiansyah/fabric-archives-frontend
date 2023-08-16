@@ -17,6 +17,9 @@ const SertifikatList = () => {
   const [selectedProdi, setSelectedProdi] = useState("");
   const [confirmedSertifikat, setConfirmedSertifikat] = useState([]);
 
+  const [rejectButtonClicked, setRejectButtonClicked] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState("");
+
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedSertifikatDetail, setSelectedSertifikatDetail] =
     useState(null);
@@ -127,25 +130,30 @@ const SertifikatList = () => {
   };
 
   const tolakSertifikat = async (sertifikatId) => {
-    try {
-      const response = await axios({
-        url: `http://localhost:5000/sertifikat/${sertifikatId}`,
-        method: "PATCH",
-        data: {
-          konfirmasi_mitra: "Ditolak",
-        },
-      });
-      setConfirmedSertifikat((prevConfirmedSertifikat) => [
-        ...prevConfirmedSertifikat,
-        response.data,
-      ]);
-      Swal.fire(
-        "Ditolak!",
-        "Data arsip sertifikat uji kompetensi siswa ditolak.",
-        "success"
-      );
-    } catch (error) {
-      console.log(error);
+    if (!rejectButtonClicked) {
+      setRejectButtonClicked(true);
+    } else {
+      try {
+        const response = await axios({
+          url: `http://localhost:5000/sertifikat/${sertifikatId}`,
+          method: "PATCH",
+          data: {
+            konfirmasi_mitra: "Ditolak",
+            alasan_penolakan: rejectionReason,
+          },
+        });
+        setConfirmedSertifikat((prevConfirmedSertifikat) => [
+          ...prevConfirmedSertifikat,
+          response.data,
+        ]);
+        Swal.fire(
+          "Ditolak!",
+          "Data arsip sertifikat uji kompetensi siswa ditolak.",
+          "success"
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -164,8 +172,45 @@ const SertifikatList = () => {
     }
   };
 
+  const handleRejectionReasonChange = (event) => {
+    setRejectionReason(event.target.value);
+  };
+
   const handleProdiFilterChange = (event) => {
     setSelectedProdi(event.target.value);
+  };
+
+  // Define a function to format the date and time in Indonesian format
+  const formatDateTime = (isoDateTime) => {
+    const dateTime = new Date(isoDateTime);
+
+    const optionsDate = {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
+
+    const optionsTime = {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+
+    const formattedDate = dateTime.toLocaleDateString("id-ID", optionsDate);
+    const formattedTime = dateTime.toLocaleTimeString("id-ID", optionsTime);
+
+    // Get the timezone offset in minutes
+    const timezoneOffset = dateTime.getTimezoneOffset();
+
+    // Calculate the timezone abbreviation based on offset
+    let timezoneAbbr = "WITA";
+    if (timezoneOffset === -420) {
+      timezoneAbbr = "WIB";
+    } else if (timezoneOffset === -480) {
+      timezoneAbbr = "WIT";
+    }
+
+    return `${formattedDate}, ${formattedTime} ${timezoneAbbr}`;
   };
 
   return (
@@ -359,43 +404,237 @@ const SertifikatList = () => {
             </header>
             {user && user.roles === "kepala sekolah" && (
               <section className="modal-card-body">
-                <p>No Sertifikat: {selectedSertifikatDetail.no_sertifikat}</p>
-                <p>Nomor Induk: {selectedSertifikatDetail.nis}</p>
-                <p>Nama Siswa: {selectedSertifikatDetail.nama}</p>
-                <p>Jenis Kelamin: {selectedSertifikatDetail.jk}</p>
-                <p>Kompetensi Keahlian: {selectedSertifikatDetail.keahlian}</p>
-                <p>
-                  Arsip Sertifikat:{" "}
-                  <Link
-                    to={`https://${selectedSertifikatDetail.arsip_sertifikat}.ipfs.w3s.link`}
-                    target="_blank"
-                  >
-                    {selectedSertifikatDetail.arsip_sertifikat}
-                  </Link>
-                </p>
-                <p>Tanggal Arsip: {selectedSertifikatDetail.createdAt}</p>
-                <p>
-                  Konfirmasi Mitra: {selectedSertifikatDetail.konfirmasi_mitra}
-                </p>
+                <div className="content">
+                  <div className="container">
+                    <div className="row text-center justify-content-center mb-5">
+                      <div className="col-xl-6 col-lg-8">
+                        <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
+                          Traceability Arsip Sertifikat
+                        </h2>
+                        <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
+                          Ketertelusuran pengarsipan sertifikat uji kompetensi
+                          siswa
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col">
+                        <div
+                          className="timeline-steps aos-init aos-animate"
+                          data-aos="fade-up"
+                        >
+                          <div className="timeline-step">
+                            <div
+                              className="timeline-content"
+                              data-toggle="popover"
+                              data-trigger="hover"
+                              data-placement="top"
+                              title="Staff tata usaha telah mengarsipkan data sertifikat"
+                            >
+                              <div className="inner-circle"></div>
+                              <p className="h6 mt-3 mb-1 is-size-7">
+                                {formatDateTime(
+                                  selectedSertifikatDetail.createdAt
+                                )}
+                              </p>
+                              <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
+                                <strong>Staff Tata Usaha</strong> mengarsipkan
+                                sertifikat{" "}
+                                <strong>{selectedSertifikatDetail.nama}</strong>
+                              </p>
+                            </div>
+                          </div>
+                          <div className="timeline-step mb-0">
+                            <div
+                              className="timeline-content"
+                              data-toggle="popover"
+                              data-trigger="hover"
+                              data-placement="top"
+                              title="Mitra telah mengkonfirmasi data arsip sertifikat"
+                            >
+                              <div className="inner-circle"></div>
+                              <p className="h6 mt-3 mb-1 is-size-7">
+                                {formatDateTime(
+                                  selectedSertifikatDetail.updatedAt
+                                )}
+                              </p>
+                              <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
+                                <strong>Mitra</strong> mengkonfirmasi sertifikat{" "}
+                                <strong>{selectedSertifikatDetail.nama}</strong>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="container mt-4">
+                    <div className="columns is-centered">
+                      <div className="column is-fullwidth">
+                        <div className="box p-4 has-background-grey-lighter">
+                          <h2 className="is-size-5 has-text-weight-semibold is-underlined has-text-centered">
+                            Keterangan Arsip Sertifikat
+                          </h2>
+                          <h3 className="is-size-6 has-text-weight-light is-capitalized has-text-centered mt-1">
+                            Keterangan arsip sertifikat uji kompetensi siswa{" "}
+                            <br /> {selectedSertifikatDetail.nama}
+                          </h3>
+                          <p className="is-size-7">
+                            <strong>Nomor Sertifikat:</strong>{" "}
+                            {selectedSertifikatDetail.no_sertifikat}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nomor Induk Siswa:</strong>{" "}
+                            {selectedSertifikatDetail.nis}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nama Lengkap:</strong>{" "}
+                            {selectedSertifikatDetail.nama}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Jenis Kelamin:</strong>{" "}
+                            {selectedSertifikatDetail.jk}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Program Kompetensi:</strong>{" "}
+                            {selectedSertifikatDetail.keahlian}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Arsip Sertifikat:</strong>{" "}
+                            <a
+                              href={`https://${selectedSertifikatDetail.arsip_sertifikat}.ipfs.w3s.link`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {selectedSertifikatDetail.arsip_sertifikat}
+                            </a>
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Tanggal Arsip:</strong>{" "}
+                            {formatDateTime(selectedSertifikatDetail.createdAt)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </section>
             )}
             {user && user.roles === "mitra" && (
               <section className="modal-card-body">
-                <p>No Sertifikat: {selectedSertifikatDetail.no_sertifikat}</p>
-                <p>Nomor Induk: {selectedSertifikatDetail.nis}</p>
-                <p>Nama Siswa: {selectedSertifikatDetail.nama}</p>
-                <p>Jenis Kelamin: {selectedSertifikatDetail.jk}</p>
-                <p>Kompetensi Keahlian: {selectedSertifikatDetail.keahlian}</p>
-                <p>
-                  Arsip Sertifikat:{" "}
-                  <Link
-                    to={`https://${selectedSertifikatDetail.arsip_sertifikat}.ipfs.w3s.link`}
-                    target="_blank"
-                  >
-                    {selectedSertifikatDetail.arsip_sertifikat}
-                  </Link>
-                </p>
-                <p>Tanggal Arsip: {selectedSertifikatDetail.createdAt}</p>
+                <div className="content">
+                  <div className="container">
+                    <div className="row text-center justify-content-center mb-5">
+                      <div className="col-xl-6 col-lg-8">
+                        <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
+                          Traceability Arsip Sertifikat
+                        </h2>
+                        <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
+                          Ketertelusuran pengarsipan sertifikat uji kompetensi
+                          siswa
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col">
+                        <div
+                          className="timeline-steps aos-init aos-animate"
+                          data-aos="fade-up"
+                        >
+                          <div className="timeline-step">
+                            <div
+                              className="timeline-content"
+                              data-toggle="popover"
+                              data-trigger="hover"
+                              data-placement="top"
+                              title="Staff tata usaha telah mengarsipkan data sertifikat"
+                            >
+                              <div className="inner-circle"></div>
+                              <p className="h6 mt-3 mb-1 is-size-7">
+                                {formatDateTime(
+                                  selectedSertifikatDetail.createdAt
+                                )}
+                              </p>
+                              <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
+                                <strong>Staff Tata Usaha</strong> mengarsipkan
+                                sertifikat{" "}
+                                <strong>{selectedSertifikatDetail.nama}</strong>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="container mt-4">
+                    <div className="columns is-centered">
+                      <div className="column is-fullwidth">
+                        <div className="box p-4 has-background-grey-lighter">
+                          <h2 className="is-size-5 has-text-weight-semibold is-underlined has-text-centered">
+                            Keterangan Arsip Sertifikat
+                          </h2>
+                          <h3 className="is-size-6 has-text-weight-light is-capitalized has-text-centered mt-1">
+                            Keterangan arsip sertifikat uji kompetensi siswa{" "}
+                            <br /> {selectedSertifikatDetail.nama}
+                          </h3>
+                          <p className="is-size-7">
+                            <strong>Nomor Sertifikat:</strong>{" "}
+                            {selectedSertifikatDetail.no_sertifikat}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nomor Induk Siswa:</strong>{" "}
+                            {selectedSertifikatDetail.nis}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nama Lengkap:</strong>{" "}
+                            {selectedSertifikatDetail.nama}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Jenis Kelamin:</strong>{" "}
+                            {selectedSertifikatDetail.jk}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Program Kompetensi:</strong>{" "}
+                            {selectedSertifikatDetail.keahlian}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Arsip Sertifikat:</strong>{" "}
+                            <a
+                              href={`https://${selectedSertifikatDetail.arsip_sertifikat}.ipfs.w3s.link`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {selectedSertifikatDetail.arsip_sertifikat}
+                            </a>
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Tanggal Arsip:</strong>{" "}
+                            {formatDateTime(selectedSertifikatDetail.createdAt)}
+                          </p>
+                          {rejectButtonClicked && (
+                            <div className="field">
+                              <div className="control">
+                                <p className="is-size-7 mb-1">
+                                  <strong>Alasan Penolakan</strong>
+                                </p>
+                                <textarea
+                                  className="textarea is-small"
+                                  value={rejectionReason}
+                                  onChange={handleRejectionReasonChange}
+                                  placeholder="Ketikan alasannya disini..."
+                                ></textarea>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </section>
             )}
             <footer className="modal-card-foot">

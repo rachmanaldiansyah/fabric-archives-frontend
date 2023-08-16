@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import { IoTrashOutline } from "react-icons/io5";
+import { IoEyeOutline } from "react-icons/io5";
 
 const IjazahRejected = () => {
-  const [ijazahDitolak, setIjazahDitolak] = useState([]);
   const { user } = useSelector((state) => state.auth);
+
+  const [ijazahDitolak, setIjazahDitolak] = useState([]);
+
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedIjazahDetail, setSelectedIjazahDetail] = useState(null);
+
+  const openDetailModal = (ijazah) => {
+    setSelectedIjazahDetail(ijazah);
+    setIsDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setSelectedIjazahDetail(null);
+    setIsDetailModalOpen(false);
+  };
 
   useEffect(() => {
     getIjazahDitolak();
@@ -24,23 +37,37 @@ const IjazahRejected = () => {
     }
   };
 
-  const deleteIjazah = async (ijazahId) => {
-    Swal.fire({
-      title: "Apakah Anda Yakin Akan Menghapus Data Ini?",
-      text: "Data arsip ijazah yang terhapus tidak akan bisa kembali!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, Hapus",
-      cancelButtonText: "Batal",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await axios.delete(`http://localhost:5000/ijazah/${ijazahId}`);
-        getIjazahDitolak();
-        Swal.fire("Terhapus!", "Data Arsip Ijazah Telah Dihapus.", "success");
-      }
-    });
+  // Define a function to format the date and time in Indonesian format
+  const formatDateTime = (isoDateTime) => {
+    const dateTime = new Date(isoDateTime);
+
+    const optionsDate = {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
+
+    const optionsTime = {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+
+    const formattedDate = dateTime.toLocaleDateString("id-ID", optionsDate);
+    const formattedTime = dateTime.toLocaleTimeString("id-ID", optionsTime);
+
+    // Get the timezone offset in minutes
+    const timezoneOffset = dateTime.getTimezoneOffset();
+
+    // Calculate the timezone abbreviation based on offset
+    let timezoneAbbr = "WITA";
+    if (timezoneOffset === -420) {
+      timezoneAbbr = "WIB";
+    } else if (timezoneOffset === -480) {
+      timezoneAbbr = "WIT";
+    }
+
+    return `${formattedDate}, ${formattedTime} ${timezoneAbbr}`;
   };
 
   return (
@@ -101,10 +128,10 @@ const IjazahRejected = () => {
                   {user && user.roles === "admin" && (
                     <td>
                       <button
-                        onClick={() => deleteIjazah(ijazah.uuid)}
-                        className="button is-small is-danger is-fullwidth mt-1"
+                        onClick={() => openDetailModal(ijazah)}
+                        className="button is-small is-info is-fullwidth mt-1"
                       >
-                        <IoTrashOutline />
+                        <IoEyeOutline />
                       </button>
                     </td>
                   )}
@@ -114,6 +141,98 @@ const IjazahRejected = () => {
           </table>
         )}
       </div>
+
+      {selectedIjazahDetail && (
+        <div className={`modal${isDetailModalOpen ? " is-active" : ""}`}>
+          <div className="modal-background" onClick={closeDetailModal}></div>
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <p className="modal-card-title has-text-centered has-text-weight-semibold">
+                Detail Arsip Ijazah
+              </p>
+              <button
+                className="delete"
+                aria-label="close"
+                onClick={closeDetailModal}
+              ></button>
+            </header>
+            <section className="modal-card-body">
+              <div className="content">
+                <div className="container">
+                  <div className="columns is-centered">
+                    <div className="column is-fullwidth">
+                      <div className="box p-4 has-background-warning mt-0 mb-2">
+                        <p className="is-size-7 has-text-centered">
+                          <strong>
+                            Alasan Penolakan:
+                          </strong>{" "}
+                          {selectedIjazahDetail.alasan_penolakan}
+                        </p>
+                      </div>
+                      <div className="box p-4 has-background-grey-lighter">
+                        <h2 className="is-size-5 has-text-weight-semibold is-underlined has-text-centered">
+                          Keterangan Arsip Ijazah
+                        </h2>
+                        <h3 className="is-size-6 has-text-weight-light is-capitalized has-text-centered mt-1">
+                          Keterangan arsip ijazah siswa <br />{" "}
+                          {selectedIjazahDetail.nama}
+                        </h3>
+                        <p className="is-size-7">
+                          <strong>Nomor Ijazah:</strong>{" "}
+                          {selectedIjazahDetail.no_ijazah}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Nomor Induk Siswa Nasional:</strong>{" "}
+                          {selectedIjazahDetail.nisn}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Nomor Induk Siswa:</strong>{" "}
+                          {selectedIjazahDetail.nis}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Nama Lengkap:</strong>{" "}
+                          {selectedIjazahDetail.nama}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Jenis Kelamin:</strong>{" "}
+                          {selectedIjazahDetail.jk}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Nama Orangtua/Wali:</strong>{" "}
+                          {selectedIjazahDetail.nama_orangtua}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Program Studi:</strong>{" "}
+                          {selectedIjazahDetail.prodi}
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Arsip Ijazah:</strong>{" "}
+                          <a
+                            href={`https://${selectedIjazahDetail.arsip_ijazah}.ipfs.w3s.link`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {selectedIjazahDetail.arsip_ijazah}
+                          </a>
+                        </p>
+                        <p className="is-size-7">
+                          <strong>Tanggal Arsip:</strong>{" "}
+                          {formatDateTime(selectedIjazahDetail.createdAt)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <footer className="modal-card-foot">
+              <button className="button is-primary" onClick={closeDetailModal}>
+                Tutup
+              </button>
+            </footer>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

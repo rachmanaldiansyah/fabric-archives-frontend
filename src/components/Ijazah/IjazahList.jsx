@@ -13,9 +13,13 @@ import {
 
 const IjazahList = () => {
   const { user } = useSelector((state) => state.auth);
+
   const [ijazah, setIjazah] = useState([]);
   const [selectedProdi, setSelectedProdi] = useState("");
   const [confirmedIjazah, setConfirmedIjazah] = useState([]);
+
+  const [rejectButtonClicked, setRejectButtonClicked] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState("");
 
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedIjazahDetail, setSelectedIjazahDetail] = useState(null);
@@ -126,25 +130,30 @@ const IjazahList = () => {
   };
 
   const tolakIjazah = async (ijazahId) => {
-    try {
-      const response = await axios({
-        url: `http://localhost:5000/ijazah/${ijazahId}`,
-        method: "PATCH",
-        data: {
-          konfirmasi_kesiswaan: "Ditolak",
-        },
-      });
-      setConfirmedIjazah((prevConfirmedIjazah) => [
-        ...prevConfirmedIjazah,
-        response.data,
-      ]);
-      Swal.fire(
-        "Ditolak!",
-        "Data Arsip Ijazah Telah Ditolak oleh Kesiswaan.",
-        "success"
-      );
-    } catch (error) {
-      console.log(error);
+    if (!rejectButtonClicked) {
+      setRejectButtonClicked(true);
+    } else {
+      try {
+        const response = await axios({
+          url: `http://localhost:5000/ijazah/${ijazahId}`,
+          method: "PATCH",
+          data: {
+            konfirmasi_kesiswaan: "Ditolak",
+            alasan_penolakan: rejectionReason,
+          },
+        });
+        setConfirmedIjazah((prevConfirmedIjazah) => [
+          ...prevConfirmedIjazah,
+          response.data,
+        ]);
+        Swal.fire(
+          "Ditolak!",
+          "Data Arsip Ijazah Telah Ditolak oleh Kesiswaan.",
+          "success"
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -159,9 +168,46 @@ const IjazahList = () => {
     }
   };
 
+  const handleRejectionReasonChange = (event) => {
+    setRejectionReason(event.target.value);
+  };
+
   const handleProdiFilterChange = (event) => {
     setSelectedProdi(event.target.value);
     setCurrentPage(1);
+  };
+
+  // Define a function to format the date and time in Indonesian format
+  const formatDateTime = (isoDateTime) => {
+    const dateTime = new Date(isoDateTime);
+
+    const optionsDate = {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
+
+    const optionsTime = {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+
+    const formattedDate = dateTime.toLocaleDateString("id-ID", optionsDate);
+    const formattedTime = dateTime.toLocaleTimeString("id-ID", optionsTime);
+
+    // Get the timezone offset in minutes
+    const timezoneOffset = dateTime.getTimezoneOffset();
+
+    // Calculate the timezone abbreviation based on offset
+    let timezoneAbbr = "WITA";
+    if (timezoneOffset === -420) {
+      timezoneAbbr = "WIB";
+    } else if (timezoneOffset === -480) {
+      timezoneAbbr = "WIT";
+    }
+
+    return `${formattedDate}, ${formattedTime} ${timezoneAbbr}`;
   };
 
   return (
@@ -351,90 +397,245 @@ const IjazahList = () => {
             </header>
             {user && user.roles === "kepala sekolah" && (
               <section className="modal-card-body">
-                <p>
-                  <strong>Nomor Ijazah:</strong>{" "}
-                  {selectedIjazahDetail.no_ijazah}
-                </p>
-                <p>
-                  <strong>Nomor Induk Siswa Nasional:</strong>{" "}
-                  {selectedIjazahDetail.nisn}
-                </p>
-                <p>
-                  <strong>Nomor Induk Siswa:</strong> {selectedIjazahDetail.nis}
-                </p>
-                <p>
-                  <strong>Nama Lengkap:</strong> {selectedIjazahDetail.nama}
-                </p>
-                <p>
-                  <strong>Jenis Kelamin:</strong> {selectedIjazahDetail.jk}
-                </p>
-                <p>
-                  <strong>Nama Orangtua:</strong>{" "}
-                  {selectedIjazahDetail.nama_orangtua}
-                </p>
-                <p>
-                  <strong>Program Studi:</strong> {selectedIjazahDetail.prodi}
-                </p>
-                <p>
-                  <strong>Arsip Ijazah:</strong>{" "}
-                  <Link
-                    to={`https://${selectedIjazahDetail.arsip_ijazah}.ipfs.w3s.link`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {selectedIjazahDetail.arsip_ijazah}
-                  </Link>
-                </p>
-                <p>
-                  <strong>Tanggal Arsip:</strong>{" "}
-                  {selectedIjazahDetail.createdAt}
-                </p>
-                <p>
-                  <strong>Konfirmasi Kesiswaan:</strong>{" "}
-                  {selectedIjazahDetail.konfirmasi_kesiswaan}
-                </p>
+                <div className="content">
+                  <div className="container">
+                    <div className="row text-center justify-content-center mb-5">
+                      <div className="col-xl-6 col-lg-8">
+                        <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
+                          Traceability Arsip Ijazah
+                        </h2>
+                        <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
+                          Ketertelusuran pengarsipan ijazah siswa
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col">
+                        <div
+                          className="timeline-steps aos-init aos-animate"
+                          data-aos="fade-up"
+                        >
+                          <div className="timeline-step">
+                            <div
+                              className="timeline-content"
+                              data-toggle="popover"
+                              data-trigger="hover"
+                              data-placement="top"
+                              title=""
+                            >
+                              <div className="inner-circle"></div>
+                              <p className="h6 mt-3 mb-1 is-size-7">
+                                {formatDateTime(selectedIjazahDetail.createdAt)}
+                              </p>
+                              <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
+                                <strong>Staff Tata Usaha</strong> mengarsipkan
+                                sertifikat{" "}
+                                <strong>{selectedIjazahDetail.nama}</strong>
+                              </p>
+                            </div>
+                          </div>
+                          <div className="timeline-step mb-0">
+                            <div
+                              className="timeline-content"
+                              data-toggle="popover"
+                              data-trigger="hover"
+                              data-placement="top"
+                              title=""
+                            >
+                              <div className="inner-circle"></div>
+                              <p className="h6 mt-3 mb-1 is-size-7">
+                                {formatDateTime(selectedIjazahDetail.updatedAt)}
+                              </p>
+                              <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
+                                <strong>Kesiswaan</strong> mengkonfirmasi ijazah{" "}
+                                <strong>{selectedIjazahDetail.nama}</strong>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="container mt-4">
+                    <div className="columns is-centered">
+                      <div className="column is-fullwidth">
+                        <div className="box p-4 has-background-grey-lighter">
+                          <h2 className="is-size-5 has-text-weight-semibold is-underlined has-text-centered">
+                            Keterangan Arsip Ijazah
+                          </h2>
+                          <h3 className="is-size-6 has-text-weight-light is-capitalized has-text-centered mt-1">
+                            Keterangan arsip ijazah siswa <br />{" "}
+                            {selectedIjazahDetail.nama}
+                          </h3>
+                          <p className="is-size-7">
+                            <strong>Nomor Ijazah:</strong>{" "}
+                            {selectedIjazahDetail.no_ijazah}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nomor Induk Siswa Nasional:</strong>{" "}
+                            {selectedIjazahDetail.nisn}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nomor Induk Siswa:</strong>{" "}
+                            {selectedIjazahDetail.nis}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nama Lengkap:</strong>{" "}
+                            {selectedIjazahDetail.nama}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Jenis Kelamin:</strong>{" "}
+                            {selectedIjazahDetail.jk}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nama Orangtua/Wali:</strong>{" "}
+                            {selectedIjazahDetail.nama_orangtua}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Program Studi:</strong>{" "}
+                            {selectedIjazahDetail.prodi}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Arsip Ijazah:</strong>{" "}
+                            <a
+                              href={`https://${selectedIjazahDetail.arsip_ijazah}.ipfs.w3s.link`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {selectedIjazahDetail.arsip_ijazah}
+                            </a>
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Tanggal Arsip:</strong>{" "}
+                            {formatDateTime(selectedIjazahDetail.createdAt)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </section>
             )}
             {user && user.roles === "kesiswaan" && (
               <section className="modal-card-body">
-                <p>
-                  <strong>Nomor Ijazah:</strong>{" "}
-                  {selectedIjazahDetail.no_ijazah}
-                </p>
-                <p>
-                  <strong>Nomor Induk Siswa Nasional:</strong>{" "}
-                  {selectedIjazahDetail.nisn}
-                </p>
-                <p>
-                  <strong>Nomor Induk Siswa:</strong> {selectedIjazahDetail.nis}
-                </p>
-                <p>
-                  <strong>Nama Lengkap:</strong> {selectedIjazahDetail.nama}
-                </p>
-                <p>
-                  <strong>Jenis Kelamin:</strong> {selectedIjazahDetail.jk}
-                </p>
-                <p>
-                  <strong>Nama Orangtua:</strong>{" "}
-                  {selectedIjazahDetail.nama_orangtua}
-                </p>
-                <p>
-                  <strong>Program Studi:</strong> {selectedIjazahDetail.prodi}
-                </p>
-                <p>
-                  <strong>Arsip Ijazah:</strong>{" "}
-                  <Link
-                    to={`https://${selectedIjazahDetail.arsip_ijazah}.ipfs.w3s.link`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {selectedIjazahDetail.arsip_ijazah}
-                  </Link>
-                </p>
-                <p>
-                  <strong>Tanggal Arsip:</strong>{" "}
-                  {selectedIjazahDetail.createdAt}
-                </p>
+                <div className="content">
+                  <div className="container">
+                    <div className="row text-center justify-content-center mb-5">
+                      <div className="col-xl-6 col-lg-8">
+                        <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
+                          Traceability Arsip Ijazah
+                        </h2>
+                        <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
+                          Ketertelusuran pengarsipan ijazah siswa
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col">
+                        <div
+                          className="timeline-steps aos-init aos-animate"
+                          data-aos="fade-up"
+                        >
+                          <div className="timeline-step">
+                            <div
+                              className="timeline-content"
+                              data-toggle="popover"
+                              data-trigger="hover"
+                              data-placement="top"
+                              title=""
+                            >
+                              <div className="inner-circle"></div>
+                              <p className="h6 mt-3 mb-1 is-size-7">
+                                {formatDateTime(selectedIjazahDetail.createdAt)}
+                              </p>
+                              <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
+                                <strong>Staff Tata Usaha</strong> mengarsipkan
+                                sertifikat{" "}
+                                <strong>{selectedIjazahDetail.nama}</strong>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="container mt-4">
+                    <div className="columns is-centered">
+                      <div className="column is-fullwidth">
+                        <div className="box p-4 has-background-grey-lighter">
+                          <h2 className="is-size-5 has-text-weight-semibold is-underlined has-text-centered">
+                            Keterangan Arsip Ijazah
+                          </h2>
+                          <h3 className="is-size-6 has-text-weight-light is-capitalized has-text-centered mt-1">
+                            Keterangan arsip ijazah siswa <br />{" "}
+                            {selectedIjazahDetail.nama}
+                          </h3>
+                          <p className="is-size-7">
+                            <strong>Nomor Ijazah:</strong>{" "}
+                            {selectedIjazahDetail.no_ijazah}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nomor Induk Siswa Nasional:</strong>{" "}
+                            {selectedIjazahDetail.nisn}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nomor Induk Siswa:</strong>{" "}
+                            {selectedIjazahDetail.nis}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nama Lengkap:</strong>{" "}
+                            {selectedIjazahDetail.nama}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Jenis Kelamin:</strong>{" "}
+                            {selectedIjazahDetail.jk}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Nama Orangtua/Wali:</strong>{" "}
+                            {selectedIjazahDetail.nama_orangtua}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Program Studi:</strong>{" "}
+                            {selectedIjazahDetail.prodi}
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Arsip Ijazah:</strong>{" "}
+                            <a
+                              href={`https://${selectedIjazahDetail.arsip_ijazah}.ipfs.w3s.link`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {selectedIjazahDetail.arsip_ijazah}
+                            </a>
+                          </p>
+                          <p className="is-size-7">
+                            <strong>Tanggal Arsip:</strong>{" "}
+                            {formatDateTime(selectedIjazahDetail.createdAt)}
+                          </p>
+                          {rejectButtonClicked && (
+                            <div className="field">
+                              <div className="control">
+                                <p className="is-size-7 mb-1">
+                                  <strong>Alasan Penolakan</strong>
+                                </p>
+                                <textarea
+                                  className="textarea is-small"
+                                  value={rejectionReason}
+                                  onChange={handleRejectionReasonChange}
+                                  placeholder="Ketikan alasannya disini..."
+                                ></textarea>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </section>
             )}
             <footer className="modal-card-foot">
