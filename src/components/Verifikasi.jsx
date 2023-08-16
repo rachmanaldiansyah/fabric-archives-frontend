@@ -36,6 +36,231 @@ const Verifikasi = () => {
     setHashValue(sanitizedValue);
   };
 
+  // Define a function to format the date and time in Indonesian format
+  const formatDateTime = (isoDateTime) => {
+    const dateTime = new Date(isoDateTime);
+
+    const optionsDate = {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
+
+    const optionsTime = {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+
+    const formattedDate = dateTime.toLocaleDateString("id-ID", optionsDate);
+    const formattedTime = dateTime.toLocaleTimeString("id-ID", optionsTime);
+
+    // Get the timezone offset in minutes
+    const timezoneOffset = dateTime.getTimezoneOffset();
+
+    // Calculate the timezone abbreviation based on offset
+    let timezoneAbbr = "WITA";
+    if (timezoneOffset === -420) {
+      timezoneAbbr = "WIB";
+    } else if (timezoneOffset === -480) {
+      timezoneAbbr = "WIT";
+    }
+
+    return `${formattedDate}, ${formattedTime} ${timezoneAbbr}`;
+  };
+
+  // Tambahkan state untuk melacak tipe verifikasi yang dipilih
+  const [verificationType, setVerificationType] = useState(null);
+
+  // Fungsi untuk menampilkan traceability sesuai dengan tipe verifikasi yang dipilih
+  const displayTraceability = () => {
+    if (verificationType === "ijazah") {
+      return (
+        <div className="container">
+          <div className="row text-center justify-content-center mb-5">
+            <div className="col-xl-6 col-lg-8">
+              <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
+                Traceability Arsip Ijazah
+              </h2>
+              <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
+                Ketertelusuran pengarsipan ijazah siswa
+              </p>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div
+                className="timeline-steps aos-init aos-animate"
+                data-aos="fade-up"
+              >
+                <div className="timeline-step">
+                  <div
+                    className="timeline-content"
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    data-placement="top"
+                    title=""
+                  >
+                    <div className="inner-circle"></div>
+                    <p className="is-size-7 mt-3 mb-1">
+                      {formatDateTime(verificationResult.response.TanggalArsip)}
+                    </p>
+                    <p className="is-size-7 text-muted mb-0 mb-lg-0">
+                    <strong>Staff TU</strong> mengarsipkan data ijazah <strong>{verificationResult.response.Nama}</strong>
+                    </p>
+                  </div>
+                </div>
+                <div className="timeline-step">
+                  <div
+                    className="timeline-content"
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    data-placement="top"
+                    title=""
+                  >
+                    <div className="inner-circle"></div>
+                    <p className="is-size-7 mt-3 mb-1">
+                      {formatDateTime(verificationResult.response.TanggalKonfirmasiKesiswaan)}
+                    </p>
+                    <p className="is-size-7 text-muted mb-0 mb-lg-0">
+                      <strong>Kesiswaan</strong> mengkonfirmasi data ijazah <strong>{verificationResult.response.Nama}</strong>
+                    </p>
+                  </div>
+                </div>
+                <div className="timeline-step">
+                  <div
+                    className="timeline-content"
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    data-placement="top"
+                    title=""
+                  >
+                    <div className="inner-circle"></div>
+                    <p className="is-size-7 mt-3 mb-1">
+                      {formatDateTime(verificationResult.response.TanggalKonfirmasiKepsek)}
+                    </p>
+                    <p className="is-size-7 text-muted mb-0 mb-lg-0">
+                      <strong>Kepala Sekolah</strong> mengkonfirmasi data ijazah <strong>{verificationResult.response.Nama}</strong>
+                    </p>
+                  </div>
+                </div>
+                <div className="timeline-step mb-0">
+                  <div
+                    className="timeline-content"
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    data-placement="top"
+                    title=""
+                  >
+                    <div className="inner-circle"></div>
+                    <p className="is-size-7 mt-3 mb-1">{formatDateTime(verificationResult.response.TanggalKonfirmasiKesiswaan)}</p>
+                    <p className="is-size-7 text-muted mb-0 mb-lg-0">
+                      <strong>Kesiswaan</strong> mengarsipkan data ijazah <strong>{verificationResult.response.Nama}</strong> ke Blockchain
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (verificationType === "sertifikat") {
+      return (
+        <div className="container">
+          <div className="row text-center justify-content-center mb-5">
+            <div className="col-xl-6 col-lg-8">
+              <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
+                Traceability Arsip Sertifikat Uji Kompetensi
+              </h2>
+              <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
+                Ketertelusuran alur pengarsipan sertifikat uji kompetensi
+              </p>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div
+                className="timeline-steps aos-init aos-animate"
+                data-aos="fade-up"
+              >
+                <div className="timeline-step">
+                  <div
+                    className="timeline-content"
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    data-placement="top"
+                    title=""
+                  >
+                    <div className="inner-circle"></div>
+                    <p className="is-size-6 mt-3 mb-1">
+                      {formatDateTime(verificationResult.response.TanggalArsip)}
+                    </p>
+                    <p className="is-size-7 text-muted mb-0 mb-lg-0">
+                      <strong>Staff TU</strong> mengarsipkan data sertifikat <strong>{verificationResult.response.Nama}</strong>
+                    </p>
+                  </div>
+                </div>
+                <div className="timeline-step">
+                  <div
+                    className="timeline-content"
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    data-placement="top"
+                    title=""
+                  >
+                    <div className="inner-circle"></div>
+                    <p className="is-size-6 mt-3 mb-1">
+                      {formatDateTime(verificationResult.response.TanggalKonfirmasiKepsek)}
+                    </p>
+                    <p className="is-size-7 text-muted mb-0 mb-lg-0">
+                      <strong>Kepala Sekolah</strong> mengkonfirmasi data arsip sertifikat <strong>{verificationResult.response.Nama}</strong>
+                    </p>
+                  </div>
+                </div>
+                <div className="timeline-step">
+                  <div
+                    className="timeline-content"
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    data-placement="top"
+                    title=""
+                  >
+                    <div className="inner-circle"></div>
+                    <p className="is-size-6 mt-3 mb-1">
+                      {formatDateTime(verificationResult.response.TanggalKonfirmasiMitra)}
+                    </p>
+                    <p className="is-size-7 text-muted mb-0 mb-lg-0">
+                      <strong>Mitra</strong> mengkonfirmasi data arsip sertifikat <strong>{verificationResult.response.Nama}</strong>
+                    </p>
+                  </div>
+                </div>
+                <div className="timeline-step mb-0">
+                  <div
+                    className="timeline-content"
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    data-placement="top"
+                    title=""
+                  >
+                    <div className="inner-circle"></div>
+                    <p className="is-size-6 mt-3 mb-1">
+                      {formatDateTime(verificationResult.response.TanggalKonfirmasiMitra)}
+                    </p>
+                    <p className="is-size-7 text-muted mb-0 mb-lg-0">
+                      <strong>Kesiswaan</strong> mengupload data arsip sertifikat <strong>{verificationResult.response.Nama}</strong> ke Blockchain
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  };
+
   const verifyArsipIjazah = async () => {
     try {
       const verifyAsset = { method: "VerifyArsipIjazah", args: [hashValue] };
@@ -137,7 +362,10 @@ const Verifikasi = () => {
                 <div className="control">
                   <button
                     className="button is-info"
-                    onClick={verifyArsipIjazah}
+                    onClick={() => {
+                      verifyArsipIjazah();
+                      setVerificationType("ijazah");
+                    }}
                   >
                     <IoSchoolOutline />
                   </button>
@@ -145,7 +373,10 @@ const Verifikasi = () => {
                 <div className="control">
                   <button
                     className="button is-info"
-                    onClick={verifyArsipSertifikat}
+                    onClick={() => {
+                      verifyArsipSertifikat();
+                      setVerificationType("sertifikat");
+                    }}
                   >
                     <IoRibbonOutline />
                   </button>
@@ -162,88 +393,7 @@ const Verifikasi = () => {
                   Hasil Verifikasi
                 </h3>
 
-                <div className="container">
-                  <div className="row text-center justify-content-center mb-5">
-                    <div className="col-xl-6 col-lg-8">
-                      <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
-                        Traceability Arsip Ijazah
-                      </h2>
-                      <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
-                        Ketertelusuran pengarsipan ijazah siswa
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col">
-                      <div
-                        className="timeline-steps aos-init aos-animate"
-                        data-aos="fade-up"
-                      >
-                        <div className="timeline-step">
-                          <div
-                            className="timeline-content"
-                            data-toggle="popover"
-                            data-trigger="hover"
-                            data-placement="top"
-                            title=""
-                          >
-                            <div className="inner-circle"></div>
-                            <p className="h6 mt-3 mb-1">2003</p>
-                            <p className="h6 text-muted mb-0 mb-lg-0">
-                              Staff TU mengarsipkan ijazah siswa
-                            </p>
-                          </div>
-                        </div>
-                        <div className="timeline-step">
-                          <div
-                            className="timeline-content"
-                            data-toggle="popover"
-                            data-trigger="hover"
-                            data-placement="top"
-                            title=""
-                          >
-                            <div className="inner-circle"></div>
-                            <p className="h6 mt-3 mb-1">2004</p>
-                            <p className="h6 text-muted mb-0 mb-lg-0">
-                              Kesiswaan mengkonfirmasi data arsip ijazah siswa
-                            </p>
-                          </div>
-                        </div>
-                        <div className="timeline-step">
-                          <div
-                            className="timeline-content"
-                            data-toggle="popover"
-                            data-trigger="hover"
-                            data-placement="top"
-                            title=""
-                          >
-                            <div className="inner-circle"></div>
-                            <p className="h6 mt-3 mb-1">2005</p>
-                            <p className="h6 text-muted mb-0 mb-lg-0">
-                              Kepala sekolah mengkonfirmasi data arsip ijazah siswa
-                            </p>
-                          </div>
-                        </div>
-                        <div className="timeline-step mb-0">
-                          <div
-                            className="timeline-content"
-                            data-toggle="popover"
-                            data-trigger="hover"
-                            data-placement="top"
-                            title=""
-                          >
-                            <div className="inner-circle"></div>
-                            <p className="h6 mt-3 mb-1">2010</p>
-                            <p className="h6 text-muted mb-0 mb-lg-0">
-                              Kesiswaan mengarsipkan ijazah
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {displayTraceability()}
 
                 <form className="container mt-4">
                   {Object.keys(verificationResult.response).map(
@@ -269,6 +419,7 @@ const Verifikasi = () => {
                     )
                   )}
                 </form>
+
                 {verificationResult.response &&
                   verificationResult.response.ArsipIjazah && (
                     <div className="field mt-2">

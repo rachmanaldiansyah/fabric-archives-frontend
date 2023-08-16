@@ -142,6 +142,21 @@ const SertifikatConfirm = () => {
   const uploadToBlockchain = async (uuid) => {
     try {
       const selectedSertifikat = sertifikat.find((item) => item.uuid === uuid);
+
+      // Mengubah string tanggal menjadi objek tanggal
+      const createdAtDate = new Date(selectedSertifikat.createdAt);
+      const kepsekUpdatedAtDate = new Date(
+        selectedSertifikat.konfirmasi_kepsekUpdatedAt
+      );
+      const mitraUpdatedAtDate = new Date(
+        selectedSertifikat.konfirmasi_mitraUpdatedAt
+      );
+
+      // Mengonversi objek tanggal ke format ISO
+      const createdAtISO = createdAtDate.toISOString();
+      const kepsekUpdatedAtISO = kepsekUpdatedAtDate.toISOString();
+      const mitraUpdatedAtISO = mitraUpdatedAtDate.toISOString();
+
       const assetData = {
         method: "CreateAsset",
         args: [
@@ -151,8 +166,11 @@ const SertifikatConfirm = () => {
           selectedSertifikat.jk,
           selectedSertifikat.keahlian,
           selectedSertifikat.arsip_sertifikat,
+          createdAtISO,
           getStatus(selectedSertifikat),
+          kepsekUpdatedAtISO,
           getStatus(selectedSertifikat),
+          mitraUpdatedAtISO,
         ],
       };
 
@@ -498,8 +516,8 @@ const SertifikatConfirm = () => {
                           Keterangan Arsip Sertifikat
                         </h2>
                         <h3 className="is-size-6 has-text-weight-light is-capitalized has-text-centered mt-1">
-                          Keterangan arsip sertifikat uji kompetensi siswa <br/> {" "}
-                          {selectedSertifikatDetail.nama}
+                          Keterangan arsip sertifikat uji kompetensi siswa{" "}
+                          <br /> {selectedSertifikatDetail.nama}
                         </h3>
                         <p className="is-size-7">
                           <strong>Nomor Sertifikat:</strong>{" "}

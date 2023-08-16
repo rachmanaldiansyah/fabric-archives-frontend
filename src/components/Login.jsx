@@ -86,22 +86,25 @@ function Login() {
       <div className="hero-body">
         <div className="container">
           <div className="columns is-centered">
-            <div className="column is-4">
-              <form onSubmit={Auth} className="box">
-                <p className="title has-text-centered has-text-weight-semibold is-uppercase mt-2">
-                  Login Pengguna
-                </p>
-                <div className="columns is-centered">
-                  <div className="column is-half">
-                    <img
-                      src={Logo}
-                      width="250"
-                      height="250"
-                      className="center"
-                      alt="logo"
-                    />
-                  </div>
+            <div className="column is-5">
+              <p className="is-size-4 has-text-centered has-text-weight-semibold mb-2 mt-2">
+                Selamat Datang di <br />{" "}
+                <span className="is-size-5 has-text-weight-light is-capitalized">
+                  Sistem pengarsipan ijazah dan sertifikat uji kompetensi
+                  berbasis blockchain & IPFS
+                </span>
+              </p>
+              <div className="columns is-centered mb-0">
+                <div className="column is-half">
+                  <img
+                    src={Logo}
+                    width="250"
+                    height="250"
+                    alt="logo"
+                  />
                 </div>
+              </div>
+              <form onSubmit={Auth} className="box">
                 <div className="field">
                   <label className="label">Email</label>
                   <div className="control has-icons-left">
@@ -112,7 +115,7 @@ function Login() {
                       onChange={(e) => handleInputChange(e, setEmail)}
                       placeholder="Email"
                     />
-                    <span class="icon is-small is-left">
+                    <span className="icon is-small is-left">
                       <FaEnvelope />
                     </span>
                   </div>
@@ -141,7 +144,10 @@ function Login() {
                   </button>
                 </div>
                 <div className="field mt-5 has-text-centered">
-                  Tidak Punya Akun? <Link to={"/register"} className="is-underlined">Registrasi</Link>
+                  Tidak Punya Akun?{" "}
+                  <Link to={"/register"} className="is-underlined">
+                    Registrasi
+                  </Link>
                 </div>
               </form>
             </div>

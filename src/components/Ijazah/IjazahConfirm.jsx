@@ -128,6 +128,21 @@ const IjazahConfirm = () => {
   const uploadToBlockchain = async (uuid) => {
     try {
       const selectedIjazah = ijazah.find((item) => item.uuid === uuid);
+
+      // Mengubah string tanggal menjadi objek tanggal
+      const createdAtDate = new Date(selectedIjazah.createdAt);
+      const kepsekUpdatedAtDate = new Date(
+        selectedIjazah.konfirmasi_kepsekUpdatedAt
+      );
+      const kesiswaanUpdatedAtDate = new Date(
+        selectedIjazah.konfirmasi_kesiswaanUpdatedAt
+      );
+
+      // Mengonversi objek tanggal ke format ISO
+      const createdAtISO = createdAtDate.toISOString();
+      const kepsekUpdatedAtISO = kepsekUpdatedAtDate.toISOString();
+      const kesiswaanUpdatedAtISO = kesiswaanUpdatedAtDate.toISOString();
+
       const assetData = {
         method: "CreateAsset",
         args: [
@@ -139,8 +154,11 @@ const IjazahConfirm = () => {
           selectedIjazah.nama_orangtua,
           selectedIjazah.prodi,
           selectedIjazah.arsip_ijazah,
+          createdAtISO,
           getStatus(selectedIjazah),
+          kepsekUpdatedAtISO,
           getStatus(selectedIjazah),
+          kesiswaanUpdatedAtISO,
         ],
       };
 
@@ -394,7 +412,9 @@ const IjazahConfirm = () => {
                           >
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
-                              {formatDateTime(selectedIjazahDetail.konfirmasi_kesiswaanUpdatedAt)}
+                              {formatDateTime(
+                                selectedIjazahDetail.konfirmasi_kesiswaanUpdatedAt
+                              )}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                               <strong>Kesiswaan</strong> mengkonfirmasi ijazah{" "}
@@ -412,7 +432,9 @@ const IjazahConfirm = () => {
                           >
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
-                              {formatDateTime(selectedIjazahDetail.konfirmasi_kepsekUpdatedAt)}
+                              {formatDateTime(
+                                selectedIjazahDetail.konfirmasi_kepsekUpdatedAt
+                              )}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                               <strong>Kepala Sekolah</strong> mengkonfirmasi
@@ -431,7 +453,9 @@ const IjazahConfirm = () => {
                           >
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
-                              {formatDateTime(selectedIjazahDetail.konfirmasi_kesiswaanUpdatedAt)}
+                              {formatDateTime(
+                                selectedIjazahDetail.konfirmasi_kesiswaanUpdatedAt
+                              )}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                               <strong>Kesiswaan</strong> mengunggah ijazah{" "}
