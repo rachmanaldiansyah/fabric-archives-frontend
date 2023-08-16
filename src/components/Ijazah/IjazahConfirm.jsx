@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 
 const IjazahConfirm = () => {
   const { user } = useSelector((state) => state.auth);
+
   const [ijazah, setIjazah] = useState([]);
   const [selectedProdi, setSelectedProdi] = useState("");
   const [token, setToken] = useState(null);
@@ -42,6 +43,21 @@ const IjazahConfirm = () => {
       return "Dikonfirmasi";
     } else {
       return "Pending";
+    }
+  };
+
+  const konfirmasiUploadToBlockchain = async (uuid) => {
+    try {
+      const response = await axios({
+        url: `http://localhost:5000/ijazah/${uuid}`,
+        method: "PATCH",
+        data: {
+          konfirmasi_uploadToBlockchain: new Date(),
+        },
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -127,6 +143,8 @@ const IjazahConfirm = () => {
 
   const uploadToBlockchain = async (uuid) => {
     try {
+      konfirmasiUploadToBlockchain(uuid);
+      
       const selectedIjazah = ijazah.find((item) => item.uuid === uuid);
 
       // Mengubah string tanggal menjadi objek tanggal
@@ -137,11 +155,15 @@ const IjazahConfirm = () => {
       const kesiswaanUpdatedAtDate = new Date(
         selectedIjazah.konfirmasi_kesiswaanUpdatedAt
       );
+      const blockchainUpdatedAtDate = new Date(
+        selectedIjazah.konfirmasi_uploadToBlockchain
+      );
 
       // Mengonversi objek tanggal ke format ISO
       const createdAtISO = createdAtDate.toISOString();
       const kepsekUpdatedAtISO = kepsekUpdatedAtDate.toISOString();
       const kesiswaanUpdatedAtISO = kesiswaanUpdatedAtDate.toISOString();
+      const blockchainUpdatedAtISO = blockchainUpdatedAtDate.toISOString();
 
       const assetData = {
         method: "CreateAsset",
@@ -159,6 +181,7 @@ const IjazahConfirm = () => {
           kepsekUpdatedAtISO,
           getStatus(selectedIjazah),
           kesiswaanUpdatedAtISO,
+          blockchainUpdatedAtISO,
         ],
       };
 
@@ -454,7 +477,7 @@ const IjazahConfirm = () => {
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
                               {formatDateTime(
-                                selectedIjazahDetail.konfirmasi_kesiswaanUpdatedAt
+                                selectedIjazahDetail.konfirmasi_uploadToBlockchain
                               )}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">

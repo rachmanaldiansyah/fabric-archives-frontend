@@ -50,6 +50,21 @@ const SertifikatConfirm = () => {
     }
   };
 
+  const konfirmasiUploadToBlockchain = async (uuid) => {
+    try {
+      const response = await axios({
+        url: `http://localhost:5000/sertifikat/${uuid}`,
+        method: "PATCH",
+        data: {
+          konfirmasi_uploadToBlockchain: new Date(),
+        },
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // Define a function to format the date and time in Indonesian format
   const formatDateTime = (isoDateTime) => {
     const dateTime = new Date(isoDateTime);
@@ -141,6 +156,9 @@ const SertifikatConfirm = () => {
 
   const uploadToBlockchain = async (uuid) => {
     try {
+      // Menambah timestamp setelah di klik upload
+      konfirmasiUploadToBlockchain(uuid);
+
       const selectedSertifikat = sertifikat.find((item) => item.uuid === uuid);
 
       // Mengubah string tanggal menjadi objek tanggal
@@ -151,11 +169,15 @@ const SertifikatConfirm = () => {
       const mitraUpdatedAtDate = new Date(
         selectedSertifikat.konfirmasi_mitraUpdatedAt
       );
+      const blockchainUpdatedAtDate = new Date(
+        selectedSertifikat.konfirmasi_uploadToBlockchain
+      );
 
       // Mengonversi objek tanggal ke format ISO
       const createdAtISO = createdAtDate.toISOString();
       const kepsekUpdatedAtISO = kepsekUpdatedAtDate.toISOString();
       const mitraUpdatedAtISO = mitraUpdatedAtDate.toISOString();
+      const blockchainUpdatedAtISO = blockchainUpdatedAtDate.toISOString();
 
       const assetData = {
         method: "CreateAsset",
@@ -171,6 +193,7 @@ const SertifikatConfirm = () => {
           kepsekUpdatedAtISO,
           getStatus(selectedSertifikat),
           mitraUpdatedAtISO,
+          blockchainUpdatedAtISO,
         ],
       };
 
@@ -186,6 +209,7 @@ const SertifikatConfirm = () => {
         title: "Success",
         text: `${response}`,
       });
+
       console.log(createAssetResponse.data);
     } catch (error) {
       Swal.fire({
@@ -493,7 +517,7 @@ const SertifikatConfirm = () => {
                             <div className="inner-circle"></div>
                             <p className="h6 mt-3 mb-1 is-size-7">
                               {formatDateTime(
-                                selectedSertifikatDetail.konfirmasi_mitraUpdatedAt
+                                selectedSertifikatDetail.konfirmasi_uploadToBlockchain
                               )}
                             </p>
                             <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">

@@ -107,7 +107,8 @@ const Verifikasi = () => {
                       {formatDateTime(verificationResult.response.TanggalArsip)}
                     </p>
                     <p className="is-size-7 text-muted mb-0 mb-lg-0">
-                    <strong>Staff TU</strong> mengarsipkan data ijazah <strong>{verificationResult.response.Nama}</strong>
+                      <strong>Staff TU</strong> mengarsipkan data ijazah{" "}
+                      <strong>{verificationResult.response.Nama}</strong>
                     </p>
                   </div>
                 </div>
@@ -121,10 +122,13 @@ const Verifikasi = () => {
                   >
                     <div className="inner-circle"></div>
                     <p className="is-size-7 mt-3 mb-1">
-                      {formatDateTime(verificationResult.response.TanggalKonfirmasiKesiswaan)}
+                      {formatDateTime(
+                        verificationResult.response.TanggalKonfirmasiKesiswaan
+                      )}
                     </p>
                     <p className="is-size-7 text-muted mb-0 mb-lg-0">
-                      <strong>Kesiswaan</strong> mengkonfirmasi data ijazah <strong>{verificationResult.response.Nama}</strong>
+                      <strong>Kesiswaan</strong> mengkonfirmasi data ijazah{" "}
+                      <strong>{verificationResult.response.Nama}</strong>
                     </p>
                   </div>
                 </div>
@@ -138,10 +142,13 @@ const Verifikasi = () => {
                   >
                     <div className="inner-circle"></div>
                     <p className="is-size-7 mt-3 mb-1">
-                      {formatDateTime(verificationResult.response.TanggalKonfirmasiKepsek)}
+                      {formatDateTime(
+                        verificationResult.response.TanggalKonfirmasiKepsek
+                      )}
                     </p>
                     <p className="is-size-7 text-muted mb-0 mb-lg-0">
-                      <strong>Kepala Sekolah</strong> mengkonfirmasi data ijazah <strong>{verificationResult.response.Nama}</strong>
+                      <strong>Kepala Sekolah</strong> mengkonfirmasi data ijazah{" "}
+                      <strong>{verificationResult.response.Nama}</strong>
                     </p>
                   </div>
                 </div>
@@ -154,9 +161,15 @@ const Verifikasi = () => {
                     title=""
                   >
                     <div className="inner-circle"></div>
-                    <p className="is-size-7 mt-3 mb-1">{formatDateTime(verificationResult.response.TanggalKonfirmasiKesiswaan)}</p>
+                    <p className="is-size-7 mt-3 mb-1">
+                      {formatDateTime(
+                        verificationResult.response.TanggalUpload
+                      )}
+                    </p>
                     <p className="is-size-7 text-muted mb-0 mb-lg-0">
-                      <strong>Kesiswaan</strong> mengarsipkan data ijazah <strong>{verificationResult.response.Nama}</strong> ke Blockchain
+                      <strong>Kesiswaan</strong> mengarsipkan data ijazah{" "}
+                      <strong>{verificationResult.response.Nama}</strong> ke
+                      Blockchain
                     </p>
                   </div>
                 </div>
@@ -198,7 +211,8 @@ const Verifikasi = () => {
                       {formatDateTime(verificationResult.response.TanggalArsip)}
                     </p>
                     <p className="is-size-7 text-muted mb-0 mb-lg-0">
-                      <strong>Staff TU</strong> mengarsipkan data sertifikat <strong>{verificationResult.response.Nama}</strong>
+                      <strong>Staff TU</strong> mengarsipkan data sertifikat{" "}
+                      <strong>{verificationResult.response.Nama}</strong>
                     </p>
                   </div>
                 </div>
@@ -212,10 +226,14 @@ const Verifikasi = () => {
                   >
                     <div className="inner-circle"></div>
                     <p className="is-size-6 mt-3 mb-1">
-                      {formatDateTime(verificationResult.response.TanggalKonfirmasiKepsek)}
+                      {formatDateTime(
+                        verificationResult.response.TanggalKonfirmasiKepsek
+                      )}
                     </p>
                     <p className="is-size-7 text-muted mb-0 mb-lg-0">
-                      <strong>Kepala Sekolah</strong> mengkonfirmasi data arsip sertifikat <strong>{verificationResult.response.Nama}</strong>
+                      <strong>Kepala Sekolah</strong> mengkonfirmasi data arsip
+                      sertifikat{" "}
+                      <strong>{verificationResult.response.Nama}</strong>
                     </p>
                   </div>
                 </div>
@@ -229,10 +247,14 @@ const Verifikasi = () => {
                   >
                     <div className="inner-circle"></div>
                     <p className="is-size-6 mt-3 mb-1">
-                      {formatDateTime(verificationResult.response.TanggalKonfirmasiMitra)}
+                      {formatDateTime(
+                        verificationResult.response.TanggalKonfirmasiMitra
+                      )}
                     </p>
                     <p className="is-size-7 text-muted mb-0 mb-lg-0">
-                      <strong>Mitra</strong> mengkonfirmasi data arsip sertifikat <strong>{verificationResult.response.Nama}</strong>
+                      <strong>Mitra</strong> mengkonfirmasi data arsip
+                      sertifikat{" "}
+                      <strong>{verificationResult.response.Nama}</strong>
                     </p>
                   </div>
                 </div>
@@ -246,10 +268,15 @@ const Verifikasi = () => {
                   >
                     <div className="inner-circle"></div>
                     <p className="is-size-6 mt-3 mb-1">
-                      {formatDateTime(verificationResult.response.TanggalKonfirmasiMitra)}
+                      {formatDateTime(
+                        verificationResult.response.TanggalUpload
+                      )}
                     </p>
                     <p className="is-size-7 text-muted mb-0 mb-lg-0">
-                      <strong>Kesiswaan</strong> mengupload data arsip sertifikat <strong>{verificationResult.response.Nama}</strong> ke Blockchain
+                      <strong>Kesiswaan</strong> mengupload data arsip
+                      sertifikat{" "}
+                      <strong>{verificationResult.response.Nama}</strong> ke
+                      Blockchain
                     </p>
                   </div>
                 </div>
@@ -395,7 +422,17 @@ const Verifikasi = () => {
 
                 {displayTraceability()}
 
-                <form className="container mt-4">
+                <form className="container box has-background-grey-lighter">
+                  <div className="row text-center justify-content-center mb-5">
+                    <div className="col-xl-6 col-lg-8">
+                      <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
+                        Keterangan Arsip {verificationResult.response.Nama}
+                      </h2>
+                      <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
+                        Keterangan arsip siswa yang telah diterbitkan di Blockchain.
+                      </p>
+                    </div>
+                  </div>
                   {Object.keys(verificationResult.response).map(
                     (key, index) => (
                       <div className="field" key={index}>
