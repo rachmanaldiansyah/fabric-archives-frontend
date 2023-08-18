@@ -144,7 +144,7 @@ const IjazahConfirm = () => {
   const uploadToBlockchain = async (uuid) => {
     try {
       konfirmasiUploadToBlockchain(uuid);
-      
+
       const selectedIjazah = ijazah.find((item) => item.uuid === uuid);
 
       // Mengubah string tanggal menjadi objek tanggal

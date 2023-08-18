@@ -207,7 +207,7 @@ const Verifikasi = () => {
                     title=""
                   >
                     <div className="inner-circle"></div>
-                    <p className="is-size-6 mt-3 mb-1">
+                    <p className="is-size-7 mt-3 mb-1">
                       {formatDateTime(verificationResult.response.TanggalArsip)}
                     </p>
                     <p className="is-size-7 text-muted mb-0 mb-lg-0">
@@ -225,7 +225,7 @@ const Verifikasi = () => {
                     title=""
                   >
                     <div className="inner-circle"></div>
-                    <p className="is-size-6 mt-3 mb-1">
+                    <p className="is-size-7 mt-3 mb-1">
                       {formatDateTime(
                         verificationResult.response.TanggalKonfirmasiKepsek
                       )}
@@ -246,7 +246,7 @@ const Verifikasi = () => {
                     title=""
                   >
                     <div className="inner-circle"></div>
-                    <p className="is-size-6 mt-3 mb-1">
+                    <p className="is-size-7 mt-3 mb-1">
                       {formatDateTime(
                         verificationResult.response.TanggalKonfirmasiMitra
                       )}
@@ -267,7 +267,7 @@ const Verifikasi = () => {
                     title=""
                   >
                     <div className="inner-circle"></div>
-                    <p className="is-size-6 mt-3 mb-1">
+                    <p className="is-size-7 mt-3 mb-1">
                       {formatDateTime(
                         verificationResult.response.TanggalUpload
                       )}

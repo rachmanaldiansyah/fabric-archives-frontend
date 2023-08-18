@@ -156,11 +156,9 @@ const SertifikatConfirm = () => {
 
   const uploadToBlockchain = async (uuid) => {
     try {
-      // Menambah timestamp setelah di klik upload
       konfirmasiUploadToBlockchain(uuid);
 
       const selectedSertifikat = sertifikat.find((item) => item.uuid === uuid);
-
       // Mengubah string tanggal menjadi objek tanggal
       const createdAtDate = new Date(selectedSertifikat.createdAt);
       const kepsekUpdatedAtDate = new Date(
