@@ -366,7 +366,7 @@ const SertifikatConfirm = () => {
                         <td>
                           <button
                             onClick={() => handleUpload(sertifikat.uuid)}
-                            className="button is-small is-info is-fullwidth has-tooltip-bottom"
+                            className="button is-small is-info is-fullwidth has-tooltip-bottom custom-popover-button"
                             data-tooltip="Upload ke Blockchain"
                           >
                             <IoCloudUploadOutline />

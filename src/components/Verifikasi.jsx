@@ -3,16 +3,23 @@ import axios from "axios";
 import Logo from "../img/logo-mtc.png";
 import {
   IoCloudDownloadOutline,
+  IoEyeOutline,
   IoRibbonOutline,
   IoSchoolOutline,
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import "../styles/global.css";
+import "../styles/ijazah.css";
+import "../styles/sertifikat.css";
 
 const Verifikasi = () => {
   const [hashValue, setHashValue] = useState("");
   const [verificationResult, setVerificationResult] = useState(null);
   const [verificationError, setVerificationError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   // Menambahkan state untuk nilai input yang akan diubah
   const [inputValues, setInputValues] = useState({});
@@ -388,7 +395,7 @@ const Verifikasi = () => {
                 </div>
                 <div className="control">
                   <button
-                    className="button is-info"
+                    className="button is-info custom-popover-button-ijazah"
                     onClick={() => {
                       verifyArsipIjazah();
                       setVerificationType("ijazah");
@@ -399,7 +406,7 @@ const Verifikasi = () => {
                 </div>
                 <div className="control">
                   <button
-                    className="button is-info"
+                    className="button is-info custom-popover-button-sertifikat"
                     onClick={() => {
                       verifyArsipSertifikat();
                       setVerificationType("sertifikat");
@@ -422,41 +429,6 @@ const Verifikasi = () => {
 
                 {displayTraceability()}
 
-                <form className="container box has-background-grey-lighter">
-                  <div className="row text-center justify-content-center mb-5">
-                    <div className="col-xl-6 col-lg-8">
-                      <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
-                        Keterangan Arsip {verificationResult.response.Nama}
-                      </h2>
-                      <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
-                        Keterangan arsip siswa yang telah diterbitkan di Blockchain.
-                      </p>
-                    </div>
-                  </div>
-                  {Object.keys(verificationResult.response).map(
-                    (key, index) => (
-                      <div className="field" key={index}>
-                        <label
-                          className="label has-text-left pl-2"
-                          htmlFor={key}
-                        >
-                          {key}
-                        </label>
-                        <div className="control pl-2">
-                          <input
-                            className="input"
-                            type="text"
-                            id={key}
-                            name={key}
-                            value={verificationResult.response[key] || ""}
-                            readOnly
-                          />
-                        </div>
-                      </div>
-                    )
-                  )}
-                </form>
-
                 {verificationResult.response &&
                   verificationResult.response.ArsipIjazah && (
                     <div className="field mt-2">
@@ -465,15 +437,24 @@ const Verifikasi = () => {
                           to={`https://${getArsipIjazahDownloadLink()}.ipfs.w3s.link`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="button is-info mt-2"
+                          className="button is-primary mt-2"
                         >
                           <p className="has-text-weight-semibold ml-5">
-                            Download Arsip Ijazah
+                            Download Arsip
                           </p>
                           <span className="icon is-left">
                             <IoCloudDownloadOutline />
                           </span>
                         </Link>
+                        <button
+                          className="button is-info mt-2 ml-2"
+                          onClick={toggleModal}
+                        >
+                          <p className="has-text-weight-semibold ml-5">Detail Arsip</p>
+                          <span className="icon is-left">
+                            <IoEyeOutline />
+                          </span>
+                        </button>
                       </div>
                     </div>
                   )}
@@ -485,18 +466,91 @@ const Verifikasi = () => {
                           to={`https://${getArsipSertifikatDownloadLink()}.ipfs.w3s.link`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="button is-info mt-2"
+                          className="button is-primary mt-2"
                         >
                           <p className="has-text-weight-semibold ml-5">
-                            Download Arsip Sertifikat
+                            Download Arsip
                           </p>
                           <span className="icon is-left">
                             <IoCloudDownloadOutline />
                           </span>
                         </Link>
+                        <button
+                          className="button is-info mt-2 ml-2"
+                          onClick={toggleModal}
+                        >
+                          <p className="has-text-weight-semibold ml-5">Detail Arsip</p>
+                          <span className="icon is-left">
+                            <IoEyeOutline />
+                          </span>
+                        </button>
                       </div>
                     </div>
                   )}
+
+                {isModalOpen && (
+                  <div className="modal is-active">
+                    <div
+                      className="modal-background"
+                      onClick={toggleModal}
+                    ></div>
+                    <div className="modal-card">
+                      <header className="modal-card-head">
+                        <p className="modal-card-title">Detail Arsip</p>
+                        <button
+                          className="delete"
+                          aria-label="close"
+                          onClick={toggleModal}
+                        ></button>
+                      </header>
+                      <section className="modal-card-body">
+                        <form className="container">
+                          <div className="row text-center justify-content-center mb-5">
+                            <div className="col-xl-6 col-lg-8">
+                              <h2 className="font-weight-bold is-size-5 has-text-centered has-text-weight-semibold">
+                                Keterangan Arsip{" "}
+                                {verificationResult.response.Nama}
+                              </h2>
+                              <p className="text-muted is-size-6 has-text-centered has-text-weight-light is-capitalized">
+                                Keterangan arsip siswa yang telah diterbitkan di
+                                Blockchain.
+                              </p>
+                            </div>
+                          </div>
+                          {Object.keys(verificationResult.response).map(
+                            (key, index) => (
+                              <div className="field" key={index}>
+                                <label
+                                  className="label has-text-left has-text-weight-semibold pl-2"
+                                  htmlFor={key}
+                                >
+                                  {key}
+                                </label>
+                                <div className="control pl-2">
+                                  <input
+                                    className="input"
+                                    type="text"
+                                    id={key}
+                                    name={key}
+                                    value={
+                                      verificationResult.response[key] || ""
+                                    }
+                                    readOnly
+                                  />
+                                </div>
+                              </div>
+                            )
+                          )}
+                        </form>
+                      </section>
+                      <footer className="modal-card-foot">
+                        <button className="button is-primary" onClick={toggleModal}>
+                          Tutup
+                        </button>
+                      </footer>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

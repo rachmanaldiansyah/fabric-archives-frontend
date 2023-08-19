@@ -10,6 +10,7 @@ import {
   IoHandRightOutline,
   IoCheckmarkDoneCircleOutline,
 } from "react-icons/io5";
+import "../../styles/sertifikat.css";
 
 const SertifikatList = () => {
   const { user } = useSelector((state) => state.auth);
@@ -100,6 +101,7 @@ const SertifikatList = () => {
         "Data Arsip Sertifikat Telah Dikonfirmasi oleh Kepala Sekolah.",
         "success"
       );
+      closeDetailModal();
     } catch (error) {
       console.log(error);
     }
@@ -126,6 +128,7 @@ const SertifikatList = () => {
         "Data Arsip Sertifikat Telah Dikonfirmasi oleh Mitra.",
         "success"
       );
+      closeDetailModal();
     } catch (error) {
       console.log(error);
     }
@@ -153,6 +156,7 @@ const SertifikatList = () => {
           "Data arsip sertifikat uji kompetensi siswa ditolak.",
           "success"
         );
+        closeDetailModal();
       } catch (error) {
         console.log(error);
       }
@@ -336,7 +340,7 @@ const SertifikatList = () => {
                         ) : (
                           <button
                             onClick={() => openDetailModal(sertifikat)}
-                            className="button is-small is-info is-fullwidth mt-1"
+                            className="button is-small is-info is-fullwidth mt-1 custom-popover-button-detail"
                           >
                             <IoEyeOutline />
                           </button>
@@ -350,7 +354,7 @@ const SertifikatList = () => {
                         ) : (
                           <button
                             onClick={() => openDetailModal(sertifikat)}
-                            className="button is-small is-info is-fullwidth mt-1"
+                            className="button is-small is-info is-fullwidth mt-1 custom-popover-button-detail"
                           >
                             <IoEyeOutline />
                           </button>

@@ -10,6 +10,7 @@ import {
   IoHandRightOutline,
   IoCheckmarkDoneCircleOutline,
 } from "react-icons/io5";
+import "../../styles/ijazah.css";
 
 const IjazahList = () => {
   const { user } = useSelector((state) => state.auth);
@@ -96,6 +97,7 @@ const IjazahList = () => {
         "Data Arsip Ijazah Telah Dikonfirmasi oleh Kepala Sekolah.",
         "success"
       );
+      closeDetailModal();
     } catch (error) {
       console.log(error);
     }
@@ -122,6 +124,7 @@ const IjazahList = () => {
         "Data Arsip Ijazah Telah Dikonfirmasi oleh Kesiswaan.",
         "success"
       );
+      closeDetailModal();
     } catch (error) {
       console.log(error);
     }
@@ -153,6 +156,7 @@ const IjazahList = () => {
           "Data Arsip Ijazah Telah Ditolak oleh Kesiswaan.",
           "success"
         );
+        closeDetailModal();
       } catch (error) {
         console.log(error);
       }
@@ -331,7 +335,7 @@ const IjazahList = () => {
                         {!isIjazahConfirmed(ijazah.uuid) && (
                           <button
                             onClick={() => openDetailModal(ijazah)}
-                            className="button is-small is-info is-fullwidth"
+                            className="button is-small is-info is-fullwidth custom-popover-button-detail"
                           >
                             <IoEyeOutline />
                           </button>
@@ -343,7 +347,7 @@ const IjazahList = () => {
                         {!isIjazahConfirmed(ijazah.uuid) && (
                           <button
                             onClick={() => openDetailModal(ijazah)}
-                            className="button is-small is-info is-fullwidth"
+                            className="button is-small is-info is-fullwidth custom-popover-button-detail"
                           >
                             <IoEyeOutline />
                           </button>

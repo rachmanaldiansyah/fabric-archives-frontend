@@ -1,0 +1,51 @@
+/* Gaya untuk popover */
+.custom-popover-button-sertifikat {
+  position: relative;
+}
+
+.custom-popover-button-sertifikat::after {
+  content: "Verifikasi Sertifikat";
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+
+.custom-popover-button-sertifikat:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Gaya untuk popover */
+.custom-popover-button-detail {
+  position: relative;
+}
+
+.custom-popover-button-detail::after {
+  content: "Detail Arsip";
+  position: absolute;
+  top: -40px;
+  left: 35%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+
+.custom-popover-button-detail:hover::after {
+  opacity: 1;
+  visibility: visible;
+}

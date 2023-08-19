@@ -332,7 +332,7 @@ const IjazahConfirm = () => {
                         <td>
                           <button
                             onClick={() => handleUpload(ijazah.uuid)}
-                            className="button is-small is-info is-fullwidth mt-1"
+                            className="button is-small is-info is-fullwidth mt-1 custom-popover-button"
                           >
                             <IoCloudUploadOutline />
                           </button>

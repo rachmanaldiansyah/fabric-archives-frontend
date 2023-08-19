@@ -1,86 +1,89 @@
-body{margin-top:20px;}
+body {
+  margin-top: 20px;
+}
 .timeline-steps {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .timeline-steps .timeline-step {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    margin: 1rem
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 1rem;
 }
 
-@media (min-width:768px) {
-    .timeline-steps .timeline-step:not(:last-child):after {
-        content: "";
-        display: block;
-        border-top: .25rem dotted #3b82f6;
-        width: 3.46rem;
-        position: absolute;
-        left: 7.5rem;
-        top: .3125rem
-    }
-    .timeline-steps .timeline-step:not(:first-child):before {
-        content: "";
-        display: block;
-        border-top: .25rem dotted #3b82f6;
-        width: 3.8125rem;
-        position: absolute;
-        right: 7.5rem;
-        top: .3125rem
-    }
+@media (min-width: 768px) {
+  .timeline-steps .timeline-step:not(:last-child):after {
+    content: "";
+    display: block;
+    border-top: 0.25rem dotted #3b82f6;
+    width: 3.46rem;
+    position: absolute;
+    left: 7.5rem;
+    top: 0.3125rem;
+  }
+  .timeline-steps .timeline-step:not(:first-child):before {
+    content: "";
+    display: block;
+    border-top: 0.25rem dotted #3b82f6;
+    width: 3.8125rem;
+    position: absolute;
+    right: 7.5rem;
+    top: 0.3125rem;
+  }
 }
 
 .timeline-steps .timeline-content {
-    width: 10rem;
-    text-align: center
+  width: 10rem;
+  text-align: center;
 }
 
 .timeline-steps .timeline-content .inner-circle {
-    border-radius: 1.5rem;
-    height: 1rem;
-    width: 1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #3b82f6
+  border-radius: 1.5rem;
+  height: 1rem;
+  width: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3b82f6;
 }
 
 .timeline-steps .timeline-content .inner-circle:before {
-    content: "";
-    background-color: #3b82f6;
-    display: inline-block;
-    height: 3rem;
-    width: 3rem;
-    min-width: 3rem;
-    border-radius: 6.25rem;
-    opacity: .5
+  content: "";
+  background-color: #3b82f6;
+  display: inline-block;
+  height: 3rem;
+  width: 3rem;
+  min-width: 3rem;
+  border-radius: 6.25rem;
+  opacity: 0.5;
 }
 
-/* CSS untuk tombol dengan tooltip */
-.button[title]:hover::before {
-    content: attr(title);
-    position: absolute;
-    background-color: #333;
-    color: white;
-    padding: 0.25em 0.5em;
-    border-radius: 4px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    z-index: 1;
-  }
-  
-  .button[title]:hover::before {
-    opacity: 1;
-  }
-  
-  /* CSS tambahan untuk styling tombol */
-  .button {
-    position: relative;
-    overflow: hidden;
-  }
+/* Gaya untuk popover */
+.custom-popover-button {
+  position: relative;
+}
+
+.custom-popover-button::after {
+  content: "Upload Arsip";
+  position: absolute;
+  top: -40px;
+  left: 35%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+
+.custom-popover-button:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
