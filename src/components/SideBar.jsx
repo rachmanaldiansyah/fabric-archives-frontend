@@ -190,6 +190,9 @@ const Sidebar = () => {
             <p className="has-text-dark has-text-centered has-text-weight-medium is-capitalized is-family-sans-serif mt-2">
               {user.nama}
             </p>
+            <p className="has-text-dark has-text-centered has-text-weight-light is-uppercase is-family-sans-serif mt-2 mb-0">
+              {user.nip}
+            </p>
             <p className="has-text-dark has-text-centered has-text-weight-light is-uppercase is-family-sans-serif mt-2">
               {user.roles}
             </p>

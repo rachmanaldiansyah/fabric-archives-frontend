@@ -106,7 +106,7 @@ function Login() {
               </div>
               <form onSubmit={Auth} className="box">
                 <div className="field">
-                  <label className="label">Email</label>
+                  <label className="label has-text-weight-semibold">Email</label>
                   <div className="control has-icons-left">
                     <input
                       type="text"
@@ -121,7 +121,7 @@ function Login() {
                   </div>
                 </div>
                 <div className="field">
-                  <label className="label">Password</label>
+                  <label className="label has-text-weight-semibold">Password</label>
                   <div className="control has-icons-left">
                     <input
                       type="password"

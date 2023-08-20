@@ -20,6 +20,7 @@ const Register = () => {
   const [confPassword, setConfPassword] = useState("");
   const [roles, setRoles] = useState("");
   const [nip, setNip] = useState("");
+
   const navigate = useNavigate();
   const { isLoading } = useSelector((state) => state.auth);
 
@@ -61,6 +62,31 @@ const Register = () => {
     }).showToast();
   };
 
+  const verifyNIPRole = () => {
+    const validNIPs = {
+      1100049712: "kesiswaan",
+      1100049713: "kepala sekolah",
+    };
+
+    if (validNIPs[nip]) {
+      if (validNIPs[nip] === "kepala sekolah") {
+        return nip === "1100049713";
+      } else if (validNIPs[nip] === "kesiswaan") {
+        return nip === "1100049712";
+      } else {
+        return validNIPs[nip] === roles;
+      }
+    }
+
+    if (roles === "kepala sekolah") {
+      return false;
+    } else if (roles === "kesiswaan") {
+      return false;
+    }
+  
+    return true;
+  };
+
   const validateEmail = (email) => {
     // Simple email validation using regex
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -85,6 +111,9 @@ const Register = () => {
       return;
     } else if (!/[0-9]{10}/.test(nip)) {
       showErrorNotification("NIP harus terdiri dari 10 digit angka.");
+      return;
+    } else if (!verifyNIPRole()) {
+      showErrorNotification("NIP tidak sesuai dengan hak akses yang dipilih.");
       return;
     }
 
@@ -115,7 +144,7 @@ const Register = () => {
     ) {
       return (
         <div className="field">
-          <label className="label">NIP</label>
+          <label className="label has-text-weight-semibold">NIP</label>
           <div className="control has-icons-left">
             <input
               type="text"
@@ -160,7 +189,7 @@ const Register = () => {
               </div>
               <form onSubmit={SaveUsers} className="box">
                 <div className="field">
-                  <label className="label">Nama</label>
+                  <label className="label has-text-weight-semibold">Nama</label>
                   <div className="control has-icons-left">
                     <input
                       type="text"
@@ -175,7 +204,7 @@ const Register = () => {
                   </div>
                 </div>
                 <div className="field">
-                  <label className="label">Email</label>
+                  <label className="label has-text-weight-semibold">Email</label>
                   <div className="control has-icons-left">
                     <input
                       type="text"
@@ -190,7 +219,7 @@ const Register = () => {
                   </div>
                 </div>
                 <div className="field">
-                  <label className="label">Password</label>
+                  <label className="label has-text-weight-semibold">Password</label>
                   <div className="control has-icons-left">
                     <input
                       type="password"
@@ -205,7 +234,7 @@ const Register = () => {
                   </div>
                 </div>
                 <div className="field">
-                  <label className="label">Konfirmasi Password</label>
+                  <label className="label has-text-weight-semibold">Konfirmasi Password</label>
                   <div className="control has-icons-left">
                     <input
                       type="password"
@@ -220,7 +249,7 @@ const Register = () => {
                   </div>
                 </div>
                 <div className="field">
-                  <label className="label">Hak Akses</label>
+                  <label className="label has-text-weight-semibold">Hak Akses</label>
                   <div className="control has-icons-left">
                     <div className="select is-fullwidth">
                       <select
@@ -231,8 +260,8 @@ const Register = () => {
                           Pilih Hak Akses
                         </option>
                         <option value="admin">Staff Tata Usaha</option>
-                        <option value="kepala sekolah">Kepala Sekolah</option>
                         <option value="kesiswaan">Kesiswaan</option>
+                        <option value="kepala sekolah">Kepala Sekolah</option>
                         <option value="mitra">Mitra</option>
                       </select>
                     </div>

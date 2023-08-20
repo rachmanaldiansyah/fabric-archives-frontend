@@ -67,6 +67,7 @@ const UsersList = () => {
           <thead>
             <tr>
               <th>No</th>
+              <th>NIP</th>
               <th>Nama Lengkap</th>
               <th>Email</th>
               <th>Roles</th>
@@ -77,6 +78,7 @@ const UsersList = () => {
             {currentItems.map((users, index) => (
               <tr key={users.uuid}>
                 <td>{index + 1}</td>
+                <td>{users.nip}</td>
                 <td>{users.nama}</td>
                 <td>{users.email}</td>
                 <td className="is-capitalized">{users.roles}</td>
