@@ -9,6 +9,7 @@ import {
   IoCreateOutline,
   IoHandRightOutline,
   IoCheckmarkDoneCircleOutline,
+  IoSearchOutline,
 } from "react-icons/io5";
 import "../../styles/ijazah.css";
 
@@ -24,6 +25,12 @@ const IjazahList = () => {
 
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedIjazahDetail, setSelectedIjazahDetail] = useState(null);
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   const openDetailModal = (ijazah) => {
     setSelectedIjazahDetail(ijazah);
@@ -60,7 +67,7 @@ const IjazahList = () => {
   const deleteIjazah = async (ijazahId) => {
     Swal.fire({
       title: "Apakah Anda Yakin Akan Menghapus Data Ini?",
-      text: "Data arsip ijazah yang terhapus tidak akan bisa kembali!",
+      text: "Perhatian: data arsip ijazah yang terhapus tidak akan bisa kembali!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -69,9 +76,28 @@ const IjazahList = () => {
       cancelButtonText: "Batal",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await axios.delete(`http://localhost:5000/ijazah/${ijazahId}`);
-        getIjazah();
-        Swal.fire("Terhapus!", "Data Arsip Ijazah Telah Dihapus.", "success");
+        Swal.fire({
+          title: "Apakah Anda Benar-benar Yakin Akan Menghapus Data Ini?",
+          text: "Perhatian: data arsip ijazah yang terhapus tidak akan bisa kembali!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ya, Hapus",
+          cancelButtonText: "Batal",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            await axios.delete(`http://localhost:5000/ijazah/${ijazahId}`);
+            getIjazah();
+            Swal.fire(
+              "Terhapus!",
+              "Data Arsip Ijazah Telah Dihapus.",
+              "success"
+            );
+          } else {
+            Swal.fire("Info", "Data Arsip Ijazah Tidak Terhapus.", "info");
+          }
+        });
       }
     });
   };
@@ -105,29 +131,54 @@ const IjazahList = () => {
 
   // fungsi untuk konfirmasi data sebagai kesiswaan
   const konfirmasiKesiswaan = async (ijazahId) => {
-    try {
-      const response = await axios({
-        url: `http://localhost:5000/ijazah/${ijazahId}`,
-        method: "PATCH",
-        data: {
-          konfirmasi_kesiswaan: "Dikonfirmasi",
-          konfirmasi_kesiswaanUpdatedAt: new Date(),
-        },
-      });
-      // Setelah berhasil dikonfirmasi oleh kesiswaan, update status di state
-      setConfirmedIjazah((prevConfirmedIjazah) => [
-        ...prevConfirmedIjazah,
-        response.data,
-      ]);
-      Swal.fire(
-        "Terkonfirmasi!",
-        "Data Arsip Ijazah Telah Dikonfirmasi oleh Kesiswaan.",
-        "success"
-      );
-      closeDetailModal();
-    } catch (error) {
-      console.log(error);
-    }
+    Swal.fire({
+      title: "Apakah Data Arsip Ijazah Siswa Sudah Sesuai?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, Konfirmasi",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Apakah Anda Benar Yakin Bahwa Arsip Ijazah Sudah Sesuai?",
+          text: "Perhatian: data arsip yang sudah dikonfirmasi tidak dapat diubah kembali, mohon di periksa dengan teliti!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ya, Konfirmasi",
+          cancelButtonText: "Batal",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await axios({
+                url: `http://localhost:5000/ijazah/${ijazahId}`,
+                method: "PATCH",
+                data: {
+                  konfirmasi_kesiswaan: "Dikonfirmasi",
+                  konfirmasi_kesiswaanUpdatedAt: new Date(),
+                },
+              });
+              // Setelah berhasil dikonfirmasi oleh kesiswaan, update status di state
+              setConfirmedIjazah((prevConfirmedIjazah) => [
+                ...prevConfirmedIjazah,
+                response.data,
+              ]);
+              Swal.fire(
+                "Terkonfirmasi!",
+                "Data Arsip Ijazah Telah Dikonfirmasi oleh Kesiswaan.",
+                "success"
+              );
+              closeDetailModal();
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        });
+      }
+    });
   };
 
   const isIjazahConfirmed = (ijazahId) => {
@@ -227,22 +278,42 @@ const IjazahList = () => {
         </h2>
       </div>
 
-      <div className="container mb-2">
-        <div className="control select is-primary">
-          <select
-            id="prodiFilter"
-            value={selectedProdi}
-            onChange={handleProdiFilterChange}
-          >
-            <option value="" selected disabled>
-              Pilih Program Studi
-            </option>
-            <option value="Teknik Komputer & Jaringan">
-              Teknik Komputer & Jaringan
-            </option>
-            <option value="Perhotelan">Perhotelan</option>
-            <option value="Multimedia">Multimedia</option>
-          </select>
+      <div className="columns">
+        <div className="column is-one-third">
+          <div className="control select is-primary">
+            <select
+              id="prodiFilter"
+              value={selectedProdi}
+              onChange={handleProdiFilterChange}
+            >
+              <option value="" disabled>
+                Pilih Program Studi
+              </option>
+              <option value="Teknik Komputer & Jaringan">
+                Teknik Komputer & Jaringan
+              </option>
+              <option value="Perhotelan">Perhotelan</option>
+              <option value="Multimedia">Multimedia</option>
+            </select>
+          </div>
+        </div>
+        <div className="column is-one-third is-hidden-mobile"></div>{" "}
+        {/* Kolom kosong */}
+        <div className="column is-one-third">
+          <div className="field has-addons is-pulled-right">
+            <div className="control has-icons-left">
+              <input
+                type="text"
+                className="input is-primary"
+                placeholder="Cari Nama Siswa"
+                value={searchQuery}
+                onChange={handleSearch}
+              />
+              <span className="icon is-small is-left">
+                <IoSearchOutline />
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -282,7 +353,10 @@ const IjazahList = () => {
                     !isIjazahConfirmed(ijazah.uuid) &&
                     ijazah.konfirmasi_kesiswaan === "Dikonfirmasi") ||
                   (user.roles === "kesiswaan" &&
-                    getStatus(ijazah) === "Pending")) && (
+                    getStatus(ijazah) === "Pending")) &&
+                ijazah.nama
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase()) && (
                   <tr key={ijazah.uuid}>
                     <td className="is-size-6">{index + 1}</td>
                     <td className="is-size-6">{ijazah.no_ijazah}</td>
@@ -436,7 +510,7 @@ const IjazahList = () => {
                               </p>
                               <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                                 <strong>Staff Tata Usaha</strong> mengarsipkan
-                                sertifikat{" "}
+                                ijazah{" "}
                                 <strong>{selectedIjazahDetail.nama}</strong>
                               </p>
                             </div>
@@ -451,7 +525,9 @@ const IjazahList = () => {
                             >
                               <div className="inner-circle"></div>
                               <p className="h6 mt-3 mb-1 is-size-7">
-                                {formatDateTime(selectedIjazahDetail.konfirmasi_kesiswaanUpdatedAt)}
+                                {formatDateTime(
+                                  selectedIjazahDetail.konfirmasi_kesiswaanUpdatedAt
+                                )}
                               </p>
                               <p className="h6 text-muted mb-0 mb-lg-0 is-size-7 is-capitalized">
                                 <strong>Kesiswaan</strong> mengkonfirmasi ijazah{" "}

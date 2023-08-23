@@ -9,6 +9,7 @@ import {
   IoCreateOutline,
   IoHandRightOutline,
   IoCheckmarkDoneCircleOutline,
+  IoSearchOutline,
 } from "react-icons/io5";
 import "../../styles/sertifikat.css";
 
@@ -24,6 +25,12 @@ const SertifikatList = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedSertifikatDetail, setSelectedSertifikatDetail] =
     useState(null);
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   const openDetailModal = (sertifikat) => {
     setSelectedSertifikatDetail(sertifikat);
@@ -109,29 +116,54 @@ const SertifikatList = () => {
 
   // fungsi untuk konfirmasi data sebagai kesiswaan
   const konfirmasiMitra = async (sertifikatId) => {
-    try {
-      const response = await axios({
-        url: `http://localhost:5000/sertifikat/${sertifikatId}`,
-        method: "PATCH",
-        data: {
-          konfirmasi_mitra: "Dikonfirmasi",
-          konfirmasi_mitraUpdatedAt: new Date(),
-        },
-      });
-      // Setelah berhasil dikonfirmasi oleh kesiswaan, update status di state
-      setConfirmedSertifikat((prevConfirmedSertifikat) => [
-        ...prevConfirmedSertifikat,
-        response.data,
-      ]);
-      Swal.fire(
-        "Terkonfirmasi!",
-        "Data Arsip Sertifikat Telah Dikonfirmasi oleh Mitra.",
-        "success"
-      );
-      closeDetailModal();
-    } catch (error) {
-      console.log(error);
-    }
+    Swal.fire({
+      title: "Apakah Data Arsip Sertifikat Siswa Sudah Sesuai?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, Konfirmasi",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Apakah Anda Benar Yakin Bahwa Arsip Sertifikat Sudah Sesuai?",
+          text: "Perhatian: data arsip yang sudah dikonfirmasi tidak dapat diubah kembali, mohon di periksa dengan teliti!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ya, Konfirmasi",
+          cancelButtonText: "Batal",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await axios({
+                url: `http://localhost:5000/sertifikat/${sertifikatId}`,
+                method: "PATCH",
+                data: {
+                  konfirmasi_mitra: "Dikonfirmasi",
+                  konfirmasi_mitraUpdatedAt: new Date(),
+                },
+              });
+              // Setelah berhasil dikonfirmasi oleh kesiswaan, update status di state
+              setConfirmedSertifikat((prevConfirmedSertifikat) => [
+                ...prevConfirmedSertifikat,
+                response.data,
+              ]);
+              Swal.fire(
+                "Terkonfirmasi!",
+                "Data Arsip Sertifikat Telah Dikonfirmasi oleh Mitra.",
+                "success"
+              );
+              closeDetailModal();
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        });
+      }
+    });
   };
 
   const tolakSertifikat = async (sertifikatId) => {
@@ -220,7 +252,7 @@ const SertifikatList = () => {
   };
 
   return (
-    <div className="container box">
+    <div className="container box is-max-widescreen">
       <div className="hero is-primary is-bold box">
         <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">
           Kelola Daftar Arsip Sertifikat Uji Kompetensi
@@ -229,23 +261,43 @@ const SertifikatList = () => {
           Daftar data arsip sertifikat uji kompetensi siswa
         </h2>
       </div>
-
-      <div className="container mb-2">
-        <div className="control select is-primary">
-          <select
-            id="prodiFilter"
-            value={selectedProdi}
-            onChange={handleProdiFilterChange}
-          >
-            <option value="" selected disabled>
-              Pilih Program Studi
-            </option>
-            <option value="Teknik Komputer & Jaringan">
-              Teknik Komputer & Jaringan
-            </option>
-            <option value="Perhotelan">Perhotelan</option>
-            <option value="Multimedia">Multimedia</option>
-          </select>
+      
+      <div className="columns">
+        <div className="column is-one-third">
+          <div className="control select is-primary">
+            <select
+              id="prodiFilter"
+              value={selectedProdi}
+              onChange={handleProdiFilterChange}
+            >
+              <option value="" disabled>
+                Pilih Program Studi
+              </option>
+              <option value="Teknik Komputer & Jaringan">
+                Teknik Komputer & Jaringan
+              </option>
+              <option value="Perhotelan">Perhotelan</option>
+              <option value="Multimedia">Multimedia</option>
+            </select>
+          </div>
+        </div>
+        <div className="column is-one-third is-hidden-mobile"></div>{" "}
+        {/* Kolom kosong */}
+        <div className="column is-one-third">
+          <div className="field has-addons is-pulled-right">
+            <div className="control has-icons-left">
+              <input
+                type="text"
+                className="input is-primary"
+                placeholder="Cari Nama Siswa"
+                value={searchQuery}
+                onChange={handleSearch}
+              />
+              <span className="icon is-small is-left">
+                <IoSearchOutline />
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -283,7 +335,10 @@ const SertifikatList = () => {
                     !isSertifikatConfirmed(sertifikat.uuid) &&
                     sertifikat.konfirmasi_mitra === "Dikonfirmasi") ||
                   (user.roles === "mitra" &&
-                    getStatus(sertifikat) === "Pending")) && (
+                    getStatus(sertifikat) === "Pending")) &&
+                sertifikat.nama
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase()) && (
                   <tr key={sertifikat.uuid}>
                     <td className="is-size-6">{index + 1}</td>
                     <td className="is-size-6">{sertifikat.no_sertifikat}</td>
