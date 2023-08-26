@@ -12,7 +12,6 @@ const UsersCreate = () => {
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
   const [roles, setRoles] = useState("");
-  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
   const showSuccessNotification = () => {
@@ -23,7 +22,7 @@ const UsersCreate = () => {
       position: "right",
       style: {
         background: "linear-gradient(to right, #00b09b, #96c93d)",
-      }
+      },
     }).showToast();
 
     Swal.fire({
@@ -43,7 +42,7 @@ const UsersCreate = () => {
       position: "right",
       style: {
         background: "linear-gradient(to right, #ff0000, #940000)",
-      }
+      },
     }).showToast();
 
     Swal.fire({
@@ -97,7 +96,6 @@ const UsersCreate = () => {
         <div className="card-content">
           <div className="content">
             <form onSubmit={SaveUsers}>
-              <p className="has-text-centered">{msg}</p>
               <div className="field">
                 <label className="label">Nama Lengkap</label>
                 <div className="control">

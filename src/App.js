@@ -4,6 +4,9 @@ import Login from "./components/Login";
 import Users from "./pages/Users";
 import UsersCreate from "./components/Register";
 import UsersFormEdit from "./pages/UsersFormEdit";
+import Siswa from "./pages/siswa/Siswa";
+import SiswaFormCreate from "./pages/siswa/SiswaFormCreate";
+import SiswaFormEdit from "./pages/siswa/SiswaFormEdit";
 import Ijazah from "./pages/ijazah/Ijazah";
 import IjazahFormConfirm from "./pages/ijazah/IjazahFormConfirm";
 import IjazahFormEdit from "./pages/ijazah/IjazahFormEdit";
@@ -26,6 +29,9 @@ function App() {
           <Route path="/users" element={<Users />} />
           <Route path="/register" element={<UsersCreate />} />
           <Route path="/users/edit/:id" element={<UsersFormEdit />} />
+          <Route path="/siswa" element={<Siswa />} />
+          <Route path="/siswa/tambah" element={<SiswaFormCreate />} />
+          <Route path="/siswa/edit/id" element={<SiswaFormEdit />} />
           <Route path="/ijazah" element={<Ijazah />} />
           <Route path="/ijazah/arsipkan" element={<IjazahFormCreate />} />
           <Route path="/ijazah/edit/:id" element={<IjazahFormEdit />} />

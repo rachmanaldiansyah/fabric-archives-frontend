@@ -299,6 +299,14 @@ const Sidebar = () => {
           </p>
           <ul className="menu-list">
             <li>
+              <NavLink to={"/siswa"}>
+                <span className="icon is-small">
+                  <IoPeopleOutline />
+                </span>
+                <span className="ml-1">Kelola Siswa</span>
+              </NavLink>
+            </li>
+            <li>
               <NavLink to={"/users"}>
                 <span className="icon is-small">
                   <IoPeopleOutline />
