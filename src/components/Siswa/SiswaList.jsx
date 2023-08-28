@@ -3,12 +3,9 @@ import { Link } from "react-router-dom";
 import { IoTrashOutline, IoCreateOutline } from "react-icons/io5";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { IoSearchOutline } from "react-icons/io5";
 
 const SiswaList = () => {
   const [siswa, setSiswa] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedProdi, setSelectedProdi] = useState("");
 
   useEffect(() => {
     getSiswa();
@@ -21,15 +18,6 @@ const SiswaList = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = siswa.slice(indexOfFirstItem, indexOfLastItem);
-
-  const handleProdiFilterChange = (event) => {
-    setSelectedProdi(event.target.value);
-    setCurrentPage(1);
-  };
-
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
 
   // Function to handle page change
   const handlePageChange = (pageNumber) => {
@@ -74,51 +62,17 @@ const SiswaList = () => {
         </h2>
       </div>
 
-      <div className="columns">
+      <div className="columns mt-0">
         <div className="column is-one-third">
-          <div className="control select is-primary">
-            <select
-              id="prodiFilter"
-              value={selectedProdi}
-              onChange={handleProdiFilterChange}
-            >
-              <option value="" disabled>
-                Pilih Program Studi
-              </option>
-              <option value="Teknik Komputer & Jaringan">
-                Teknik Komputer & Jaringan
-              </option>
-              <option value="Perhotelan">Perhotelan</option>
-              <option value="Multimedia">Multimedia</option>
-            </select>
-          </div>
-        </div>
-        <div className="column is-one-third is-hidden-mobile"></div>{" "}
-        {/* Kolom kosong */}
-        <div className="column is-one-third">
-          <div className="field has-addons is-pulled-right">
-            <div className="control has-icons-left">
-              <input
-                type="text"
-                className="input is-primary"
-                placeholder="Cari Nama Siswa"
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-              <span className="icon is-small is-left">
-                <IoSearchOutline />
-              </span>
-            </div>
-          </div>
+          <Link
+            to={`/siswa/tambah`}
+            className="button has-text-weight-semibold is-primary is-rounded"
+          >
+            Tambah Siswa
+          </Link>
         </div>
       </div>
 
-      <div className="columns mt-0">
-        <div className="column is-one-third">
-          <button className="button is-parimary">Tambah Siswa</button>
-        </div>
-      </div>
-      
       <div className="table-container">
         <table className="table is-narrow is-striped is-fullwidth is-hoverable">
           <thead>
@@ -140,19 +94,19 @@ const SiswaList = () => {
                 <td>{siswa.nisn}</td>
                 <td>{siswa.nis}</td>
                 <td>{siswa.nama}</td>
-                <th>{siswa.jk}</th>
-                <th>{siswa.nama_orangtua}</th>
-                <th>{siswa.prodi}</th>
+                <td>{siswa.jk}</td>
+                <td>{siswa.nama_orangtua}</td>
+                <td>{siswa.prodi}</td>
                 <td>
                   <Link
                     to={`/siswa/edit/${siswa.uuid}`}
-                    className="button is-small is-info is-fullwidth"
+                    className="button is-small is-info is-fullwidth is-rounded"
                   >
                     <IoCreateOutline />
                   </Link>
                   <button
                     onClick={() => deleteSiswa(siswa.uuid)}
-                    className="button is-small is-danger is-fullwidth mt-1"
+                    className="button is-small is-danger is-fullwidth is-rounded mt-1"
                   >
                     <IoTrashOutline />
                   </button>

@@ -85,13 +85,13 @@ const UsersList = () => {
                 <td>
                   <Link
                     to={`/users/edit/${users.uuid}`}
-                    className="button is-small is-info is-fullwidth"
+                    className="button is-small is-info is-rounded"
                   >
                     <IoCreateOutline />
                   </Link>
                   <button
                     onClick={() => deleteUsers(users.uuid)}
-                    className="button is-small is-danger is-fullwidth mt-1"
+                    className="button is-small is-danger is-rounded ml-1"
                   >
                     <IoTrashOutline />
                   </button>

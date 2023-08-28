@@ -83,7 +83,7 @@ const SiswaCreate = () => {
   };
 
   return (
-    <div>
+    <div className="container box">
       <div className="card is-shadowless">
         <div className="hero is-primary is-bold box">
           <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">

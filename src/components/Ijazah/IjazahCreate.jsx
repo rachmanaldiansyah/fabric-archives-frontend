@@ -19,6 +19,22 @@ const IjazahCreate = () => {
   const [msg] = useState("");
   const navigate = useNavigate();
 
+  const fetchStudentData = async (nisn) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/siswa/nisn/${nisn}`);
+      const studentData = response.data;
+
+      setNisn(studentData.nisn);
+      setNis(studentData.nis);
+      setNama(studentData.nama);
+      setJk(studentData.jk);
+      setNamaOrangtua(studentData.nama_orangtua);
+      setProdi(studentData.prodi);
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+    }
+  };
+
   const handleInputChange = (e, setterFunction) => {
     const inputValue = e.target.value;
 
@@ -148,7 +164,10 @@ const IjazahCreate = () => {
                     type="text"
                     className="input"
                     value={nisn}
-                    onChange={(e) => handleInputChange(e, setNisn)}
+                    onChange={(e) => {
+                      handleInputChange(e, setNisn);
+                      fetchStudentData(e.target.value);
+                    }}
                     placeholder="Isi nomor siswa induk nasional"
                   />
                 </div>
@@ -214,11 +233,11 @@ const IjazahCreate = () => {
                       <option value="" selected disabled>
                         Pilih Program Keahlian
                       </option>
-                      <option value="Teknik Komputer & Jaringan">
+                      <option value="TKJ">
                         Teknik Komputer & Jaringan
                       </option>
-                      <option value="Perhotelan">Perhotelan</option>
-                      <option value="Multimedia">Multimedia</option>
+                      <option value="PH">Perhotelan</option>
+                      <option value="MM">Multimedia</option>
                     </select>
                   </div>
                 </div>
