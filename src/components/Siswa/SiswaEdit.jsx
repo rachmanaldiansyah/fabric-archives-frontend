@@ -189,9 +189,9 @@ const SiswaEdit = () => {
                       <option value="" disabled>
                         Pilih Program Studi
                       </option>
-                      <option value="TKJ">Teknik Komputer & Jaringan</option>
-                      <option value="PH">Perhotelan</option>
-                      <option value="MM">Multimedia</option>
+                      <option value="Teknik Komputer & Jaringan">Teknik Komputer & Jaringan</option>
+                      <option value="Perhotelan">Perhotelan</option>
+                      <option value="Multimedia">Multimedia</option>
                     </select>
                   </div>
                 </div>
