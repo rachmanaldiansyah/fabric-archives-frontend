@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import { IoSaveOutline } from "react-icons/io5";
 
 const SiswaEdit = () => {
   const [nisn, setNisn] = useState("");
@@ -189,16 +190,19 @@ const SiswaEdit = () => {
                       <option value="" disabled>
                         Pilih Program Studi
                       </option>
-                      <option value="TKJ">Teknik Komputer & Jaringan</option>
-                      <option value="PH">Perhotelan</option>
-                      <option value="MM">Multimedia</option>
+                      <option value="Teknik Komputer & Jaringan">Teknik Komputer & Jaringan</option>
+                      <option value="Perhotelan">Perhotelan</option>
+                      <option value="Multimedia">Multimedia</option>
                     </select>
                   </div>
                 </div>
               </div>
               <div className="field">
                 <div className="control">
-                  <button type="submit" className="button is-success">
+                  <button type="submit" className="button has-text-weight-semibold is-success">
+                    <span className="icon mr-1">
+                      <IoSaveOutline />
+                    </span>
                     Simpan
                   </button>
                 </div>

@@ -6,6 +6,9 @@ import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import {
+  IoArchiveOutline
+} from "react-icons/io5";
 
 const IjazahCreate = () => {
   const [no_ijazah, setNoIjazah] = useState("");
@@ -18,6 +21,22 @@ const IjazahCreate = () => {
   const [arsip_ijazah, setArsipIjazah] = useState("");
   const [msg] = useState("");
   const navigate = useNavigate();
+
+  const fetchStudentData = async (nisn) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/siswa/nisn/${nisn}`);
+      const studentData = response.data;
+
+      setNisn(studentData.nisn);
+      setNis(studentData.nis);
+      setNama(studentData.nama);
+      setJk(studentData.jk);
+      setNamaOrangtua(studentData.nama_orangtua);
+      setProdi(studentData.prodi);
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+    }
+  };
 
   const handleInputChange = (e, setterFunction) => {
     const inputValue = e.target.value;
@@ -148,7 +167,10 @@ const IjazahCreate = () => {
                     type="text"
                     className="input"
                     value={nisn}
-                    onChange={(e) => handleInputChange(e, setNisn)}
+                    onChange={(e) => {
+                      handleInputChange(e, setNisn);
+                      fetchStudentData(e.target.value);
+                    }}
                     placeholder="Isi nomor siswa induk nasional"
                   />
                 </div>
@@ -162,6 +184,7 @@ const IjazahCreate = () => {
                     value={nis}
                     onChange={(e) => handleInputChange(e, setNis)}
                     placeholder="Isi nomor induk siswa"
+                    readOnly
                   />
                 </div>
               </div>
@@ -174,6 +197,7 @@ const IjazahCreate = () => {
                     value={nama}
                     onChange={(e) => setNama(e.target.value)}
                     placeholder="Isi nama lengkap siswa"
+                    readOnly
                   />
                 </div>
               </div>
@@ -200,6 +224,7 @@ const IjazahCreate = () => {
                     value={nama_orangtua}
                     onChange={(e) => setNamaOrangtua(e.target.value)}
                     placeholder="Isi nama lengkap orang tua siswa"
+                    readOnly
                   />
                 </div>
               </div>
@@ -238,8 +263,11 @@ const IjazahCreate = () => {
               </div>
               <div className="field">
                 <div className="control">
-                  <button type="submit" className="button is-success">
-                    Arsipkan Ijazah
+                  <button type="submit" className="button has-text-weight-semibold is-success">
+                    <span className="icon mr-1">
+                      <IoArchiveOutline />
+                    </span>
+                    Arsipkan
                   </button>
                 </div>
               </div>

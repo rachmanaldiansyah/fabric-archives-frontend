@@ -26,22 +26,22 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/users" element={<Users />} />
+          <Route path="/pengguna" element={<Users />} />
           <Route path="/register" element={<UsersCreate />} />
-          <Route path="/users/edit/:id" element={<UsersFormEdit />} />
+          <Route path="/pengguna/ubah/:id" element={<UsersFormEdit />} />
           <Route path="/siswa" element={<Siswa />} />
           <Route path="/siswa/tambah" element={<SiswaFormCreate />} />
-          <Route path="/siswa/edit/id" element={<SiswaFormEdit />} />
+          <Route path="/siswa/ubah/:id" element={<SiswaFormEdit />} />
           <Route path="/ijazah" element={<Ijazah />} />
           <Route path="/ijazah/arsipkan" element={<IjazahFormCreate />} />
-          <Route path="/ijazah/edit/:id" element={<IjazahFormEdit />} />
-          <Route path="/ijazah/confirm" element={<IjazahFormConfirm />} />
-          <Route path="/ijazah/rejected" element={<IjazahFormRejected />} />
+          <Route path="/ijazah/ubah/:id" element={<IjazahFormEdit />} />
+          <Route path="/ijazah/konfirmasi" element={<IjazahFormConfirm />} />
+          <Route path="/ijazah/tolak" element={<IjazahFormRejected />} />
           <Route path="/sertifikat" element={<Sertifikat />} />
           <Route path="/sertifikat/arsipkan" element={<SertifikatFormCreate />} />
-          <Route path="/sertifikat/edit/:id" element={<SertifikatFormEdit />} />
-          <Route path="/sertifikat/confirm" element={<SertifikatFormConfirm />} />
-          <Route path="/sertifikat/rejected" element={<SertifikatFormRejected />}/>
+          <Route path="/sertifikat/ubah/:id" element={<SertifikatFormEdit />} />
+          <Route path="/sertifikat/konfirmasi" element={<SertifikatFormConfirm />} />
+          <Route path="/sertifikat/tolak" element={<SertifikatFormRejected />}/>
           <Route path="/verifikasi" element={<Verifikasi />} />
         </Routes>
       </BrowserRouter>

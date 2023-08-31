@@ -223,7 +223,7 @@ const Sidebar = () => {
         )}
         {user && user.roles === "kepala sekolah" && (
           <li>
-            <NavLink to={"/ijazah/confirm"}>
+            <NavLink to={"/ijazah/konfirmasi"}>
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -233,7 +233,7 @@ const Sidebar = () => {
         )}
         {user && user.roles === "kesiswaan" && (
           <li>
-            <NavLink to={"/ijazah/confirm"}>
+            <NavLink to={"/ijazah/konfirmasi"}>
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -258,7 +258,7 @@ const Sidebar = () => {
         )}
         {user && user.roles === "kepala sekolah" && (
           <li>
-            <NavLink to={"/sertifikat/confirm"}>
+            <NavLink to={"/sertifikat/konfirmasi"}>
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -268,7 +268,7 @@ const Sidebar = () => {
         )}
         {user && user.roles === "kesiswaan" && (
           <li>
-            <NavLink to={"/sertifikat/confirm"}>
+            <NavLink to={"/sertifikat/konfirmasi"}>
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -283,7 +283,7 @@ const Sidebar = () => {
         )}
         {user && user.roles === "mitra" && (
           <li>
-            <NavLink to={"/sertifikat/confirm"}>
+            <NavLink to={"/sertifikat/konfirmasi"}>
               <span className="icon is-small">
                 <IoLibraryOutline />
               </span>
@@ -307,7 +307,7 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to={"/users"}>
+              <NavLink to={"/pengguna"}>
                 <span className="icon is-small">
                   <IoPeopleOutline />
                 </span>
@@ -347,7 +347,7 @@ const Sidebar = () => {
               <span className="icon is-small ml-1"></span>
               <ul>
                 <li>
-                  <NavLink to={"/ijazah/rejected"}>
+                  <NavLink to={"/ijazah/tolak"}>
                     <span className="icon is-small">
                       <IoSchoolOutline />
                     </span>
@@ -360,7 +360,7 @@ const Sidebar = () => {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to={"/sertifikat/rejected"}>
+                  <NavLink to={"/sertifikat/tolak"}>
                     <span className="icon is-small">
                       <IoRibbonOutline />
                     </span>

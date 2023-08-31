@@ -390,7 +390,7 @@ const IjazahList = () => {
                         )}
                         <td>
                           <Link
-                            to={`/ijazah/edit/${ijazah.uuid}`}
+                            to={`/ijazah/ubah/${ijazah.uuid}`}
                             className="button is-small is-info is-fullwidth"
                           >
                             <IoCreateOutline />

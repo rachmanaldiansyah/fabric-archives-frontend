@@ -374,7 +374,7 @@ const SertifikatList = () => {
                         )}
                         <td>
                           <Link
-                            to={`/sertifikat/edit/${sertifikat.uuid}`}
+                            to={`/sertifikat/ubah/${sertifikat.uuid}`}
                             className="button is-small is-info is-fullwidth"
                           >
                             <IoCreateOutline />

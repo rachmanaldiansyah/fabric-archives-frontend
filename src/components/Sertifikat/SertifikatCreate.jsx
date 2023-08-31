@@ -6,16 +6,35 @@ import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import {
+  IoArchiveOutline
+} from "react-icons/io5";
 
 const SertifikatCreate = () => {
   const [no_sertifikat, setNoSertifikat] = useState("");
   const [nis, setNis] = useState("");
   const [nama, setNama] = useState("");
   const [jk, setJk] = useState("");
-  const [keahlian, setKeahlian] = useState("");
+  const [prodi, setProdi] = useState("");
   const [arsip_sertifikat, setArsipSertifikat] = useState("");
   const [msg] = useState("");
   const navigate = useNavigate();
+
+  const fetchStudentData = async (nis) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/siswa/nomor_induk/${nis}`
+      );
+      const studentData = response.data;
+
+      setNis(studentData.nis);
+      setNama(studentData.nama);
+      setJk(studentData.jk);
+      setProdi(studentData.prodi);
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+    }
+  };
 
   const handleInputChange = (e, setterFunction) => {
     const inputValue = e.target.value;
@@ -54,7 +73,7 @@ const SertifikatCreate = () => {
       position: "right",
       style: {
         background: "linear-gradient(to right, #00b09b, #96c93d)",
-      }
+      },
     }).showToast();
 
     Swal.fire({
@@ -74,7 +93,7 @@ const SertifikatCreate = () => {
       position: "right",
       style: {
         background: "linear-gradient(to right, #ff0000, #940000)",
-      }
+      },
     }).showToast();
 
     Swal.fire({
@@ -103,7 +122,7 @@ const SertifikatCreate = () => {
         nis: nis,
         nama: nama,
         jk: jk,
-        keahlian: keahlian,
+        keahlian: prodi,
         arsip_sertifikat: cid,
       });
       showSuccessNotification();
@@ -150,7 +169,10 @@ const SertifikatCreate = () => {
                     type="text"
                     className="input"
                     value={nis}
-                    onChange={(e) => handleInputChange(e, setNis)}
+                    onChange={(e) => {
+                      handleInputChange(e, setNis);
+                      fetchStudentData(e.target.value);
+                    }}
                     placeholder="Isi nomor induk siswa"
                   />
                 </div>
@@ -186,8 +208,8 @@ const SertifikatCreate = () => {
                 <div className="control">
                   <div className="select is-fullwidth">
                     <select
-                      value={keahlian}
-                      onChange={(e) => setKeahlian(e.target.value)}
+                      value={prodi}
+                      onChange={(e) => setProdi(e.target.value)}
                     >
                       <option value="" selected disabled>
                         Pilih Keahlian Kompetensi
@@ -216,7 +238,10 @@ const SertifikatCreate = () => {
               </div>
               <div className="field">
                 <div className="control">
-                  <button type="submit" className="button is-success">
+                  <button type="submit" className="button has-text-weight-semibold is-success">
+                    <span className="icon mr-1">
+                      <IoArchiveOutline />
+                    </span>
                     Arsipkan
                   </button>
                 </div>

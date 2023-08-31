@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import { IoSaveOutline } from "react-icons/io5";
 
 const IjazahEdit = () => {
   const [no_ijazah, setNoIjazah] = useState("");
@@ -262,8 +263,11 @@ const IjazahEdit = () => {
               </div>
               <div className="field">
                 <div className="control">
-                  <button type="submit" className="button mt-4 is-primary">
-                    Ubah Arsip Ijazah
+                  <button type="submit" className="button has-text-weight-semibold is-success">
+                    <span className="icon mr-1">
+                      <IoSaveOutline />
+                    </span>
+                    Simpan
                   </button>
                 </div>
               </div>

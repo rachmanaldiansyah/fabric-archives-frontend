@@ -84,7 +84,7 @@ const UsersList = () => {
                 <td className="is-capitalized">{users.roles}</td>
                 <td>
                   <Link
-                    to={`/users/edit/${users.uuid}`}
+                    to={`/pengguna/ubah/${users.uuid}`}
                     className="button is-small is-info is-fullwidth"
                   >
                     <IoCreateOutline />

@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import { IoSaveOutline } from "react-icons/io5";
 
 const SiswaCreate = () => {
   const [nisn, setNisn] = useState("");
@@ -83,7 +84,7 @@ const SiswaCreate = () => {
   };
 
   return (
-    <div>
+    <div className="container box">
       <div className="card is-shadowless">
         <div className="hero is-primary is-bold box">
           <h1 className="title is-family-sans-serif is-uppercase has-text-centered has-text-weight-semibold mt-2">
@@ -141,7 +142,7 @@ const SiswaCreate = () => {
                       <option value="" disabled>
                         Pilih Jenis Kelamin
                       </option>
-                      <option value="laki-laki">Laki-laki</option>
+                      <option value="Laki-laki">Laki-laki</option>
                       <option value="perempuan">Perempuan</option>
                     </select>
                   </div>
@@ -167,16 +168,19 @@ const SiswaCreate = () => {
                       <option value="" disabled>
                         Pilih Program Studi
                       </option>
-                      <option value="TKJ">Teknik Komputer & Jaringan</option>
-                      <option value="PH">Perhotelan</option>
-                      <option value="MM">Multimedia</option>
+                      <option value="Teknik Komputer & Jaringan">Teknik Komputer & Jaringan</option>
+                      <option value="Perhotelan">Perhotelan</option>
+                      <option value="Multimedia">Multimedia</option>
                     </select>
                   </div>
                 </div>
               </div>
               <div className="field">
                 <div className="control">
-                  <button type="submit" className="button is-success">
+                  <button type="submit" className="button has-text-weight-semibold is-success">
+                    <span className="icon mr-1">
+                      <IoSaveOutline />
+                    </span>
                     Simpan
                   </button>
                 </div>

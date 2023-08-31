@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { IoTrashOutline, IoCreateOutline } from "react-icons/io5";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { IoSearchOutline } from "react-icons/io5";
+import { IoSearchOutline, IoPersonAddOutline } from "react-icons/io5";
 
 const SiswaList = () => {
   const [siswa, setSiswa] = useState([]);
@@ -76,25 +76,31 @@ const SiswaList = () => {
 
       <div className="columns">
         <div className="column is-one-third">
-          <div className="control select is-primary">
-            <select
-              id="prodiFilter"
-              value={selectedProdi}
-              onChange={handleProdiFilterChange}
-            >
-              <option value="" disabled>
-                Pilih Program Studi
-              </option>
-              <option value="Teknik Komputer & Jaringan">
-                Teknik Komputer & Jaringan
-              </option>
-              <option value="Perhotelan">Perhotelan</option>
-              <option value="Multimedia">Multimedia</option>
-            </select>
+          <div className="field has-addons">
+            <div className="control select is-primary">
+              <select
+                id="prodiFilter"
+                value={selectedProdi}
+                onChange={handleProdiFilterChange}
+              >
+                <option value="" disabled>
+                  Pilih Program Studi
+                </option>
+                <option value="Teknik Komputer & Jaringan">
+                  Teknik Komputer & Jaringan
+                </option>
+                <option value="Perhotelan">Perhotelan</option>
+                <option value="Multimedia">Multimedia</option>
+              </select>
+            </div>
+            <div className="control">
+              <Link to={`/siswa/tambah`} className="button is-primary">
+                <IoPersonAddOutline />
+              </Link>
+            </div>
           </div>
         </div>
-        <div className="column is-one-third is-hidden-mobile"></div>{" "}
-        {/* Kolom kosong */}
+        <div className="column is-one-third is-hidden-mobile"></div>
         <div className="column is-one-third">
           <div className="field has-addons is-pulled-right">
             <div className="control has-icons-left">
@@ -113,12 +119,6 @@ const SiswaList = () => {
         </div>
       </div>
 
-      <div className="columns mt-0">
-        <div className="column is-one-third">
-          <button className="button is-parimary">Tambah Siswa</button>
-        </div>
-      </div>
-      
       <div className="table-container">
         <table className="table is-narrow is-striped is-fullwidth is-hoverable">
           <thead>
@@ -128,7 +128,7 @@ const SiswaList = () => {
               <th>NIS</th>
               <th>Nama Siswa</th>
               <th>Jenis kelamin</th>
-              <th>Nama Orangtua/Wali</th>
+              <th>Nama Orangtua</th>
               <th>Prodi</th>
               <th>Action</th>
             </tr>
@@ -140,12 +140,12 @@ const SiswaList = () => {
                 <td>{siswa.nisn}</td>
                 <td>{siswa.nis}</td>
                 <td>{siswa.nama}</td>
-                <th>{siswa.jk}</th>
-                <th>{siswa.nama_orangtua}</th>
-                <th>{siswa.prodi}</th>
+                <td>{siswa.jk}</td>
+                <td>{siswa.nama_orangtua}</td>
+                <td>{siswa.prodi}</td>
                 <td>
                   <Link
-                    to={`/siswa/edit/${siswa.uuid}`}
+                    to={`/siswa/ubah/${siswa.uuid}`}
                     className="button is-small is-info is-fullwidth"
                   >
                     <IoCreateOutline />
